@@ -1,0 +1,3723 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Yaxiya Grosir - Sistem Manajemen Pelanggan & Cetak Label A6 / A4</title>
+  <meta name="theme-color" content="#8E1EA2" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- PWA Manifest Data URI (1-File PWA) -->
+  <link rel="manifest" href='data:application/manifest+json,{"name":"Yaxiya Grosir - Manajemen Pelanggan","short_name":"YaxiyaGrosir","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#8E1EA2","description":"Sistem Manajemen Pelanggan dan Cetak Label A6 100x150mm & A4 Yaxiya Grosir","icons":[{"src":"https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg","sizes":"192x192","type":"image/jpeg"},{"src":"https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg","sizes":"512x512","type":"image/jpeg"}]}' />
+  <link rel="icon" type="image/jpeg" href="https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg" />
+
+  <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono & Libre Barcode 128 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Libre+Barcode+128&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+            barcode: ['"Libre Barcode 128"', 'cursive']
+          },
+          colors: {
+            brand: {
+              50: '#fbf4fd',
+              100: '#f5e6f9',
+              200: '#eccbf3',
+              300: '#dda2e9',
+              400: '#c769da',
+              500: '#ae3bc5',
+              600: '#8E1EA2',
+              700: '#771787',
+              800: '#63166f',
+              900: '#52175b'
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Dynamic Print Page Style (Diubah otomatis antara A6 100x150mm dan A4 210x297mm) -->
+  <style id="dynamic-page-print-style">
+    @media print {
+      @page {
+        size: 100mm 150mm;
+        margin: 0mm !important;
+      }
+    }
+  </style>
+
+  <style>
+    :root {
+      --primary: #8E1EA2;
+      --primary-dark: #63166f;
+      --primary-light: #f5e6f9;
+    }
+
+    /* Full Page Reset untuk menutupi seluruh elemen bawaan Blogger tanpa edit XML */
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden !important;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f4f6fb;
+      color: #0f172a;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #yaxiya-app-root {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100dvh;
+      z-index: 2147483640;
+      background:
+        radial-gradient(circle at 6% 10%, rgba(142, 30, 162, 0.10) 0%, transparent 38%),
+        radial-gradient(circle at 94% 90%, rgba(142, 30, 162, 0.08) 0%, transparent 40%),
+        linear-gradient(180deg, #fafbff 0%, #f3f5fa 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Glassmorphism Utilities */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 10px 30px -5px rgba(142, 30, 162, 0.07), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(142, 30, 162, 0.11);
+      box-shadow: 0 4px 20px -2px rgba(142, 30, 162, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(142, 30, 162, 0.24);
+      box-shadow: 0 12px 28px -6px rgba(142, 30, 162, 0.11), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    }
+
+    .brand-gradient {
+      background: linear-gradient(135deg, #9b23b0 0%, #8E1EA2 45%, #5c1369 100%);
+    }
+
+    .brand-shadow {
+      box-shadow: 0 8px 20px -4px rgba(142, 30, 162, 0.42);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(142, 30, 162, 0.25);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(142, 30, 162, 0.5);
+    }
+
+    /* Responsive Layout:
+       - Desktop (>= 1024px): Full Fixed Sidebar (17.5rem)
+       - Tablet (769px - 1023px): Compact Fixed Sidebar (15rem)
+       - Mobile (<= 768px): Floating Bottom Navigation Bar */
+    @media (min-width: 1024px) {
+      #desktop-sidebar {
+        display: flex !important;
+        width: 17.5rem !important;
+      }
+      #mobile-bottom-nav {
+        display: none !important;
+      }
+      #main-content-area {
+        margin-left: 17.5rem !important;
+        padding-bottom: 2.5rem !important;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1023px) {
+      #desktop-sidebar {
+        display: flex !important;
+        width: 14.75rem !important;
+      }
+      #mobile-bottom-nav {
+        display: none !important;
+      }
+      #main-content-area {
+        margin-left: 14.75rem !important;
+        padding-bottom: 2rem !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #desktop-sidebar {
+        display: none !important;
+      }
+      #mobile-bottom-nav {
+        display: flex !important;
+      }
+      #main-content-area {
+        margin-left: 0 !important;
+        padding-bottom: 6.75rem !important;
+      }
+    }
+
+    /* ===================================================================== */
+    /* 1. STANDAR PRESISI KERTAS LABEL THERMAL A6 100 x 150 MM               */
+    /* ===================================================================== */
+    .label-stage-container {
+      position: relative;
+      display: inline-block;
+      padding: 14px;
+      background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
+      border-radius: 20px;
+      box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.12);
+      margin-top: 14px;
+    }
+
+    .label-stage-container.show-ruler::before {
+      content: "← Lebar Presisi 100 mm →";
+      position: absolute;
+      top: -22px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #8E1EA2;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .label-stage-container.show-ruler::after {
+      content: "↕ Tinggi 150 mm (Gap Massal 3 mm)";
+      position: absolute;
+      right: -102px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-size: 11px;
+      font-weight: 800;
+      color: #8E1EA2;
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 640px) {
+      .label-stage-container.show-ruler::after {
+        display: none;
+      }
+    }
+
+    .thermal-label-100x150 {
+      width: 100mm !important;
+      height: 150mm !important;
+      min-width: 100mm !important;
+      max-width: 100mm !important;
+      min-height: 150mm !important;
+      max-height: 150mm !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      box-sizing: border-box !important;
+      padding: 3mm !important;
+      font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif !important;
+      position: relative !important;
+      overflow: hidden !important;
+      margin: 0 auto !important;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .thermal-frame {
+      width: 100% !important;
+      height: 100% !important;
+      border: 2px solid #000000 !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      background: #ffffff !important;
+    }
+
+    /* ===================================================================== */
+    /* 2. STANDAR PRESISI KERTAS A4 (210 x 297 MM) DIBAGI 3 SLOT             */
+    /*    (ATAS, TENGAH, BAWAH @ TINGGI 99 MM)                               */
+    /* ===================================================================== */
+    .a4-sheet-preview {
+      width: 210mm !important;
+      height: 297mm !important;
+      min-width: 210mm !important;
+      max-width: 210mm !important;
+      min-height: 297mm !important;
+      max-height: 297mm !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+      font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif !important;
+      position: relative !important;
+      overflow: hidden !important;
+      margin: 0 auto !important;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.22);
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .a4-slot-third {
+      width: 210mm !important;
+      height: 99mm !important;
+      min-height: 99mm !important;
+      max-height: 99mm !important;
+      box-sizing: border-box !important;
+      padding: 4.5mm 6mm !important;
+      position: relative !important;
+      overflow: hidden !important;
+      background: #ffffff !important;
+    }
+
+    .a4-slot-third.has-cutline {
+      border-bottom: 1.5px dashed #000000 !important;
+    }
+
+    /* Wadah Skala Proporsional Kertas A4 & A6 agar rapi tanpa memotong konten di semua layar */
+    .a4-preview-frame-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      padding: 8px 0;
+    }
+
+    .a4-responsive-scaler {
+      width: 210mm;
+      height: calc(297mm * 0.60);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .a4-responsive-scaler > .a4-sheet-preview {
+      transform: scale(0.60);
+      transform-origin: top center;
+    }
+
+    .a4-responsive-scaler.zoom-large {
+      height: calc(297mm * 0.78) !important;
+    }
+
+    .a4-responsive-scaler.zoom-large > .a4-sheet-preview {
+      transform: scale(0.78) !important;
+    }
+
+    @media (max-width: 1280px) {
+      .a4-responsive-scaler {
+        height: calc(297mm * 0.50);
+      }
+      .a4-responsive-scaler > .a4-sheet-preview {
+        transform: scale(0.50);
+      }
+    }
+
+    @media (max-width: 1023px) {
+      .a4-responsive-scaler {
+        height: calc(297mm * 0.54);
+      }
+      .a4-responsive-scaler > .a4-sheet-preview {
+        transform: scale(0.54);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .a4-responsive-scaler {
+        height: calc(297mm * 0.37);
+      }
+      .a4-responsive-scaler > .a4-sheet-preview {
+        transform: scale(0.37);
+      }
+      .label-responsive-scaler {
+        height: calc(150mm * 0.82 + 28px);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .label-responsive-scaler > #label-stage-box {
+        transform: scale(0.82);
+        transform-origin: top center;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .a4-responsive-scaler {
+        height: calc(297mm * 0.32);
+      }
+      .a4-responsive-scaler > .a4-sheet-preview {
+        transform: scale(0.32);
+      }
+      .label-responsive-scaler {
+        height: calc(150mm * 0.74 + 24px);
+      }
+      .label-responsive-scaler > #label-stage-box {
+        transform: scale(0.74);
+        transform-origin: top center;
+      }
+    }
+
+    /* Area Cetak Khusus Printer (A6 & A4) */
+    #print-mount-container {
+      display: none;
+    }
+
+    @media print {
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+        height: auto !important;
+      }
+
+      #yaxiya-app-root {
+        display: none !important;
+      }
+
+      #print-mount-container {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      /* Mode Cetak Label A6 (100x150 mm) dengan Gap Antar Label 3mm saat Cetak Massal */
+      .print-page-sheet-a6 {
+        width: 100mm !important;
+        height: 150mm !important;
+        min-width: 100mm !important;
+        max-width: 100mm !important;
+        min-height: 150mm !important;
+        max-height: 150mm !important;
+        padding: 3mm !important;
+        margin: 0 auto 3mm auto !important; /* GAP 3MM DARI 1 LABEL KE LABEL LAIN */
+        box-sizing: border-box !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .print-page-sheet-a6:last-child {
+        margin-bottom: 0mm !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+
+      /* Mode Cetak Kertas A4 (210x297 mm - Otomatis 1, 2, atau 3 Alamat per Halaman & Multi-Halaman) */
+      .print-page-sheet-a4 {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-width: 210mm !important;
+        max-width: 210mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        overflow: hidden !important;
+        box-shadow: none !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .print-page-sheet-a4:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+
+      /* Slot Kosong di Bawah tidak mencetak kotak/tinta sama sekali */
+      .a4-empty-slot-placeholder {
+        visibility: hidden !important;
+      }
+
+      .a4-slot-third.empty-slot-no-cutline {
+        border-bottom: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="yaxiya-app-root">
+
+    <!-- BANNER MODE PREVIEW -->
+    <div id="preview-banner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-semibold px-4 py-1.5 flex items-center justify-between z-50 shadow-sm shrink-0">
+      <div class="flex items-center gap-2 truncate">
+        <i class="fa-solid fa-flask"></i>
+        <span class="truncate"><b>MODE PREVIEW AKTIF</b> (<code>IS_PREVIEW = true</code>) — Cetak A4 kini mendukung pilih 1 alamat (Atas), 2 alamat (Atas & Tengah), beberapa alamat, atau Cetak Semua Alamat (Multi-Halaman Otomatis).</span>
+      </div>
+      <span class="bg-white/25 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0 ml-2">Simulasi Interaktif</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- HALAMAN LOGIN (SINGLE ADMIN UTAMA)         -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="flex-1 flex items-center justify-center p-4 overflow-y-auto">
+      <div class="glass-panel w-full max-w-md rounded-3xl p-7 md:p-8 relative overflow-hidden">
+        <div class="absolute -top-16 -right-16 w-36 h-36 rounded-full bg-brand-600/15 blur-2xl pointer-events-none"></div>
+        <div class="absolute -bottom-16 -left-16 w-36 h-36 rounded-full bg-brand-600/15 blur-2xl pointer-events-none"></div>
+
+        <div class="flex flex-col items-center text-center mb-6">
+          <div class="w-20 h-20 rounded-2xl p-1.5 bg-white shadow-md border border-brand-200 mb-3.5 overflow-hidden flex items-center justify-center">
+            <img src="https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg"
+              onerror="this.src='https://placehold.co/160x160/8E1EA2/ffffff?text=YAXIYA'"
+              alt="Yaxiya Grosir Logo" class="w-full h-full object-contain rounded-xl" />
+          </div>
+          <span class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-brand-100 text-brand-700 mb-2">
+            <i class="fa-solid fa-lock mr-1"></i>Single Admin Portal
+          </span>
+          <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Yaxiya Grosir</h1>
+          <p class="text-xs text-slate-500 mt-1">Sistem Manajemen Pelanggan & Cetak Label A6 (100x150) & A4</p>
+        </div>
+
+        <form id="login-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Admin Utama</label>
+            <div class="relative">
+              <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="email" id="login-email" required placeholder="admin@yaxiyagrosir.com"
+                class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white/95 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent transition" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password Admin</label>
+            <div class="relative">
+              <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" id="login-password" required placeholder="••••••••"
+                class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 bg-white/95 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-transparent transition" />
+              <button type="button" id="toggle-password-btn" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-eye text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="preview-login-hint" class="hidden p-3.5 rounded-2xl bg-brand-50 border border-brand-200 text-xs text-brand-900">
+            <div class="font-extrabold flex items-center justify-between mb-1">
+              <span><i class="fa-solid fa-bolt text-brand-600 mr-1"></i> Akses Cepat Mode Preview:</span>
+              <span class="text-[10px] bg-brand-600 text-white px-2 py-0.5 rounded-full">Terisi Otomatis</span>
+            </div>
+            <div class="text-[11px] text-brand-700">Langsung klik tombol <b>Masuk sebagai Admin Utama</b> di bawah untuk membuka aplikasi.</div>
+          </div>
+
+          <button type="submit" id="login-submit-btn"
+            class="w-full py-3.5 rounded-xl brand-gradient text-white font-extrabold text-sm brand-shadow hover:opacity-95 active:scale-[0.99] transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            <span>Masuk sebagai Admin Utama</span>
+          </button>
+        </form>
+
+        <div class="mt-6 pt-4 border-t border-slate-200/70 text-center">
+          <p class="text-[11px] text-slate-400">
+            &copy; 2026 <b>Yaxiya Grosir</b> &bull; Proteksi Akses Admin Tunggal
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- DASHBOARD SHELL (SETELAH LOGIN)            -->
+    <!-- ========================================== -->
+    <div id="app-shell" class="hidden flex-1 flex overflow-hidden relative">
+
+      <!-- DESKTOP & TABLET FIXED SIDEBAR (KIRI) -->
+      <aside id="desktop-sidebar" class="glass-panel border-r border-slate-200/80 flex-col justify-between fixed top-0 bottom-0 left-0 z-30 select-none transition-all duration-200">
+        <div>
+          <!-- Brand Header -->
+          <div class="p-4 lg:p-5 border-b border-slate-200/60 flex items-center gap-3">
+            <img id="sidebar-store-logo" src="https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg"
+              onerror="this.src='https://placehold.co/120x120/8E1EA2/ffffff?text=YX'"
+              alt="Logo" class="w-11 h-11 lg:w-12 lg:h-12 rounded-xl object-contain bg-white p-1 border border-brand-200 shadow-sm shrink-0" />
+            <div class="overflow-hidden">
+              <h2 id="sidebar-store-name" class="font-extrabold text-sm lg:text-base text-slate-900 truncate">YAXIYA GROSIR</h2>
+              <span class="inline-flex items-center gap-1 text-[10px] lg:text-[11px] font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-100">
+                <i class="fa-solid fa-shield-halved text-[9px]"></i> Admin Utama
+              </span>
+            </div>
+          </div>
+
+          <!-- Navigation Links -->
+          <nav class="p-3 lg:p-3.5 space-y-1.5">
+            <div class="px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Navigasi Sistem</div>
+
+            <button data-nav="dashboard" class="nav-item w-full flex items-center gap-3 px-3 lg:px-3.5 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition">
+              <i class="fa-solid fa-chart-pie w-5 text-center text-sm"></i>
+              <span class="truncate">Dashboard Utama</span>
+            </button>
+
+            <button data-nav="customers" class="nav-item w-full flex items-center justify-between px-3 lg:px-3.5 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition">
+              <div class="flex items-center gap-3 truncate">
+                <i class="fa-solid fa-table-list w-5 text-center text-sm"></i>
+                <span class="truncate">Tabel Pelanggan</span>
+              </div>
+              <span id="nav-customer-badge" class="text-[10px] lg:text-[11px] px-2 py-0.5 rounded-full font-extrabold bg-brand-100 text-brand-700 shrink-0">0</span>
+            </button>
+
+            <button data-nav="print" class="nav-item w-full flex items-center justify-between px-3 lg:px-3.5 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition">
+              <div class="flex items-center gap-3 truncate">
+                <i class="fa-solid fa-print w-5 text-center text-sm"></i>
+                <span class="truncate">Cetak Label 100x150</span>
+              </div>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 font-extrabold shrink-0">A6</span>
+            </button>
+
+            <button data-nav="print-a4" class="nav-item w-full flex items-center justify-between px-3 lg:px-3.5 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition">
+              <div class="flex items-center gap-3 truncate">
+                <i class="fa-solid fa-file-lines w-5 text-center text-sm"></i>
+                <span class="truncate">Cetak Alamat A4</span>
+              </div>
+              <span id="nav-a4-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 font-extrabold shrink-0">A4</span>
+            </button>
+
+            <button data-nav="settings" class="nav-item w-full flex items-center gap-3 px-3 lg:px-3.5 py-2.5 lg:py-3 rounded-xl text-xs lg:text-sm font-bold transition">
+              <i class="fa-solid fa-sliders w-5 text-center text-sm"></i>
+              <span class="truncate">Pengaturan Toko</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Sidebar Footer / Admin Profile -->
+        <div class="p-4 border-t border-slate-200/60 space-y-3">
+          <div class="p-3 rounded-2xl bg-brand-50/90 border border-brand-100 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl brand-gradient text-white flex items-center justify-center font-bold text-sm shrink-0">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div class="overflow-hidden flex-1">
+              <div class="text-xs font-extrabold text-slate-800 truncate" id="admin-email-display">admin@yaxiyagrosir.com</div>
+              <div class="text-[10px] text-brand-600 font-bold uppercase tracking-wider">Single Admin Mode</div>
+            </div>
+          </div>
+
+          <button id="logout-btn-desktop" class="w-full py-2.5 px-3 rounded-xl border border-rose-200 bg-rose-50/70 hover:bg-rose-100 text-rose-600 font-bold text-xs flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-power-off"></i>
+            <span>Keluar Sesi Admin</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- AREA KONTEN UTAMA -->
+      <main id="main-content-area" class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden">
+
+        <!-- TOP HEADER BAR -->
+        <header class="glass-panel sticky top-0 z-20 px-3.5 sm:px-6 lg:px-8 py-3 border-b border-slate-200/80 flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <img id="mobile-header-logo" src="https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg"
+              onerror="this.src='https://placehold.co/100x100/8E1EA2/ffffff?text=YX'"
+              alt="Logo" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-contain bg-white p-0.5 border border-brand-200 md:hidden shrink-0 shadow-sm" />
+            <div class="min-w-0">
+              <h1 id="page-title" class="text-sm sm:text-base lg:text-xl font-extrabold text-slate-900 truncate">Dashboard Ringkasan</h1>
+              <p id="page-subtitle" class="text-[11px] lg:text-xs text-slate-500 hidden sm:block truncate">Kelola tabel pelanggan, cetak label A6 (100x150 mm) & kertas A4 fleksibel</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button onclick="window.app.switchView('print-a4')"
+              class="px-3 py-2 rounded-xl border border-blue-200 bg-blue-50/90 hover:bg-blue-100 text-blue-700 text-xs font-extrabold transition hidden xl:flex items-center gap-1.5">
+              <i class="fa-solid fa-file-lines"></i>
+              <span>Cetak A4 (1/2/3/Semua)</span>
+            </button>
+
+            <button onclick="window.app.switchView('print')"
+              class="px-3 py-2 rounded-xl border border-brand-200 bg-brand-50/90 hover:bg-brand-100 text-brand-700 text-xs font-extrabold transition hidden lg:flex items-center gap-1.5">
+              <i class="fa-solid fa-print"></i>
+              <span>Label A6 (100x150)</span>
+            </button>
+
+            <button id="quick-add-customer-btn"
+              class="px-3 sm:px-3.5 py-2 rounded-xl brand-gradient text-white text-xs sm:text-sm font-extrabold brand-shadow hover:opacity-95 active:scale-95 transition flex items-center gap-1.5">
+              <i class="fa-solid fa-user-plus text-xs"></i>
+              <span class="hidden sm:inline">Tambah Pelanggan</span>
+              <span class="sm:hidden">Tambah</span>
+            </button>
+
+            <button id="logout-btn-mobile" title="Keluar"
+              class="md:hidden w-9 h-9 rounded-xl border border-rose-200 bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-power-off text-xs"></i>
+            </button>
+          </div>
+        </header>
+
+        <!-- BODY KONTEN DINAMIS -->
+        <div class="p-3.5 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto space-y-5 sm:space-y-6">
+
+          <!-- ========================================== -->
+          <!-- VIEW 1: DASHBOARD                          -->
+          <!-- ========================================== -->
+          <section id="view-dashboard" class="view-section space-y-5 sm:space-y-6">
+            <!-- Hero Welcome Banner -->
+            <div class="rounded-3xl brand-gradient text-white p-5 sm:p-7 lg:p-8 shadow-lg relative overflow-hidden flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+              <div class="absolute -right-10 -bottom-10 w-56 h-56 rounded-full bg-white/10 blur-2xl pointer-events-none"></div>
+              <div class="space-y-2 max-w-2xl relative z-10">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold bg-white/20 backdrop-blur-sm">
+                  <i class="fa-solid fa-print"></i> Label A6 (Gap 3mm) & Kertas A4 Fleksibel (Multi-Halaman)
+                </span>
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-extrabold leading-tight">Manajemen Pengiriman Yaxiya Grosir</h2>
+                <p class="text-white/90 text-xs sm:text-sm leading-relaxed">
+                  Dilengkapi input <b>ID PL Manual</b>, <b>Tabel Data Pelanggan</b>, cetak label thermal <b>100x150 mm (A6)</b> dengan jarak massal <b>3mm</b>, serta cetak <b>Ukuran A4 Fleksibel</b> (bisa cetak 1 alamat di Atas, 2 alamat di Atas-Tengah, maupun cetak semua alamat multi-halaman otomatis).
+                </p>
+              </div>
+              <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-2.5 w-full lg:w-auto relative z-10 shrink-0">
+                <button onclick="window.app.switchView('print')" class="px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white text-brand-700 font-extrabold text-xs sm:text-sm shadow hover:bg-brand-50 transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-receipt"></i>
+                  <span>Cetak A6</span>
+                </button>
+                <button onclick="window.app.switchView('print-a4')" class="px-3.5 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-white/95 text-blue-800 font-extrabold text-xs sm:text-sm shadow hover:bg-white transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-file-lines"></i>
+                  <span>Cetak A4</span>
+                </button>
+                <button onclick="window.app.openCustomerModal()" class="col-span-2 sm:col-span-1 px-4 py-2.5 sm:py-3 rounded-xl bg-brand-900/60 hover:bg-brand-900 text-white border border-white/25 font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>Input Pelanggan Baru</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 4 Stat Cards -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div class="glass-card rounded-2xl p-4 sm:p-5 flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <span class="text-[11px] sm:text-xs font-bold text-slate-500 block truncate">Total Pelanggan</span>
+                  <h3 id="stat-total-customers" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 mt-1">0</h3>
+                  <span class="text-[10px] sm:text-[11px] text-emerald-600 font-bold mt-1 inline-block truncate">
+                    <i class="fa-solid fa-id-badge mr-1"></i>ID PL Manual
+                  </span>
+                </div>
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center text-sm sm:text-lg shrink-0">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+              </div>
+
+              <div class="glass-card rounded-2xl p-4 sm:p-5 flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <span class="text-[11px] sm:text-xs font-bold text-slate-500 block truncate">Mode Reguler</span>
+                  <h3 id="stat-regular-customers" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 mt-1">0</h3>
+                  <span class="text-[10px] sm:text-[11px] text-brand-600 font-bold mt-1 inline-block truncate">
+                    <i class="fa-solid fa-store mr-1"></i>Logo Tampil
+                  </span>
+                </div>
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-sm sm:text-lg shrink-0">
+                  <i class="fa-solid fa-bag-shopping"></i>
+                </div>
+              </div>
+
+              <div class="glass-card rounded-2xl p-4 sm:p-5 flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <span class="text-[11px] sm:text-xs font-bold text-slate-500 block truncate">Mode Dropship</span>
+                  <h3 id="stat-dropship-customers" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 mt-1">0</h3>
+                  <span class="text-[10px] sm:text-[11px] text-amber-600 font-bold mt-1 inline-block truncate">
+                    <i class="fa-solid fa-eye-slash mr-1"></i>Tanpa Logo
+                  </span>
+                </div>
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-sm sm:text-lg shrink-0">
+                  <i class="fa-solid fa-boxes-packing"></i>
+                </div>
+              </div>
+
+              <div class="glass-card rounded-2xl p-4 sm:p-5 flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <span class="text-[11px] sm:text-xs font-bold text-slate-500 block truncate">Total Tercetak</span>
+                  <h3 id="stat-total-printed" class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-slate-900 mt-1">0</h3>
+                  <span class="text-[10px] sm:text-[11px] text-purple-600 font-bold mt-1 inline-block truncate">
+                    <i class="fa-solid fa-print mr-1"></i>Label A6 & A4
+                  </span>
+                </div>
+                <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-sm sm:text-lg shrink-0">
+                  <i class="fa-solid fa-print"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Daftar Pelanggan Terbaru & Info Toko -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Pelanggan Terbaru -->
+              <div class="lg:col-span-2 glass-card rounded-2xl p-5 md:p-6">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 class="font-extrabold text-slate-900 text-base">Daftar Alamat Pelanggan Terbaru</h3>
+                    <p class="text-xs text-slate-500">Pintasan cepat cetak ke Label A6 (100x150) atau Kertas A4</p>
+                  </div>
+                  <button onclick="window.app.switchView('customers')" class="text-xs font-extrabold text-brand-600 hover:text-brand-800 flex items-center gap-1">
+                    <span>Buka Tabel Pelanggan</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+
+                <div id="dashboard-recent-list" class="space-y-3">
+                  <!-- Diisi via JS -->
+                </div>
+              </div>
+
+              <!-- Identitas Pengirim Default -->
+              <div class="glass-card rounded-2xl p-5 md:p-6 flex flex-col justify-between space-y-4">
+                <div>
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-extrabold text-slate-900 text-base">Identitas Toko Default</h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-brand-100 text-brand-700">Label Reguler</span>
+                  </div>
+
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
+                    <div class="flex items-center gap-3">
+                      <img id="dash-store-logo" src="https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg"
+                        onerror="this.src='https://placehold.co/100x100/8E1EA2/ffffff?text=YX'"
+                        alt="Logo" class="w-14 h-14 rounded-xl object-contain bg-white p-1 border border-slate-200" />
+                      <div>
+                        <div id="dash-store-name" class="font-extrabold text-slate-900 text-sm">YAXIYA GROSIR</div>
+                        <div id="dash-store-phone" class="text-xs text-slate-600 font-bold mt-0.5">0812-9988-7766</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-600 leading-relaxed border-t border-slate-200/70 pt-2.5" id="dash-store-address">
+                      Pusat Grosir Yaxiya, Jl. Niaga Utama No. 88, Jawa Tengah
+                    </div>
+                  </div>
+
+                  <div class="mt-4 p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
+                    <div class="font-extrabold flex items-center gap-1.5">
+                      <i class="fa-solid fa-eye-slash text-amber-600"></i>
+                      <span>Mode Dropship (A6 & A4):</span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-amber-800">
+                      Saat fitur <b>Dropship</b> diaktifkan, sistem secara otomatis menyembunyikan <b>Logo & Nama Toko YAXIYA GROSIR</b> baik pada cetakan label A6 maupun cetakan kertas A4.
+                    </p>
+                  </div>
+                </div>
+
+                <button onclick="window.app.switchView('settings')" class="w-full py-2.5 rounded-xl border border-brand-200 bg-brand-50/70 hover:bg-brand-100 text-brand-700 font-extrabold text-xs transition flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                  <span>Edit Identitas Toko</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- VIEW 2: TABEL DATA PELANGGAN (CRUD)        -->
+          <!-- ========================================== -->
+          <section id="view-customers" class="view-section hidden space-y-5">
+            <!-- Filter, Search & Batch Action Bar -->
+            <div class="glass-card rounded-2xl p-4 md:p-5 space-y-4">
+              <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+                <!-- Search Input -->
+                <div class="relative flex-1">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                  <input type="text" id="customer-search-input" placeholder="Cari ID PL, nama penerima, nomor HP, alamat, kota, atau nama dropshipper..."
+                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                </div>
+
+                <!-- Filter Tipe & Ekspedisi -->
+                <div class="flex flex-wrap items-center gap-2">
+                  <select id="customer-type-filter" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-600">
+                    <option value="all">Semua Tipe (Reguler & Dropship)</option>
+                    <option value="regular">Hanya Pelanggan Reguler</option>
+                    <option value="dropship">Hanya Pelanggan Dropship</option>
+                  </select>
+
+                  <select id="customer-courier-filter" class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-600">
+                    <option value="all">Semua Ekspedisi</option>
+                    <option value="J&T Express">J&T Express</option>
+                    <option value="JNE Reguler">JNE Reguler</option>
+                    <option value="JTR (JNE Trucking)">JTR (JNE Trucking)</option>
+                    <option value="SPX Express">SPX Express</option>
+                    <option value="SiCepat">SiCepat</option>
+                    <option value="Indah Logistik Cargo">Indah Logistik Cargo</option>
+                    <option value="Baraka Sarana Tama">Baraka Sarana Tama</option>
+                    <option value="Pos Indonesia">Pos Indonesia</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Action Bar Cetak Massal A6 (Gap 3mm) & Cetak A4 (Sesuai yang Dipilih) -->
+              <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200/70 text-xs">
+                <div class="flex items-center gap-3">
+                  <label class="inline-flex items-center gap-2 cursor-pointer font-bold text-slate-700 select-none">
+                    <input type="checkbox" id="select-all-customers" class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-slate-300" />
+                    <span>Pilih Semua (<span id="selected-count-badge" class="text-brand-700 font-extrabold">0</span> dipilih)</span>
+                  </label>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <button id="batch-print-selected-btn" disabled
+                    class="px-3.5 py-2 rounded-xl brand-gradient text-white font-extrabold disabled:opacity-40 disabled:cursor-not-allowed hover:opacity-95 transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Cetak Massal Label A6 (Gap 3mm)</span>
+                  </button>
+
+                  <button id="batch-print-a4-selected-btn" disabled
+                    class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Buka di Cetak A4 (<span id="selected-a4-btn-count">0</span> Alamat)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- TABEL DATA PELANGGAN -->
+            <div class="glass-card rounded-2xl overflow-hidden border border-slate-200/80">
+              <div class="px-4 py-2.5 bg-slate-50/90 border-b border-slate-200/70 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+                <span><i class="fa-solid fa-table mr-1.5 text-brand-600"></i>Menampilkan <b id="table-filtered-count" class="text-slate-800">0</b> pelanggan</span>
+                <span class="sm:hidden text-[10px] font-bold text-brand-600"><i class="fa-solid fa-arrows-left-right mr-1"></i>Geser tabel ke samping untuk detail penuh</span>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[780px]">
+                  <thead>
+                    <tr class="bg-slate-100/95 border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-600">
+                      <th class="py-3.5 px-4 w-10 text-center">#</th>
+                      <th class="py-3.5 px-3 w-28">ID PL</th>
+                      <th class="py-3.5 px-4 min-w-[180px]">Penerima & No. HP</th>
+                      <th class="py-3.5 px-4 min-w-[240px]">Alamat Lengkap & Tujuan</th>
+                      <th class="py-3.5 px-3 w-36">Ekspedisi</th>
+                      <th class="py-3.5 px-3 w-44">Status / Dropship</th>
+                      <th class="py-3.5 px-4 w-52 text-right">Aksi & Cetak</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-table-body" class="divide-y divide-slate-200/70 text-xs bg-white/95">
+                    <!-- Diisi secara dinamis via renderCustomersTable() -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- VIEW 3: CETAK LABEL A6 (100x150 MM)        -->
+          <!-- ========================================== -->
+          <section id="view-print" class="view-section hidden">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 lg:gap-6 items-start">
+
+              <!-- PANEL KIRI: KONFIGURASI CETAK LABEL A6 (5 Kolom di XL) -->
+              <div class="xl:col-span-5 glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
+                  <div>
+                    <h3 class="font-extrabold text-slate-900 text-base">Studio Label Thermal A6</h3>
+                    <p class="text-xs text-slate-500">Ukuran 100 x 150 mm &bull; Gap Cetak Massal 3 mm</p>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg bg-brand-100 text-brand-700 font-extrabold text-xs font-mono">100x150mm</span>
+                </div>
+
+                <!-- Pilih Pelanggan & Edit ID PL Manual -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="sm:col-span-2">
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">
+                      1. Pilih Pelanggan
+                    </label>
+                    <select id="print-customer-select"
+                      class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-600">
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-extrabold text-brand-700 uppercase tracking-wider mb-1">
+                      ID PL (Manual)
+                    </label>
+                    <input type="text" id="print-customer-code-input" placeholder="Isi ID PL..."
+                      class="w-full px-3 py-2.5 rounded-xl border border-brand-300 bg-brand-50/40 font-mono text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                  </div>
+                </div>
+
+                <!-- SAKLAR UTAMA FITUR DROPSHIP -->
+                <div class="p-4 rounded-2xl border-2 transition" id="dropship-switch-card">
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <div id="dropship-icon-box" class="w-10 h-10 rounded-xl flex items-center justify-center text-base shrink-0">
+                        <i class="fa-solid fa-user-secret"></i>
+                      </div>
+                      <div>
+                        <div class="font-extrabold text-sm text-slate-900">Aktifkan Mode Dropship</div>
+                        <div id="dropship-status-subtext" class="text-[11px] text-slate-500">
+                          Hilangkan Logo & Nama Toko Yaxiya Grosir dari label
+                        </div>
+                      </div>
+                    </div>
+
+                    <label class="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" id="print-dropship-toggle" class="sr-only peer" />
+                      <div class="w-12 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
+                    </label>
+                  </div>
+
+                  <div id="print-dropship-fields" class="hidden mt-4 pt-4 border-t border-amber-300/70 space-y-3">
+                    <div class="p-2.5 rounded-xl bg-amber-100/90 text-amber-950 text-[11px] font-bold flex items-center gap-2">
+                      <i class="fa-solid fa-eye-slash text-amber-700"></i>
+                      <span>Logo & Nama Toko Yaxiya Grosir telah disembunyikan!</span>
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Nama Pengirim Dropship / Olshop *</label>
+                      <input type="text" id="print-dropshipper-name" placeholder="Contoh: Nabila Fashion Hijab"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">No. HP Pengirim Dropship *</label>
+                      <input type="text" id="print-dropshipper-phone" placeholder="Contoh: 0896-5544-3322"
+                        class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Ekspedisi & Berat -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Ekspedisi / Kurir</label>
+                    <select id="print-courier-select"
+                      class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600">
+                      <option value="J&T Express">J&T Express</option>
+                      <option value="JNE Reguler">JNE Reguler</option>
+                      <option value="JTR (JNE Trucking)">JTR (JNE Trucking)</option>
+                      <option value="SPX Express">SPX Express</option>
+                      <option value="SiCepat">SiCepat</option>
+                      <option value="Indah Logistik Cargo">Indah Logistik Cargo</option>
+                      <option value="Baraka Sarana Tama">Baraka Sarana Tama</option>
+                      <option value="Pos Indonesia">Pos Indonesia</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Berat / Jumlah Koli</label>
+                    <input type="text" id="print-weight-input" value="1 Kg / 1 Koli" placeholder="Contoh: 5 Kg / 1 Karung"
+                      class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Catatan Isi Paket / Instruksi Kurir</label>
+                  <textarea id="print-notes-input" rows="2" placeholder="Contoh: Pakaian Grosir 2 Lusin - Jangan Dibanting"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-600"></textarea>
+                </div>
+
+                <!-- Info Gap 3mm Cetak Massal -->
+                <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 flex items-center justify-between">
+                  <span><i class="fa-solid fa-arrows-up-down mr-1.5 text-emerald-600"></i><b>Gap Antar Label (Cetak Massal A6):</b></span>
+                  <span class="font-mono font-extrabold bg-emerald-600 text-white px-2 py-0.5 rounded">3 mm</span>
+                </div>
+
+                <!-- Tombol Aksi Cetak -->
+                <div class="pt-1 space-y-2.5">
+                  <button id="execute-single-print-btn"
+                    class="w-full py-3.5 rounded-xl brand-gradient text-white font-extrabold text-sm brand-shadow hover:opacity-95 active:scale-[0.99] transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print text-base"></i>
+                    <span>Cetak ke Printer Label (100x150 mm)</span>
+                  </button>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <button id="open-print-simulator-btn" type="button"
+                      class="py-2.5 px-3 rounded-xl border border-brand-200 bg-brand-50 hover:bg-brand-100 text-brand-700 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-expand"></i>
+                      <span>Uji Tampilan Cetak</span>
+                    </button>
+
+                    <button id="save-print-changes-btn" type="button"
+                      class="py-2.5 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-floppy-disk text-brand-600"></i>
+                      <span>Simpan ke Pelanggan</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANEL KANAN: LIVE PREVIEW KERTAS 100x150 MM PRESISI (7 Kolom di XL) -->
+              <div class="xl:col-span-7 glass-card rounded-2xl p-4 sm:p-6 flex flex-col items-center overflow-hidden">
+                <div class="w-full flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Pratinjau Presisi A6 (100 x 150 mm)</span>
+                  </div>
+
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" id="toggle-ruler-btn"
+                      class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-[11px] font-bold text-slate-700 flex items-center gap-1">
+                      <i class="fa-solid fa-ruler text-brand-600"></i>
+                      <span>Garis Ukuran</span>
+                    </button>
+                    <span id="preview-mode-pill" class="px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold bg-brand-100 text-brand-700">
+                      Mode Reguler (Logo Toko Tampil)
+                    </span>
+                  </div>
+                </div>
+
+                <!-- WADAH VISUAL KERTAS 100x150 MM -->
+                <div class="label-responsive-scaler py-2 flex justify-center w-full overflow-x-auto">
+                  <div id="label-stage-box" class="label-stage-container show-ruler">
+                    <div id="live-label-preview-box" class="thermal-label-100x150">
+                      <!-- Dirender secara dinamis via buildLabelSheetHTML() -->
+                    </div>
+                  </div>
+                </div>
+
+                <div class="w-full mt-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] text-slate-600">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                    <span><b>Format A6:</b> Label kode menggunakan <b>ID PL</b> manual & jarak antar label massal <b>3 mm</b>.</span>
+                  </div>
+                  <span class="font-mono font-bold text-brand-700 bg-brand-50 px-2 py-0.5 rounded">Gap Massal: 3mm</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ====================================================================== -->
+          <!-- VIEW 4: MENU CETAK ALAMAT UKURAN A4 FLEKSIBEL                          -->
+          <!-- ====================================================================== -->
+          <section id="view-print-a4" class="view-section hidden">
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 lg:gap-6 items-start">
+
+              <!-- PANEL KIRI: PEMILIHAN ALAMAT FLEKSIBEL & ANTREAN CETAK A4 (5 Kolom di XL) -->
+              <div class="xl:col-span-5 glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-200/70 pb-3.5">
+                  <div>
+                    <h3 class="font-extrabold text-slate-900 text-base">Cetak Alamat Ukuran A4 Fleksibel</h3>
+                    <p class="text-xs text-slate-500">Pilih 1, 2, beberapa, atau semua alamat sekaligus (Otomatis Multi-Halaman)</p>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg bg-blue-100 text-blue-700 font-extrabold text-xs font-mono">A4 Fleksibel</span>
+                </div>
+
+                <!-- Informasi Aturan Tata Letak Otomatis A4 -->
+                <div class="p-3.5 rounded-2xl bg-blue-50/90 border border-blue-200 text-xs text-blue-950 space-y-1.5">
+                  <div class="font-extrabold flex items-center gap-1.5 text-blue-800">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Aturan Susunan Otomatis Halaman A4:</span>
+                  </div>
+                  <ul class="text-[11px] space-y-1 text-blue-900 list-disc list-inside leading-relaxed">
+                    <li><b>Pilih 1 Alamat:</b> Posisi di <b>Atas</b> (Slot Tengah & Bawah otomatis kosong).</li>
+                    <li><b>Pilih 2 Alamat:</b> Posisi di <b>Atas & Tengah</b> (Slot Bawah otomatis kosong).</li>
+                    <li><b>Pilih &gt; 3 / Semua Alamat:</b> Otomatis membuat <b>banyak halaman A4</b> (@ maks. 3 alamat/hal).</li>
+                  </ul>
+                </div>
+
+                <!-- Tombol Pintasan Pilih Cepat -->
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                      1. Pintasan Pilih Jumlah Alamat
+                    </span>
+                    <span id="a4-summary-counter" class="text-[11px] font-extrabold text-brand-700 bg-brand-50 px-2.5 py-0.5 rounded-full border border-brand-200">
+                      0 Alamat (0 Hal A4)
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <button type="button" id="a4-preset-1-btn"
+                      class="py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:bg-brand-50 hover:border-brand-300 text-slate-800 font-extrabold text-[11px] transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-1 text-brand-600"></i>
+                      <span>1 Alamat (Atas)</span>
+                    </button>
+
+                    <button type="button" id="a4-preset-2-btn"
+                      class="py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:bg-brand-50 hover:border-brand-300 text-slate-800 font-extrabold text-[11px] transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-2 text-blue-600"></i>
+                      <span>2 Alamat (Atas-Tengah)</span>
+                    </button>
+
+                    <button type="button" id="a4-preset-3-btn"
+                      class="py-2 px-2.5 rounded-xl border border-slate-200 bg-white hover:bg-brand-50 hover:border-brand-300 text-slate-800 font-extrabold text-[11px] transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-3 text-emerald-600"></i>
+                      <span>3 Alamat (1 Hal)</span>
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="a4-select-all-btn"
+                      class="py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                      <i class="fa-solid fa-check-double"></i>
+                      <span>Pilih Semua Alamat (Multi-Halaman)</span>
+                    </button>
+
+                    <button type="button" id="a4-clear-all-btn"
+                      class="py-2.5 px-3 rounded-xl border border-rose-200 bg-rose-50/70 hover:bg-rose-100 text-rose-600 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-rotate-left"></i>
+                      <span>Kosongkan Pilihan</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Pencarian & Daftar Checklist Pelanggan untuk A4 -->
+                <div class="space-y-2 pt-1 border-t border-slate-200/70">
+                  <div class="flex items-center justify-between">
+                    <label class="text-[11px] font-extrabold text-slate-700 uppercase tracking-wider">
+                      2. Centang Alamat yang Akan Dicetak ke A4
+                    </label>
+                    <span class="text-[10px] text-slate-500 font-semibold">Urutan centang = Urutan posisi</span>
+                  </div>
+
+                  <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="text" id="a4-customer-search" placeholder="Cari ID PL atau nama pelanggan untuk dicentang..."
+                      class="w-full pl-8 pr-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                  </div>
+
+                  <!-- Daftar Pelanggan (Checklist + Kustomisasi ID PL / Berat / Dropship) -->
+                  <div id="a4-customer-checklist-container" class="max-h-[340px] overflow-y-auto space-y-2 pr-1">
+                    <!-- Dirender dinamis via renderA4Checklist() -->
+                  </div>
+                </div>
+
+                <!-- Tombol Eksekusi Cetak Kertas A4 -->
+                <div class="pt-2 border-t border-slate-200/70 space-y-2">
+                  <button type="button" id="execute-a4-print-btn"
+                    class="w-full py-3.5 rounded-xl brand-gradient text-white font-extrabold text-sm brand-shadow hover:opacity-95 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print text-base"></i>
+                    <span id="execute-a4-print-btn-label">Cetak Alamat A4 Terpilih Sekarang</span>
+                  </button>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" id="open-a4-simulator-btn"
+                      class="py-2.5 px-3 rounded-xl border border-brand-200 bg-brand-50 hover:bg-brand-100 text-brand-700 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-expand"></i>
+                      <span>Uji Tampilan Cetak A4</span>
+                    </button>
+
+                    <button type="button" id="execute-a4-print-all-direct-btn"
+                      class="py-2.5 px-3 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-800 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+                      <i class="fa-solid fa-copy"></i>
+                      <span>Cetak Semua Pelanggan</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANEL KANAN: LIVE PREVIEW KERTAS A4 MULTI-HALAMAN (7 Kolom di XL) -->
+              <div class="xl:col-span-7 glass-card rounded-2xl p-4 sm:p-6 flex flex-col items-center overflow-hidden">
+                <div class="w-full flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
+                    <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider">Pratinjau Kertas A4 (Atas, Tengah, Bawah)</span>
+                  </div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" id="toggle-a4-zoom-btn"
+                      class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-[11px] font-bold text-slate-700 hidden sm:inline-flex items-center gap-1">
+                      <i class="fa-solid fa-magnifying-glass-plus text-blue-600"></i>
+                      <span id="toggle-a4-zoom-label">Perbesar</span>
+                    </button>
+                    <span id="a4-preview-status-badge" class="px-3 py-1 rounded-full text-[11px] sm:text-xs font-extrabold bg-blue-100 text-blue-800 font-mono">
+                      1 Halaman A4
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Navigasi Cepat Halaman A4 jika Multi-Halaman -->
+                <div id="a4-pagination-bar" class="hidden w-full mb-3 p-2.5 rounded-xl bg-slate-100 border border-slate-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <span id="a4-pagination-info" class="font-extrabold text-slate-700">Menampilkan Semua Halaman A4</span>
+                  <div id="a4-page-Filter-buttons" class="flex items-center gap-1.5 flex-wrap"></div>
+                </div>
+
+                <!-- WADAH VISUAL KERTAS A4 (BISA 1 ATAU BANYAK HALAMAN) -->
+                <div id="live-a4-pages-scroll-container" class="w-full flex flex-col items-center overflow-x-auto py-2 space-y-6">
+                  <!-- Dirender secara dinamis via updateLiveA4Preview() -->
+                </div>
+
+                <div class="w-full mt-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] text-slate-600">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
+                    <span><b>Otomatis Presisi:</b> Jika memilih 1 alamat maka tampil di <b>Atas</b> (2 bawah kosong). Jika 2 alamat maka di <b>Atas & Tengah</b> (1 bawah kosong).</span>
+                  </div>
+                  <span class="font-mono font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded shrink-0">@page { size: A4 portrait; }</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- ========================================== -->
+          <!-- VIEW 5: PENGATURAN TOKO                    -->
+          <!-- ========================================== -->
+          <section id="view-settings" class="view-section hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+              <!-- Form Identitas Toko Default -->
+              <div class="lg:col-span-2 glass-card rounded-2xl p-6 space-y-5">
+                <div class="border-b border-slate-200/70 pb-4">
+                  <h3 class="text-base font-extrabold text-slate-900">Pengaturan Identitas Toko (Label Reguler)</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">
+                    Identitas ini tercetak pada header dan blok pengirim saat <b>Fitur Dropship Nonaktif</b> (baik di A6 maupun A4).
+                  </p>
+                </div>
+
+                <form id="store-settings-form" class="space-y-4">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Nama Toko Resmi</label>
+                      <input type="text" id="setting-store-name" required
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                    </div>
+                    <div>
+                      <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">No. Telepon / WhatsApp Toko</label>
+                      <input type="text" id="setting-store-phone" required
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">URL Logo Toko</label>
+                    <input type="url" id="setting-store-logo" required
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Alamat Lengkap Pengirim (Gudang/Toko)</label>
+                    <textarea id="setting-store-address" rows="3" required
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600"></textarea>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Pesan Catatan Bawah Label (Footer Unboxing)</label>
+                    <input type="text" id="setting-footer-note" required
+                      placeholder="Contoh: WAJIB VIDEO UNBOXING SAAT PAKET DITERIMA TANPA JEDA"
+                      class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                  </div>
+
+                  <div class="pt-2">
+                    <button type="submit"
+                      class="px-6 py-3 rounded-xl brand-gradient text-white font-extrabold text-sm brand-shadow hover:opacity-95 transition flex items-center gap-2">
+                      <i class="fa-solid fa-floppy-disk"></i>
+                      <span>Simpan Pengaturan Toko</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Backup & Utilitas Database -->
+              <div class="glass-card rounded-2xl p-6 space-y-5">
+                <div class="border-b border-slate-200/70 pb-4">
+                  <h3 class="text-base font-extrabold text-slate-900">Keamanan & Cadangan Data</h3>
+                  <p class="text-xs text-slate-500 mt-0.5">Arsitektur Single Admin & Ekspor Database</p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-brand-50/80 border border-brand-100 space-y-2 text-xs text-slate-700">
+                  <div class="font-extrabold text-brand-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-lock"></i> Proteksi RLS Admin Tunggal:
+                  </div>
+                  <p class="leading-relaxed text-[11px]">
+                    Database dikunci dengan <b>Supabase Row Level Security (RLS)</b>. Kolom <b>ID PL</b> diatur sepenuhnya untuk pengisian manual sesuai penomoran internal Yaxiya Grosir.
+                  </p>
+                </div>
+
+                <div class="space-y-2.5">
+                  <button id="export-json-btn" type="button"
+                    class="w-full py-3 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-file-arrow-down text-brand-600"></i>
+                    <span>Unduh Backup Pelanggan (.JSON)</span>
+                  </button>
+
+                  <button id="reset-demo-data-btn" type="button"
+                    class="w-full py-2.5 px-4 rounded-xl border border-amber-200 bg-amber-50/70 hover:bg-amber-100 text-amber-800 font-bold text-xs flex items-center justify-center gap-2 transition">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Reset Data Simulasi Default</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+        </div>
+      </main>
+
+      <!-- MOBILE FLOATING BOTTOM NAVIGATION BAR -->
+      <nav id="mobile-bottom-nav" class="fixed bottom-2.5 left-2.5 right-2.5 glass-panel rounded-2xl border border-brand-200/90 px-1.5 py-1.5 z-30 items-center justify-around shadow-2xl">
+        <button data-nav="dashboard" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[10px] font-extrabold transition">
+          <i class="fa-solid fa-chart-pie text-sm mb-0.5"></i>
+          <span class="truncate">Home</span>
+        </button>
+
+        <button data-nav="customers" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[10px] font-extrabold transition">
+          <i class="fa-solid fa-table-list text-sm mb-0.5"></i>
+          <span class="truncate">Tabel</span>
+        </button>
+
+        <button data-nav="print" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[10px] font-extrabold transition">
+          <i class="fa-solid fa-print text-sm mb-0.5"></i>
+          <span class="truncate">Label A6</span>
+        </button>
+
+        <button data-nav="print-a4" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[10px] font-extrabold transition">
+          <i class="fa-solid fa-file-lines text-sm mb-0.5"></i>
+          <span class="truncate">Cetak A4</span>
+        </button>
+
+        <button data-nav="settings" class="nav-item flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[10px] font-extrabold transition">
+          <i class="fa-solid fa-sliders text-sm mb-0.5"></i>
+          <span class="truncate">Toko</span>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL TAMBAH / EDIT PELANGGAN (ID PL MANUAL)-->
+    <!-- ========================================== -->
+    <div id="customer-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div class="bg-white rounded-3xl max-w-2xl w-full p-6 md:p-7 shadow-2xl border border-slate-100 my-8 max-h-[92vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+          <div>
+            <h3 id="modal-title" class="text-lg font-extrabold text-slate-900">Tambah Data Pelanggan</h3>
+            <p class="text-xs text-slate-500">ID PL diisi secara manual sesuai kode pelanggan Yaxiya Grosir</p>
+          </div>
+          <button type="button" onclick="window.app.closeCustomerModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <form id="customer-form" class="space-y-4 mt-4">
+          <input type="hidden" id="form-customer-id" />
+
+          <!-- Baris ID PL Manual + Nama + No HP -->
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3.5">
+            <div class="sm:col-span-4">
+              <label class="block text-xs font-extrabold text-brand-700 uppercase mb-1">
+                ID PL (Manual) *
+              </label>
+              <input type="text" id="form-customer-code" required placeholder="Contoh: PL-001"
+                class="w-full px-3.5 py-2.5 rounded-xl border-2 border-brand-200 bg-brand-50/40 font-mono text-sm font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+            <div class="sm:col-span-4">
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Nama Lengkap Penerima *</label>
+              <input type="text" id="form-recipient-name" required placeholder="Contoh: Hj. Siti Nurhaliza"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+            <div class="sm:col-span-4">
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">No. HP / WhatsApp *</label>
+              <input type="text" id="form-recipient-phone" required placeholder="Contoh: 0812-8899-0011"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Alamat Lengkap (Jalan, RT/RW, No. Rumah, Patokan) *</label>
+            <textarea id="form-full-address" rows="2" required placeholder="Contoh: Jl. Pasar Pagi Blok A No. 12 RT 04/02 (Samping Bank BRI)"
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Kecamatan / Kelurahan *</label>
+              <input type="text" id="form-subdistrict" required placeholder="Kec. Tegal Barat"
+                class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Kota / Kabupaten *</label>
+              <input type="text" id="form-city" required placeholder="Kota Tegal"
+                class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Provinsi & Kode Pos</label>
+              <input type="text" id="form-province-postal" placeholder="Jawa Tengah - 52111"
+                class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Ekspedisi Langganan</label>
+              <select id="form-courier-name"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-600">
+                <option value="J&T Express">J&T Express</option>
+                <option value="JNE Reguler">JNE Reguler</option>
+                <option value="JTR (JNE Trucking)">JTR (JNE Trucking)</option>
+                <option value="SPX Express">SPX Express</option>
+                <option value="SiCepat">SiCepat</option>
+                <option value="Indah Logistik Cargo">Indah Logistik Cargo</option>
+                <option value="Baraka Sarana Tama">Baraka Sarana Tama</option>
+                <option value="Pos Indonesia">Pos Indonesia</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Berat / Koli Default</label>
+              <input type="text" id="form-default-weight" value="1 Kg / 1 Koli" placeholder="Contoh: 2 Kg / 1 Koli"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+            <div>
+              <label class="block text-xs font-extrabold text-slate-700 uppercase mb-1">Catatan Barang / Isi</label>
+              <input type="text" id="form-notes" placeholder="Contoh: Grosir Gamis & Hijab"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-brand-600" />
+            </div>
+          </div>
+
+          <!-- Opsi Dropship di Modal -->
+          <div class="p-4 rounded-2xl bg-brand-50/70 border border-brand-200 space-y-3">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-xs font-extrabold text-slate-900">Aktifkan Pengiriman Mode Dropship?</div>
+                <div class="text-[11px] text-slate-500">Jika aktif, Logo & Nama Toko Yaxiya Grosir otomatis hilang saat dicetak di A6 maupun A4.</div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="form-is-dropship" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
+              </label>
+            </div>
+
+            <div id="form-dropship-section" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-brand-200/60">
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">Nama Pengirim Dropship *</label>
+                <input type="text" id="form-dropshipper-name" placeholder="Contoh: Aisyah Store"
+                  class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+              </div>
+              <div>
+                <label class="block text-[11px] font-extrabold text-slate-700 uppercase mb-1">No. HP Pengirim Dropship *</label>
+                <input type="text" id="form-dropshipper-phone" placeholder="Contoh: 0856-1122-3344"
+                  class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
+            <button type="button" onclick="window.app.closeCustomerModal()"
+              class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-extrabold text-xs hover:bg-slate-100">
+              Batal
+            </button>
+            <button type="submit"
+              class="px-6 py-2.5 rounded-xl brand-gradient text-white font-extrabold text-xs brand-shadow hover:opacity-95 flex items-center gap-2">
+              <i class="fa-solid fa-check"></i>
+              <span>Simpan Data Pelanggan</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL SIMULASI HASIL CETAK (MENDUKUNG A6 GAP 3MM & A4 MULTI-HALAMAN) -->
+    <div id="print-simulator-modal" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div class="bg-slate-100 rounded-3xl max-w-4xl w-full p-5 md:p-7 shadow-2xl border border-slate-200 my-8 max-h-[94vh] flex flex-col">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-300">
+          <div>
+            <span id="simulator-badge" class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-600 text-white">Pratinjau Output Cetak</span>
+            <h3 id="simulator-modal-title" class="text-base md:text-lg font-extrabold text-slate-900 mt-1">Simulasi Cetak</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" id="simulator-trigger-system-print"
+              class="px-4 py-2 rounded-xl brand-gradient text-white font-extrabold text-xs brand-shadow hover:opacity-95 flex items-center gap-1.5">
+              <i class="fa-solid fa-print"></i>
+              <span>Buka Dialog Printer Sistem</span>
+            </button>
+            <button type="button" onclick="window.app.closePrintSimulatorModal()"
+              class="w-9 h-9 rounded-xl bg-white hover:bg-slate-200 text-slate-700 flex items-center justify-center border border-slate-300">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="simulator-pages-container" class="flex-1 overflow-y-auto py-6 px-2 flex flex-col items-center">
+          <!-- Dirender via JS -->
+        </div>
+
+        <div class="pt-3 border-t border-slate-300 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-600">
+          <span id="simulator-footer-hint"><i class="fa-solid fa-circle-info text-brand-600 mr-1"></i>Pastikan ukuran kertas printer sesuai dan <b>Margins: None</b>.</span>
+          <button type="button" onclick="window.app.closePrintSimulatorModal()" class="font-extrabold text-slate-800 hover:underline">Tutup Pratinjau</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL KONFIRMASI HAPUS -->
+    <div id="delete-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl mx-auto">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Hapus Data Pelanggan?</h3>
+          <p id="delete-modal-text" class="text-xs text-slate-500 mt-1">Data yang dihapus tidak dapat dikembalikan.</p>
+        </div>
+        <div class="flex items-center gap-2.5 pt-2">
+          <button type="button" onclick="window.app.closeDeleteModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-extrabold text-xs">
+            Batal
+          </button>
+          <button type="button" id="confirm-delete-btn" class="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs">
+            Ya, Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="fixed top-4 right-4 z-[99999] space-y-2 pointer-events-none"></div>
+
+  </div>
+
+  <!-- MOUNT CONTAINER KHUSUS CETAK KERTAS A6 & A4 -->
+  <div id="print-mount-container"></div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT UTAMA (MODULE + SUPABASE + PWA) -->
+  <!-- ========================================== -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    // KONFIGURASI APLIKASI
+    const IS_PREVIEW = false; // Set false JIKA SUDAH TERHUBUNG KE SUPABASE
+    // PASTE SUPABASE URL & ANON KEY ANDA DI SINI
+    const SUPABASE_URL = "https://hpjlyfeurbjtyovwurqx.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_b9JpH73dBz4hCFyaqEKEaA_9QdloMQX";
+
+    const DEFAULT_LOGO = "https://cdn.phototourl.com/member/2026-10-16-116f5c22-c798-42f5-95c7-90c1ceda527d.jpg";
+
+    let supabase = null;
+    if (!IS_PREVIEW && SUPABASE_URL !== "URL_SUPABASE_ANDA") {
+      supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    // STATE APLIKASI
+    const state = {
+      adminUser: null,
+      currentView: 'dashboard',
+      storeSettings: {
+        id: 'default-store-id',
+        store_name: 'YAXIYA GROSIR',
+        store_logo: DEFAULT_LOGO,
+        store_phone: '0812-9988-7766',
+        store_address: 'Pusat Grosir Yaxiya, Jl. Niaga Utama No. 88, Jawa Tengah',
+        footer_note: 'WAJIB VIDEO UNBOXING TANPA JEDA SAAT PAKET DITERIMA'
+      },
+      customers: [],
+      selectedCustomerIds: new Set(),
+      activePrintCustomerId: null,
+      // Daftar berurutan ID pelanggan yang dipilih pada Menu Cetak A4
+      a4SelectedQueue: [],
+      // Penyimpanan kustomisasi per pelanggan di menu A4 (code, weight, isDropship)
+      a4CustomOverrides: {},
+      // Filter halaman pratinjau A4 ('all' atau nomor index halaman 0, 1, ...)
+      a4ActivePreviewPage: 'all',
+      a4ZoomLarge: false,
+      deleteTargetId: null
+    };
+
+    function registerDynamicPWA() {
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'yaxiya-grosir-pwa-v4';
+          self.addEventListener('install', (event) => self.skipWaiting());
+          self.addEventListener('activate', (event) => event.waitUntil(clients.claim()));
+          self.addEventListener('fetch', (event) => {
+            event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+          });
+        `;
+        try {
+          const blob = new Blob([swCode], { type: 'application/javascript' });
+          const swUrl = URL.createObjectURL(blob);
+          navigator.serviceWorker.register(swUrl).catch(() => {});
+        } catch (e) {}
+      }
+    }
+
+    // Data Simulasi Awal (5 Pelanggan dengan ID PL Manual agar fitur Multi-Halaman A4 langsung terlihat jelas)
+    function getInitialDummyCustomers() {
+      return [
+        {
+          id: 'cust-101',
+          customer_code: 'PL-001',
+          recipient_name: 'Hj. Rahmawati (Toko Berkah Jaya)',
+          recipient_phone: '0812-3456-7891',
+          full_address: 'Jl. Pasar Klewer Blok C No. 14 RT 02/05 (Depan Pintu Timur)',
+          subdistrict: 'Kec. Pasar Kliwon',
+          city: 'Kota Surakarta',
+          province_postal: 'Jawa Tengah - 57118',
+          courier_name: 'Indah Logistik Cargo',
+          default_weight: '3 Bal / 25 Kg',
+          is_dropship: false,
+          dropshipper_name: '',
+          dropshipper_phone: '',
+          notes: 'Grosir Setelan Anak 3 Bal (Karung Hijau)',
+          print_count: 4,
+          created_at: new Date(Date.now() - 86400000 * 4).toISOString()
+        },
+        {
+          id: 'cust-102',
+          customer_code: 'PL-002',
+          recipient_name: 'Siska Amelia Putri',
+          recipient_phone: '0857-8899-1122',
+          full_address: 'Perum Griya Asri Blok Melati No. 9 RT 04/08 Kel. Pakembaran',
+          subdistrict: 'Kec. Slawi',
+          city: 'Kab. Tegal',
+          province_postal: 'Jawa Tengah - 52419',
+          courier_name: 'J&T Express',
+          default_weight: '2 Kg / 1 Koli',
+          is_dropship: true,
+          dropshipper_name: 'Nabila Fashion Hijab',
+          dropshipper_phone: '0896-5544-3322',
+          notes: 'Gamis Ceruty Babydoll 6 Pcs (Dropship Tanpa Logo Toko)',
+          print_count: 2,
+          created_at: new Date(Date.now() - 86400000 * 3).toISOString()
+        },
+        {
+          id: 'cust-103',
+          customer_code: 'PL-003',
+          recipient_name: 'H. Abdul Rozak (Grosir Busana)',
+          recipient_phone: '0813-7766-5544',
+          full_address: 'Jl. Raya Pantura KM 5 No. 102 (Samping Ruko Bank Mandiri)',
+          subdistrict: 'Kec. Pemalang',
+          city: 'Kab. Pemalang',
+          province_postal: 'Jawa Tengah - 52312',
+          courier_name: 'Baraka Sarana Tama',
+          default_weight: '12 Kg / 1 Karung',
+          is_dropship: false,
+          dropshipper_name: '',
+          dropshipper_phone: '',
+          notes: 'Kemeja Koko Dewasa 5 Lusin',
+          print_count: 7,
+          created_at: new Date(Date.now() - 86400000 * 2).toISOString()
+        },
+        {
+          id: 'cust-104',
+          customer_code: 'PL-004',
+          recipient_name: 'Dewi Sartika',
+          recipient_phone: '0821-4433-9900',
+          full_address: 'Jl. Melati Indah No. 27 RT 01/03 Kel. Kejambon',
+          subdistrict: 'Kec. Tegal Timur',
+          city: 'Kota Tegal',
+          province_postal: 'Jawa Tengah - 52124',
+          courier_name: 'SPX Express',
+          default_weight: '1 Kg / 1 Koli',
+          is_dropship: true,
+          dropshipper_name: 'Zahra Boutique Official',
+          dropshipper_phone: '0878-1234-5678',
+          notes: 'Hijab Voal Motif Premium 1 Lusin',
+          print_count: 1,
+          created_at: new Date(Date.now() - 86400000 * 1).toISOString()
+        },
+        {
+          id: 'cust-105',
+          customer_code: 'PL-005',
+          recipient_name: 'Hj. Maimunah (Butik Al-Fath)',
+          recipient_phone: '0811-2233-4455',
+          full_address: 'Jl. Kauman Raya No. 45 RT 03/01 (Dekat Masjid Agung)',
+          subdistrict: 'Kec. Pekalongan Timur',
+          city: 'Kota Pekalongan',
+          province_postal: 'Jawa Tengah - 51122',
+          courier_name: 'JTR (JNE Trucking)',
+          default_weight: '15 Kg / 2 Koli',
+          is_dropship: false,
+          dropshipper_name: '',
+          dropshipper_phone: '',
+          notes: 'Sarung Batik & Mukena Katun 4 Koli',
+          print_count: 3,
+          created_at: new Date().toISOString()
+        }
+      ];
+    }
+
+    async function autoSetupDatabase() {
+      if (IS_PREVIEW) {
+        if (state.customers.length === 0) {
+          state.customers = getInitialDummyCustomers();
+        }
+        initDefaultA4Selection();
+        return;
+      }
+
+      try {
+        const { data: settingsData, error: settingsErr } = await supabase
+          .from('store_settings')
+          .select('*')
+          .limit(1);
+
+        if (!settingsErr && (!settingsData || settingsData.length === 0)) {
+          const { data: insertedSetting } = await supabase
+            .from('store_settings')
+            .insert([{
+              store_name: state.storeSettings.store_name,
+              store_logo: state.storeSettings.store_logo,
+              store_phone: state.storeSettings.store_phone,
+              store_address: state.storeSettings.store_address,
+              footer_note: state.storeSettings.footer_note
+            }])
+            .select()
+            .single();
+          if (insertedSetting) state.storeSettings = insertedSetting;
+        } else if (settingsData && settingsData.length > 0) {
+          state.storeSettings = settingsData[0];
+        }
+
+        const { data: custData, error: custErr } = await supabase
+          .from('customers')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!custErr && custData) {
+          state.customers = custData;
+        }
+        initDefaultA4Selection();
+      } catch (err) {
+        showToast('Gagal memuat data dari Supabase: ' + err.message, 'error');
+      }
+    }
+
+    function syncCustomerToA4Overrides(c) {
+      if (!c) return;
+      if (!state.a4CustomOverrides[c.id]) {
+        state.a4CustomOverrides[c.id] = {
+          code: c.customer_code || '',
+          weight: c.default_weight || '1 Kg / 1 Koli',
+          isDropship: Boolean(c.is_dropship)
+        };
+      }
+    }
+
+    function initDefaultA4Selection() {
+      state.customers.forEach(c => syncCustomerToA4Overrides(c));
+      // Secara default pilih 2 pelanggan pertama agar pengguna langsung melihat contoh
+      // posisi Atas & Tengah terisi dan bagian Bawah kosong (atau bisa klik 1, 3, maupun Pilih Semua)
+      if (state.a4SelectedQueue.length === 0 && state.customers.length > 0) {
+        state.a4SelectedQueue = state.customers.slice(0, Math.min(2, state.customers.length)).map(c => c.id);
+      }
+    }
+
+    function setPrintPageRule(mode = 'a6') {
+      const styleEl = document.getElementById('dynamic-page-print-style');
+      if (!styleEl) return;
+      if (mode === 'a4') {
+        styleEl.innerHTML = `
+          @media print {
+            @page {
+              size: A4 portrait;
+              margin: 0mm !important;
+            }
+          }
+        `;
+      } else {
+        styleEl.innerHTML = `
+          @media print {
+            @page {
+              size: 100mm 150mm;
+              margin: 0mm !important;
+            }
+          }
+        `;
+      }
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        success: 'bg-slate-900 text-white border-brand-500',
+        error: 'bg-rose-600 text-white border-rose-300',
+        info: 'bg-brand-700 text-white border-brand-300'
+      };
+      const icons = {
+        success: 'fa-circle-check text-emerald-400',
+        error: 'fa-circle-exclamation text-white',
+        info: 'fa-circle-info text-brand-200'
+      };
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-2xl shadow-xl border-l-4 text-xs font-bold transition-all duration-300 ${colors[type] || colors.success}`;
+      toast.innerHTML = `
+        <i class="fa-solid ${icons[type] || icons.success} text-sm"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(20px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    async function checkActiveSession() {
+      if (IS_PREVIEW) {
+        document.getElementById('preview-banner').classList.remove('hidden');
+        document.getElementById('preview-login-hint').classList.remove('hidden');
+        document.getElementById('login-email').value = 'admin@yaxiyagrosir.com';
+        document.getElementById('login-password').value = 'admin123';
+
+        state.adminUser = { email: 'admin@yaxiyagrosir.com', role: 'Admin Utama' };
+        await enterDashboard();
+        return;
+      }
+
+      if (!supabase) return;
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session && session.user) {
+        state.adminUser = { email: session.user.email, id: session.user.id };
+        await enterDashboard();
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('login-submit-btn');
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Memverifikasi Admin Utama...</span>`;
+
+      try {
+        if (IS_PREVIEW) {
+          await new Promise(r => setTimeout(r, 300));
+          state.adminUser = { email: email || 'admin@yaxiyagrosir.com', role: 'Admin Utama' };
+          showToast('Selamat datang kembali, Admin Utama!');
+          await enterDashboard();
+        } else {
+          if (!supabase) throw new Error('Konfigurasi SUPABASE_URL & SUPABASE_ANON_KEY belum diisi!');
+          const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+          if (error) throw error;
+          state.adminUser = { email: data.user.email, id: data.user.id };
+          showToast('Autentikasi Supabase berhasil!');
+          await enterDashboard();
+        }
+      } catch (err) {
+        showToast(err.message || 'Gagal login. Periksa email & password Admin.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i> <span>Masuk sebagai Admin Utama</span>`;
+      }
+    }
+
+    async function handleLogout() {
+      if (!IS_PREVIEW && supabase) {
+        await supabase.auth.signOut();
+      }
+      state.adminUser = null;
+      document.getElementById('app-shell').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+      showToast('Anda telah keluar dari sesi Admin Utama.', 'info');
+    }
+
+    async function enterDashboard() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-shell').classList.remove('hidden');
+      document.getElementById('admin-email-display').textContent = state.adminUser.email;
+
+      await autoSetupDatabase();
+      syncStoreIdentityUI();
+      renderAllViews();
+      switchView(state.currentView || 'dashboard');
+    }
+
+    function syncStoreIdentityUI() {
+      const s = state.storeSettings;
+      const logoUrl = s.store_logo || DEFAULT_LOGO;
+
+      document.getElementById('sidebar-store-logo').src = logoUrl;
+      document.getElementById('mobile-header-logo').src = logoUrl;
+      document.getElementById('dash-store-logo').src = logoUrl;
+
+      document.getElementById('sidebar-store-name').textContent = s.store_name;
+      document.getElementById('dash-store-name').textContent = s.store_name;
+      document.getElementById('dash-store-phone').textContent = s.store_phone;
+      document.getElementById('dash-store-address').textContent = s.store_address;
+
+      document.getElementById('setting-store-name').value = s.store_name;
+      document.getElementById('setting-store-phone').value = s.store_phone;
+      document.getElementById('setting-store-logo').value = logoUrl;
+      document.getElementById('setting-store-address').value = s.store_address;
+      document.getElementById('setting-footer-note').value = s.footer_note || '';
+    }
+
+    function switchView(viewName) {
+      state.currentView = viewName;
+
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById(`view-${viewName}`);
+      if (target) target.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        const isMatch = btn.getAttribute('data-nav') === viewName;
+        if (isMatch) {
+          btn.classList.add('brand-gradient', 'text-white', 'brand-shadow');
+          btn.classList.remove('text-slate-600', 'hover:bg-brand-50');
+        } else {
+          btn.classList.remove('brand-gradient', 'text-white', 'brand-shadow');
+          btn.classList.add('text-slate-600', 'hover:bg-brand-50');
+        }
+      });
+
+      const titles = {
+        dashboard: ['Dashboard Ringkasan', 'Pantau metrik pelanggan & cetak label A6 (100x150 mm) maupun Kertas A4 Fleksibel'],
+        customers: ['Tabel Data Pelanggan', 'Kelola daftar pelanggan dalam tampilan tabel, isi ID PL manual, dan cetak massal A6 / A4'],
+        print: ['Studio Cetak Label A6 (100x150 mm)', 'Kalibrasi presisi kertas thermal A6 dengan jarak antar label 3mm saat cetak massal'],
+        'print-a4': ['Cetak Alamat Ukuran A4 Fleksibel', 'Pilih 1 alamat (Atas), 2 alamat (Atas-Tengah), beberapa, atau semua alamat (Multi-Halaman Otomatis)'],
+        settings: ['Pengaturan Toko & Keamanan', 'Kelola identitas pengirim Yaxiya Grosir dan cadangan database']
+      };
+
+      if (titles[viewName]) {
+        document.getElementById('page-title').textContent = titles[viewName][0];
+        document.getElementById('page-subtitle').textContent = titles[viewName][1];
+      }
+
+      if (viewName === 'print') {
+        populatePrintCustomerDropdown();
+        updateLiveLabelPreview();
+      } else if (viewName === 'print-a4') {
+        renderA4Checklist();
+        updateLiveA4Preview();
+      }
+    }
+
+    function renderAllViews() {
+      // Bersihkan ID di antrean A4 yang mungkin sudah dihapus
+      state.a4SelectedQueue = state.a4SelectedQueue.filter(id => state.customers.some(c => c.id === id));
+      state.customers.forEach(c => syncCustomerToA4Overrides(c));
+
+      renderDashboardStats();
+      renderCustomersTable();
+      populatePrintCustomerDropdown();
+      updateLiveLabelPreview();
+      renderA4Checklist();
+      updateLiveA4Preview();
+    }
+
+    function renderDashboardStats() {
+      const total = state.customers.length;
+      const dropshipCount = state.customers.filter(c => c.is_dropship).length;
+      const regularCount = total - dropshipCount;
+      const totalPrinted = state.customers.reduce((acc, c) => acc + (Number(c.print_count) || 0), 0);
+
+      document.getElementById('stat-total-customers').textContent = total;
+      document.getElementById('stat-regular-customers').textContent = regularCount;
+      document.getElementById('stat-dropship-customers').textContent = dropshipCount;
+      document.getElementById('stat-total-printed').textContent = totalPrinted;
+      document.getElementById('nav-customer-badge').textContent = total;
+
+      const recentContainer = document.getElementById('dashboard-recent-list');
+      const recentItems = state.customers.slice(0, 4);
+
+      if (recentItems.length === 0) {
+        recentContainer.innerHTML = `
+          <div class="p-8 text-center text-slate-400 text-xs border border-dashed border-slate-200 rounded-2xl">
+            Belum ada data pelanggan. Klik tombol <b>Tambah Pelanggan</b> untuk memulai.
+          </div>
+        `;
+        return;
+      }
+
+      recentContainer.innerHTML = recentItems.map(c => `
+        <div class="p-3.5 rounded-2xl border border-slate-200/80 bg-white hover:border-brand-300 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-mono text-[11px] font-extrabold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-200">ID PL: ${escapeHTML(c.customer_code || '-')}</span>
+              <span class="font-extrabold text-sm text-slate-900">${escapeHTML(c.recipient_name)}</span>
+              ${c.is_dropship
+                ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800"><i class="fa-solid fa-eye-slash mr-1"></i>Dropship: ${escapeHTML(c.dropshipper_name || '-')}</span>`
+                : `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-brand-100 text-brand-700"><i class="fa-solid fa-store mr-1"></i>Reguler</span>`
+              }
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700">${escapeHTML(c.courier_name || 'Ekspedisi')}</span>
+            </div>
+            <div class="text-xs text-slate-500 line-clamp-1">
+              <i class="fa-solid fa-phone text-[10px] mr-1 text-brand-600"></i>${escapeHTML(c.recipient_phone)} &bull; ${escapeHTML(c.full_address)}, ${escapeHTML(c.city)}
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+            <button onclick="window.app.openPrintForCustomer('${c.id}')"
+              class="px-3 py-2 rounded-xl brand-gradient text-white font-extrabold text-xs flex items-center gap-1.5 shadow-sm hover:opacity-95 transition">
+              <i class="fa-solid fa-print"></i>
+              <span>A6</span>
+            </button>
+            <button onclick="window.app.sendSingleCustomerToA4('${c.id}')" title="Cetak 1 Alamat ini saja di posisi Atas Kertas A4"
+              class="px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-sm transition">
+              <i class="fa-solid fa-file-lines"></i>
+              <span>Cetak A4</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getFilteredCustomers() {
+      const q = (document.getElementById('customer-search-input')?.value || '').toLowerCase().trim();
+      const typeFilter = document.getElementById('customer-type-filter')?.value || 'all';
+      const courierFilter = document.getElementById('customer-courier-filter')?.value || 'all';
+
+      return state.customers.filter(c => {
+        const matchSearch = !q ||
+          (c.customer_code || '').toLowerCase().includes(q) ||
+          (c.recipient_name || '').toLowerCase().includes(q) ||
+          (c.recipient_phone || '').toLowerCase().includes(q) ||
+          (c.full_address || '').toLowerCase().includes(q) ||
+          (c.subdistrict || '').toLowerCase().includes(q) ||
+          (c.city || '').toLowerCase().includes(q) ||
+          (c.dropshipper_name || '').toLowerCase().includes(q);
+
+        const matchType =
+          typeFilter === 'all' ||
+          (typeFilter === 'dropship' && c.is_dropship) ||
+          (typeFilter === 'regular' && !c.is_dropship);
+
+        const matchCourier =
+          courierFilter === 'all' ||
+          (c.courier_name || '') === courierFilter;
+
+        return matchSearch && matchType && matchCourier;
+      });
+    }
+
+    // ====================================================
+    // RENDER TABEL DATA PELANGGAN
+    // ====================================================
+    function renderCustomersTable() {
+      const tbody = document.getElementById('customers-table-body');
+      if (!tbody) return;
+      const filtered = getFilteredCustomers();
+      const countEl = document.getElementById('table-filtered-count');
+      if (countEl) countEl.textContent = filtered.length;
+
+      updateBatchSelectionUI();
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="py-12 px-4 text-center">
+              <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl mx-auto mb-2">
+                <i class="fa-solid fa-table-list"></i>
+              </div>
+              <div class="font-extrabold text-slate-800 text-sm">Tidak Ada Data Pelanggan yang Cocok</div>
+              <p class="text-xs text-slate-500 mt-0.5">Ubah kata kunci pencarian atau klik tombol <b>Tambah Pelanggan</b>.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(c => {
+        const isChecked = state.selectedCustomerIds.has(c.id);
+        return `
+          <tr class="hover:bg-brand-50/40 transition ${isChecked ? 'bg-brand-50/70' : ''}">
+            <!-- Checkbox -->
+            <td class="py-3.5 px-4 text-center align-top">
+              <input type="checkbox" onchange="window.app.toggleSelectCustomer('${c.id}')" ${isChecked ? 'checked' : ''}
+                class="w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-slate-300 cursor-pointer mt-1" />
+            </td>
+
+            <!-- ID PL (Manual) -->
+            <td class="py-3.5 px-3 align-top">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-lg font-mono text-xs font-extrabold bg-slate-100 text-slate-900 border border-slate-200">
+                ${escapeHTML(c.customer_code || '-')}
+              </span>
+              <div class="text-[10px] text-slate-400 font-bold mt-1">
+                <i class="fa-solid fa-print mr-0.5"></i>${Number(c.print_count) || 0}x cetak
+              </div>
+            </td>
+
+            <!-- Penerima & No HP -->
+            <td class="py-3.5 px-4 align-top">
+              <div class="font-extrabold text-sm text-slate-900 leading-snug">${escapeHTML(c.recipient_name)}</div>
+              <div class="text-xs font-bold text-brand-700 font-mono mt-0.5">
+                <i class="fa-solid fa-phone text-[10px] mr-1"></i>${escapeHTML(c.recipient_phone)}
+              </div>
+            </td>
+
+            <!-- Alamat Lengkap & Tujuan -->
+            <td class="py-3.5 px-4 align-top">
+              <div class="font-semibold text-slate-800 leading-snug">${escapeHTML(c.full_address)}</div>
+              <div class="text-[11px] font-bold text-slate-500 mt-0.5">
+                ${escapeHTML(c.subdistrict || '')}, <span class="text-slate-800">${escapeHTML(c.city || '')}</span>
+                ${c.province_postal ? ` &bull; ${escapeHTML(c.province_postal)}` : ''}
+              </div>
+              ${c.notes ? `<div class="text-[11px] text-brand-700 font-bold mt-1"><i class="fa-solid fa-box-open mr-1"></i>${escapeHTML(c.notes)}</div>` : ''}
+            </td>
+
+            <!-- Ekspedisi -->
+            <td class="py-3.5 px-3 align-top">
+              <span class="inline-block px-2.5 py-1 rounded-lg text-[11px] font-extrabold bg-purple-100 text-brand-800">
+                ${escapeHTML(c.courier_name || 'J&T Express')}
+              </span>
+              <div class="text-[10px] text-slate-500 font-mono font-bold mt-1">
+                ${escapeHTML(c.default_weight || '1 Kg / 1 Koli')}
+              </div>
+            </td>
+
+            <!-- Status / Dropship -->
+            <td class="py-3.5 px-3 align-top">
+              <div class="flex flex-col items-start gap-1">
+                <button onclick="window.app.quickToggleDropship('${c.id}')" title="Klik untuk ganti Mode Reguler / Dropship"
+                  class="px-2.5 py-1 rounded-full text-[11px] font-extrabold flex items-center gap-1.5 border transition ${c.is_dropship ? 'bg-amber-100 border-amber-300 text-amber-900 hover:bg-amber-200' : 'bg-emerald-100 border-emerald-300 text-emerald-900 hover:bg-emerald-200'}">
+                  <i class="fa-solid ${c.is_dropship ? 'fa-eye-slash text-amber-700' : 'fa-store text-emerald-700'}"></i>
+                  <span>${c.is_dropship ? 'Dropship Aktif' : 'Reguler (Toko)'}</span>
+                </button>
+                ${c.is_dropship ? `
+                  <div class="text-[11px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1 w-full">
+                    <div class="font-extrabold truncate">${escapeHTML(c.dropshipper_name || 'Dropshipper')}</div>
+                    <div class="text-[10px] font-mono text-amber-700">${escapeHTML(c.dropshipper_phone || '-')}</div>
+                  </div>
+                ` : ''}
+              </div>
+            </td>
+
+            <!-- Tombol Aksi & Cetak -->
+            <td class="py-3.5 px-4 align-top text-right">
+              <div class="inline-flex items-center justify-end gap-1.5 flex-wrap">
+                <button onclick="window.app.openPrintForCustomer('${c.id}')" title="Cetak Label A6 (100x150 mm)"
+                  class="px-2.5 py-1.5 rounded-xl brand-gradient text-white font-extrabold text-[11px] shadow-sm hover:opacity-95 transition flex items-center gap-1">
+                  <i class="fa-solid fa-print"></i>
+                  <span>A6</span>
+                </button>
+                <button onclick="window.app.sendSingleCustomerToA4('${c.id}')" title="Cetak 1 Alamat ini di posisi Atas Kertas A4"
+                  class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-[11px] shadow-sm transition flex items-center gap-1">
+                  <i class="fa-solid fa-file-lines"></i>
+                  <span>A4</span>
+                </button>
+                <button onclick="window.app.openCustomerModal('${c.id}')" title="Edit Data Pelanggan"
+                  class="w-8 h-8 rounded-xl border border-slate-200 bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-600 flex items-center justify-center transition">
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button onclick="window.app.openDeleteModal('${c.id}')" title="Hapus Pelanggan"
+                  class="w-8 h-8 rounded-xl border border-rose-200 bg-rose-50/70 hover:bg-rose-100 text-rose-600 flex items-center justify-center transition">
+                  <i class="fa-solid fa-trash text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ====================================================
+    // MODAL TAMBAH / EDIT PELANGGAN (ID PL MANUAL)
+    // ====================================================
+    function openCustomerModal(customerId = null) {
+      const modal = document.getElementById('customer-modal');
+      const form = document.getElementById('customer-form');
+      form.reset();
+
+      if (customerId) {
+        const c = state.customers.find(item => item.id === customerId);
+        if (!c) return;
+        document.getElementById('modal-title').textContent = 'Edit Data Pelanggan';
+        document.getElementById('form-customer-id').value = c.id;
+        document.getElementById('form-customer-code').value = c.customer_code || '';
+        document.getElementById('form-recipient-name').value = c.recipient_name || '';
+        document.getElementById('form-recipient-phone').value = c.recipient_phone || '';
+        document.getElementById('form-full-address').value = c.full_address || '';
+        document.getElementById('form-subdistrict').value = c.subdistrict || '';
+        document.getElementById('form-city').value = c.city || '';
+        document.getElementById('form-province-postal').value = c.province_postal || '';
+        document.getElementById('form-courier-name').value = c.courier_name || 'J&T Express';
+        document.getElementById('form-default-weight').value = c.default_weight || '1 Kg / 1 Koli';
+        document.getElementById('form-notes').value = c.notes || '';
+        document.getElementById('form-is-dropship').checked = Boolean(c.is_dropship);
+        document.getElementById('form-dropshipper-name').value = c.dropshipper_name || '';
+        document.getElementById('form-dropshipper-phone').value = c.dropshipper_phone || '';
+      } else {
+        document.getElementById('modal-title').textContent = 'Tambah Pelanggan Baru';
+        document.getElementById('form-customer-id').value = '';
+        document.getElementById('form-customer-code').value = '';
+        document.getElementById('form-default-weight').value = '1 Kg / 1 Koli';
+        document.getElementById('form-is-dropship').checked = false;
+      }
+
+      toggleModalDropshipSection();
+      modal.classList.remove('hidden');
+      setTimeout(() => document.getElementById('form-customer-code').focus(), 80);
+    }
+
+    function closeCustomerModal() {
+      document.getElementById('customer-modal').classList.add('hidden');
+    }
+
+    function toggleModalDropshipSection() {
+      const isChecked = document.getElementById('form-is-dropship').checked;
+      const sec = document.getElementById('form-dropship-section');
+      if (isChecked) {
+        sec.classList.remove('hidden');
+      } else {
+        sec.classList.add('hidden');
+      }
+    }
+
+    async function handleSaveCustomer(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-customer-id').value;
+      const manualCode = document.getElementById('form-customer-code').value.trim();
+      const isDropship = document.getElementById('form-is-dropship').checked;
+      const dropshipperName = document.getElementById('form-dropshipper-name').value.trim();
+      const dropshipperPhone = document.getElementById('form-dropshipper-phone').value.trim();
+      const defaultWeight = document.getElementById('form-default-weight').value.trim() || '1 Kg / 1 Koli';
+
+      if (!manualCode) {
+        showToast('Mohon isi ID PL secara manual terlebih dahulu!', 'error');
+        document.getElementById('form-customer-code').focus();
+        return;
+      }
+
+      if (isDropship && !dropshipperName) {
+        showToast('Mohon isi Nama Pengirim Dropship saat mode Dropship diaktifkan!', 'error');
+        return;
+      }
+
+      const payload = {
+        customer_code: manualCode,
+        recipient_name: document.getElementById('form-recipient-name').value.trim(),
+        recipient_phone: document.getElementById('form-recipient-phone').value.trim(),
+        full_address: document.getElementById('form-full-address').value.trim(),
+        subdistrict: document.getElementById('form-subdistrict').value.trim(),
+        city: document.getElementById('form-city').value.trim(),
+        province_postal: document.getElementById('form-province-postal').value.trim(),
+        courier_name: document.getElementById('form-courier-name').value,
+        default_weight: defaultWeight,
+        notes: document.getElementById('form-notes').value.trim(),
+        is_dropship: isDropship,
+        dropshipper_name: isDropship ? dropshipperName : '',
+        dropshipper_phone: isDropship ? dropshipperPhone : ''
+      };
+
+      try {
+        if (IS_PREVIEW) {
+          if (id) {
+            const idx = state.customers.findIndex(c => c.id === id);
+            if (idx > -1) state.customers[idx] = { ...state.customers[idx], ...payload };
+            state.a4CustomOverrides[id] = {
+              code: manualCode,
+              weight: defaultWeight,
+              isDropship
+            };
+            showToast(`Data pelanggan (ID PL: ${manualCode}) berhasil diperbarui!`);
+          } else {
+            const newCustomer = {
+              id: 'cust-' + Date.now(),
+              ...payload,
+              print_count: 0,
+              created_at: new Date().toISOString()
+            };
+            state.customers.unshift(newCustomer);
+            state.activePrintCustomerId = newCustomer.id;
+            syncCustomerToA4Overrides(newCustomer);
+            showToast(`Pelanggan baru (ID PL: ${manualCode}) berhasil ditambahkan!`);
+          }
+        } else {
+          if (id) {
+            const { data, error } = await supabase
+              .from('customers')
+              .update(payload)
+              .eq('id', id)
+              .select()
+              .single();
+            if (error) throw error;
+            const idx = state.customers.findIndex(c => c.id === id);
+            if (idx > -1) state.customers[idx] = data;
+            state.a4CustomOverrides[id] = {
+              code: data.customer_code,
+              weight: data.default_weight || '1 Kg / 1 Koli',
+              isDropship: Boolean(data.is_dropship)
+            };
+            showToast(`Data pelanggan (ID PL: ${manualCode}) diperbarui di Supabase!`);
+          } else {
+            const { data, error } = await supabase
+              .from('customers')
+              .insert([{ ...payload, print_count: 0 }])
+              .select()
+              .single();
+            if (error) throw error;
+            state.customers.unshift(data);
+            state.activePrintCustomerId = data.id;
+            syncCustomerToA4Overrides(data);
+            showToast(`Pelanggan baru (ID PL: ${manualCode}) tersimpan di Supabase!`);
+          }
+        }
+
+        closeCustomerModal();
+        renderAllViews();
+      } catch (err) {
+        showToast('Gagal menyimpan pelanggan: ' + err.message, 'error');
+      }
+    }
+
+    async function quickToggleDropship(customerId) {
+      const c = state.customers.find(item => item.id === customerId);
+      if (!c) return;
+
+      const nextStatus = !c.is_dropship;
+      let nextName = c.dropshipper_name;
+      let nextPhone = c.dropshipper_phone;
+
+      if (nextStatus && !nextName) {
+        nextName = 'Reseller Partner';
+        nextPhone = c.recipient_phone;
+      }
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { error } = await supabase
+            .from('customers')
+            .update({ is_dropship: nextStatus, dropshipper_name: nextName, dropshipper_phone: nextPhone })
+            .eq('id', customerId);
+          if (error) throw error;
+        }
+        c.is_dropship = nextStatus;
+        c.dropshipper_name = nextName;
+        c.dropshipper_phone = nextPhone;
+        if (state.a4CustomOverrides[customerId]) {
+          state.a4CustomOverrides[customerId].isDropship = nextStatus;
+        }
+
+        showToast(nextStatus
+          ? `Mode Dropship AKTIF untuk ${c.recipient_name} (Logo Toko Disembunyikan)`
+          : `Mode Reguler AKTIF untuk ${c.recipient_name} (Logo Toko Tampil)`,
+          'info'
+        );
+        renderAllViews();
+      } catch (err) {
+        showToast('Gagal mengubah mode dropship: ' + err.message, 'error');
+      }
+    }
+
+    function openDeleteModal(customerId) {
+      const c = state.customers.find(item => item.id === customerId);
+      if (!c) return;
+      state.deleteTargetId = customerId;
+      document.getElementById('delete-modal-text').innerHTML =
+        `Apakah Anda yakin ingin menghapus pelanggan <b>${escapeHTML(c.recipient_name)}</b> (ID PL: <b>${escapeHTML(c.customer_code || '-')}</b>)?`;
+      document.getElementById('delete-modal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      state.deleteTargetId = null;
+      document.getElementById('delete-modal').classList.add('hidden');
+    }
+
+    async function confirmDeleteCustomer() {
+      if (!state.deleteTargetId) return;
+      const targetId = state.deleteTargetId;
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { error } = await supabase.from('customers').delete().eq('id', targetId);
+          if (error) throw error;
+        }
+        state.customers = state.customers.filter(c => c.id !== targetId);
+        state.selectedCustomerIds.delete(targetId);
+        state.a4SelectedQueue = state.a4SelectedQueue.filter(id => id !== targetId);
+        delete state.a4CustomOverrides[targetId];
+        closeDeleteModal();
+        renderAllViews();
+        showToast('Data pelanggan berhasil dihapus.');
+      } catch (err) {
+        showToast('Gagal menghapus: ' + err.message, 'error');
+      }
+    }
+
+    // ====================================================
+    // STUDIO CETAK LABEL A6 (100x150 MM) & GAP 3MM
+    // ====================================================
+    function populatePrintCustomerDropdown() {
+      const select = document.getElementById('print-customer-select');
+      if (!select) return;
+
+      if (state.customers.length === 0) {
+        select.innerHTML = `<option value="">-- Belum Ada Data Pelanggan --</option>`;
+        return;
+      }
+
+      if (!state.activePrintCustomerId || !state.customers.some(c => c.id === state.activePrintCustomerId)) {
+        state.activePrintCustomerId = state.customers[0].id;
+      }
+
+      select.innerHTML = state.customers.map(c => `
+        <option value="${c.id}" ${c.id === state.activePrintCustomerId ? 'selected' : ''}>
+          [ID PL: ${escapeHTML(c.customer_code || '-')}] ${escapeHTML(c.recipient_name)} — ${escapeHTML(c.city || '')}
+        </option>
+      `).join('');
+
+      loadCustomerIntoPrintControls(state.activePrintCustomerId);
+    }
+
+    function loadCustomerIntoPrintControls(customerId) {
+      const c = state.customers.find(item => item.id === customerId);
+      if (!c) return;
+
+      state.activePrintCustomerId = c.id;
+      document.getElementById('print-customer-code-input').value = c.customer_code || '';
+      document.getElementById('print-dropship-toggle').checked = Boolean(c.is_dropship);
+      document.getElementById('print-dropshipper-name').value = c.dropshipper_name || '';
+      document.getElementById('print-dropshipper-phone').value = c.dropshipper_phone || '';
+      document.getElementById('print-courier-select').value = c.courier_name || 'J&T Express';
+      document.getElementById('print-weight-input').value = c.default_weight || '1 Kg / 1 Koli';
+      document.getElementById('print-notes-input').value = c.notes || '';
+
+      syncDropshipSwitchCardUI(Boolean(c.is_dropship));
+      updateLiveLabelPreview();
+    }
+
+    function syncDropshipSwitchCardUI(isDropship) {
+      const card = document.getElementById('dropship-switch-card');
+      const iconBox = document.getElementById('dropship-icon-box');
+      const fields = document.getElementById('print-dropship-fields');
+      const pill = document.getElementById('preview-mode-pill');
+
+      if (isDropship) {
+        card.className = 'p-4 rounded-2xl border-2 border-amber-400 bg-amber-50/70 transition';
+        iconBox.className = 'w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-base shrink-0';
+        fields.classList.remove('hidden');
+        pill.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800';
+        pill.innerHTML = `<i class="fa-solid fa-eye-slash mr-1"></i>Mode Dropship Aktif (Logo & Nama Toko Hilang)`;
+      } else {
+        card.className = 'p-4 rounded-2xl border-2 border-brand-200 bg-brand-50/40 transition';
+        iconBox.className = 'w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-base shrink-0';
+        fields.classList.add('hidden');
+        pill.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-brand-100 text-brand-700';
+        pill.innerHTML = `<i class="fa-solid fa-store mr-1"></i>Mode Reguler (Logo & Nama Toko Tampil)`;
+      }
+    }
+
+    /**
+     * Generator HTML Kertas Label Pengiriman Presisi 100x150 mm (Rasio A6 Thermal).
+     * Menggunakan ID PL manual (bukan otomatis) dan label singkat "ID PL".
+     */
+    function buildLabelSheetHTML(customer, overrideOptions = {}) {
+      const store = state.storeSettings;
+      const isDropship = overrideOptions.is_dropship !== undefined ? overrideOptions.is_dropship : Boolean(customer.is_dropship);
+      const dropshipperName = (overrideOptions.dropshipper_name !== undefined ? overrideOptions.dropshipper_name : customer.dropshipper_name) || 'Pengirim Dropship';
+      const dropshipperPhone = (overrideOptions.dropshipper_phone !== undefined ? overrideOptions.dropshipper_phone : customer.dropshipper_phone) || '-';
+      const courierName = overrideOptions.courier_name || customer.courier_name || 'J&T Express';
+      const weightText = overrideOptions.weight || customer.default_weight || '1 Kg / 1 Koli';
+      const notesText = overrideOptions.notes !== undefined ? overrideOptions.notes : (customer.notes || '-');
+      const manualCode = (overrideOptions.customer_code !== undefined ? overrideOptions.customer_code : customer.customer_code) || '-';
+      const printDate = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      // 1. BARIS HEADER ATAS
+      const topHeaderBlock = !isDropship
+        ? `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:2.2mm 2.8mm; border-bottom:2px solid #000; height:17mm; box-sizing:border-box;">
+            <div style="display:flex; align-items:center; gap:2.5mm; overflow:hidden;">
+              <img src="${escapeHTML(store.store_logo || DEFAULT_LOGO)}"
+                onerror="this.style.display='none'"
+                alt="Logo"
+                style="width:11.5mm; height:11.5mm; object-fit:contain; border:1.2px solid #000; border-radius:1.5mm; padding:0.4mm; background:#fff; flex-shrink:0;" />
+              <div style="overflow:hidden;">
+                <div style="font-size:10.5pt; font-weight:800; letter-spacing:0.3px; line-height:1.1; color:#000; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                  ${escapeHTML(store.store_name)}
+                </div>
+                <div style="font-size:7.5pt; font-weight:700; color:#000; margin-top:0.6mm;">
+                  WA/Telp: ${escapeHTML(store.store_phone)}
+                </div>
+              </div>
+            </div>
+            <div style="text-align:right; flex-shrink:0;">
+              <div style="background:#000; color:#fff; font-size:8.5pt; font-weight:800; padding:1mm 2.4mm; border-radius:1.2mm; text-transform:uppercase; letter-spacing:0.4px;">
+                ${escapeHTML(courierName)}
+              </div>
+              <div style="font-size:7pt; font-weight:800; margin-top:0.8mm; font-family:'JetBrains Mono', monospace;">
+                ${escapeHTML(weightText)}
+              </div>
+            </div>
+          </div>
+        `
+        : `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:2.2mm 2.8mm; border-bottom:2px solid #000; height:14mm; box-sizing:border-box;">
+            <div style="display:flex; align-items:center; gap:2mm;">
+              <span style="background:#000; color:#fff; font-size:9.5pt; font-weight:800; padding:1.1mm 3mm; border-radius:1.2mm; text-transform:uppercase; letter-spacing:0.5px;">
+                ${escapeHTML(courierName)}
+              </span>
+              <span style="font-size:7.5pt; font-weight:800; border:1.5px solid #000; padding:0.7mm 2mm; border-radius:1mm;">
+                NON-COD / PRIORITY
+              </span>
+            </div>
+            <div style="text-align:right; font-family:'JetBrains Mono', monospace; font-size:8pt; font-weight:800; border:1.5px solid #000; padding:0.8mm 2.2mm; border-radius:1mm;">
+              ${escapeHTML(weightText)}
+            </div>
+          </div>
+        `;
+
+      // 2. BARIS PENGIRIM (DARI)
+      const senderSectionBlock = !isDropship
+        ? `
+          <div style="padding:2.2mm 2.8mm; border-bottom:1.5px solid #000; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1mm;">
+              <span style="font-size:7pt; font-weight:800; background:#000; color:#fff; padding:0.4mm 1.8mm; border-radius:0.8mm; letter-spacing:0.4px;">
+                PENGIRIM (DARI)
+              </span>
+              <span style="font-size:7.5pt; font-weight:800; font-family:'JetBrains Mono', monospace;">
+                TELP: ${escapeHTML(store.store_phone)}
+              </span>
+            </div>
+            <div style="font-size:9.5pt; font-weight:800; line-height:1.15; color:#000;">
+              ${escapeHTML(store.store_name)}
+            </div>
+            <div style="font-size:7.5pt; font-weight:600; line-height:1.25; color:#000; margin-top:0.5mm; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">
+              ${escapeHTML(store.store_address)}
+            </div>
+          </div>
+        `
+        : `
+          <div style="padding:2.4mm 2.8mm; border-bottom:1.5px solid #000; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1mm;">
+              <span style="font-size:7pt; font-weight:800; background:#000; color:#fff; padding:0.4mm 1.8mm; border-radius:0.8mm; letter-spacing:0.4px;">
+                PENGIRIM (DARI)
+              </span>
+              <span style="font-size:8pt; font-weight:800; font-family:'JetBrains Mono', monospace;">
+                HP: ${escapeHTML(dropshipperPhone)}
+              </span>
+            </div>
+            <div style="font-size:10.5pt; font-weight:800; line-height:1.2; color:#000;">
+              ${escapeHTML(dropshipperName)}
+            </div>
+          </div>
+        `;
+
+      return `
+        <div class="thermal-frame">
+          <div style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+            ${topHeaderBlock}
+
+            <!-- BLOK BARCODE & ID PL MANUAL -->
+            <div style="padding:1.8mm 2.8mm; border-bottom:2px solid #000; text-align:center; background:#fff; box-sizing:border-box;">
+              <div style="font-family:'Libre Barcode 128', cursive; font-size:28pt; line-height:0.82; letter-spacing:1.5px; color:#000;">
+                *${escapeHTML(manualCode)}*
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; font-family:'JetBrains Mono', monospace; font-size:7.5pt; font-weight:800; margin-top:0.8mm; padding-top:0.8mm; border-top:1px dashed #000;">
+                <span>ID PL: ${escapeHTML(manualCode)}</span>
+                <span>TUJUAN: ${escapeHTML((customer.city || '-').toUpperCase())}</span>
+                <span>TGL: ${printDate}</span>
+              </div>
+            </div>
+
+            <!-- BLOK UTAMA: PENERIMA (KEPADA) -->
+            <div style="padding:2.8mm 3mm; border-bottom:2px solid #000; flex:1; display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box; overflow:hidden;">
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5mm;">
+                  <span style="font-size:8pt; font-weight:800; background:#000; color:#fff; padding:0.6mm 2.2mm; border-radius:0.8mm; letter-spacing:0.5px;">
+                    PENERIMA (KEPADA)
+                  </span>
+                  <span style="font-size:7.5pt; font-weight:800; border:1.2px solid #000; padding:0.3mm 1.5mm; border-radius:0.8mm; font-family:'JetBrains Mono', monospace;">
+                    ID PL: ${escapeHTML(manualCode)}
+                  </span>
+                </div>
+
+                <div style="font-size:12.5pt; font-weight:800; line-height:1.15; color:#000; margin-bottom:1.2mm; word-break:break-word;">
+                  ${escapeHTML(customer.recipient_name)}
+                </div>
+
+                <div style="font-size:10pt; font-weight:800; font-family:'JetBrains Mono', monospace; color:#000; padding:1mm 2mm; background:#f1f5f9; border:1.2px solid #000; border-radius:1mm; display:inline-block; margin-bottom:2mm;">
+                  HP/WA: ${escapeHTML(customer.recipient_phone)}
+                </div>
+
+                <div style="font-size:9.2pt; font-weight:600; line-height:1.32; color:#000; word-break:break-word;">
+                  ${escapeHTML(customer.full_address)}
+                </div>
+              </div>
+
+              <!-- Kotak Wilayah Destinasi -->
+              <div style="margin-top:2mm; padding-top:1.5mm; border-top:1.5px dashed #000; display:flex; justify-content:space-between; align-items:flex-end; gap:2mm;">
+                <div style="font-size:8.5pt; font-weight:800; line-height:1.25; color:#000; text-transform:uppercase;">
+                  ${escapeHTML(customer.subdistrict || '')}<br/>
+                  <span style="font-size:9.5pt;">${escapeHTML(customer.city || '')}</span>
+                </div>
+                <div style="text-align:right; font-size:7.5pt; font-weight:800; font-family:'JetBrains Mono', monospace; border:1px solid #000; padding:0.6mm 1.5mm; border-radius:0.8mm; flex-shrink:0;">
+                  ${escapeHTML(customer.province_postal || 'INDONESIA')}
+                </div>
+              </div>
+            </div>
+
+            <!-- BLOK PENGIRIM -->
+            ${senderSectionBlock}
+          </div>
+
+          <!-- BAGIAN BAWAH: CATATAN ISI & FOOTER UNBOXING -->
+          <div style="background:#fff; box-sizing:border-box;">
+            <div style="padding:1.8mm 2.8mm; border-bottom:1.5px solid #000; font-size:7.5pt; line-height:1.25; display:flex; justify-content:space-between; gap:2mm;">
+              <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                <b>CATATAN / ISI:</b> ${escapeHTML(notesText || '-')}
+              </div>
+              <span style="font-weight:800; flex-shrink:0;">[ FRAGILE ]</span>
+            </div>
+
+            <div style="padding:1.5mm 2mm; background:#000; color:#fff; text-align:center; font-size:6.8pt; font-weight:800; letter-spacing:0.4px; text-transform:uppercase;">
+              ${escapeHTML(store.footer_note || 'WAJIB VIDEO UNBOXING TANPA JEDA SAAT PAKET DITERIMA')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateLiveLabelPreview() {
+      const box = document.getElementById('live-label-preview-box');
+      if (!box) return;
+
+      const c = state.customers.find(item => item.id === state.activePrintCustomerId);
+      if (!c) {
+        box.innerHTML = `<div class="m-auto text-center text-xs text-slate-400 p-6">Pilih atau tambahkan pelanggan terlebih dahulu untuk melihat pratinjau label 100x150 mm.</div>`;
+        return;
+      }
+
+      const manualCode = document.getElementById('print-customer-code-input').value.trim();
+      const isDropship = document.getElementById('print-dropship-toggle').checked;
+      const dropshipperName = document.getElementById('print-dropshipper-name').value.trim();
+      const dropshipperPhone = document.getElementById('print-dropshipper-phone').value.trim();
+      const courierName = document.getElementById('print-courier-select').value;
+      const weight = document.getElementById('print-weight-input').value.trim();
+      const notes = document.getElementById('print-notes-input').value.trim();
+
+      box.innerHTML = buildLabelSheetHTML(c, {
+        customer_code: manualCode,
+        is_dropship: isDropship,
+        dropshipper_name: dropshipperName,
+        dropshipper_phone: dropshipperPhone,
+        courier_name: courierName,
+        weight,
+        notes
+      });
+    }
+
+    function openPrintForCustomer(customerId) {
+      state.activePrintCustomerId = customerId;
+      switchView('print');
+      populatePrintCustomerDropdown();
+      loadCustomerIntoPrintControls(customerId);
+    }
+
+    async function savePrintChangesToCustomer() {
+      const c = state.customers.find(item => item.id === state.activePrintCustomerId);
+      if (!c) return false;
+
+      const manualCode = document.getElementById('print-customer-code-input').value.trim();
+      const isDropship = document.getElementById('print-dropship-toggle').checked;
+      const dropshipperName = document.getElementById('print-dropshipper-name').value.trim();
+      const dropshipperPhone = document.getElementById('print-dropshipper-phone').value.trim();
+      const courierName = document.getElementById('print-courier-select').value;
+      const weight = document.getElementById('print-weight-input').value.trim() || '1 Kg / 1 Koli';
+      const notes = document.getElementById('print-notes-input').value.trim();
+
+      if (!manualCode) {
+        showToast('ID PL (Manual) tidak boleh kosong!', 'error');
+        return false;
+      }
+
+      if (isDropship && !dropshipperName) {
+        showToast('Isi Nama Pengirim Dropship terlebih dahulu!', 'error');
+        return false;
+      }
+
+      const updates = {
+        customer_code: manualCode,
+        is_dropship: isDropship,
+        dropshipper_name: isDropship ? dropshipperName : '',
+        dropshipper_phone: isDropship ? dropshipperPhone : '',
+        courier_name: courierName,
+        default_weight: weight,
+        notes
+      };
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { error } = await supabase.from('customers').update(updates).eq('id', c.id);
+          if (error) throw error;
+        }
+        Object.assign(c, updates);
+        state.a4CustomOverrides[c.id] = {
+          code: manualCode,
+          weight,
+          isDropship
+        };
+        renderAllViews();
+        showToast('ID PL & pengaturan label pelanggan berhasil disimpan!');
+        return true;
+      } catch (err) {
+        showToast('Gagal menyimpan perubahan: ' + err.message, 'error');
+        return false;
+      }
+    }
+
+    // =========================================================================
+    // MENU CETAK ALAMAT UKURAN A4 FLEKSIBEL:
+    // - Bisa pilih 1 alamat -> Otomatis di ATAS (Tengah & Bawah Kosong)
+    // - Bisa pilih 2 alamat -> Otomatis di ATAS & TENGAH (Bawah Kosong)
+    // - Bisa pilih 3 alamat -> 1 Halaman Penuh (Atas, Tengah, Bawah)
+    // - Bisa pilih >3 atau Semua Alamat -> Otomatis membuat banyak halaman A4
+    // =========================================================================
+    function renderA4Checklist() {
+      const container = document.getElementById('a4-customer-checklist-container');
+      if (!container) return;
+
+      const query = (document.getElementById('a4-customer-search')?.value || '').toLowerCase().trim();
+
+      const filteredList = state.customers.filter(c => {
+        if (!query) return true;
+        return (
+          (c.customer_code || '').toLowerCase().includes(query) ||
+          (c.recipient_name || '').toLowerCase().includes(query) ||
+          (c.recipient_phone || '').toLowerCase().includes(query) ||
+          (c.city || '').toLowerCase().includes(query) ||
+          (c.dropshipper_name || '').toLowerCase().includes(query)
+        );
+      });
+
+      if (filteredList.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+            Tidak ada pelanggan yang cocok dengan pencarian.
+          </div>
+        `;
+        return;
+      }
+
+      const slotNames = ['ATAS', 'TENGAH', 'BAWAH'];
+
+      container.innerHTML = filteredList.map(c => {
+        syncCustomerToA4Overrides(c);
+        const ov = state.a4CustomOverrides[c.id];
+        const queueIdx = state.a4SelectedQueue.indexOf(c.id);
+        const isSelected = queueIdx !== -1;
+
+        let positionBadgeHTML = '';
+        if (isSelected) {
+          const pageNum = Math.floor(queueIdx / 3) + 1;
+          const slotPos = slotNames[queueIdx % 3];
+          const badgeColors = {
+            ATAS: 'bg-brand-600 text-white',
+            TENGAH: 'bg-blue-600 text-white',
+            BAWAH: 'bg-emerald-600 text-white'
+          };
+          positionBadgeHTML = `
+            <div class="flex items-center gap-1">
+              <button type="button" onclick="window.app.moveA4QueueItem('${c.id}', -1)" ${queueIdx === 0 ? 'disabled' : ''}
+                title="Naikkan urutan posisi di kertas A4"
+                class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-30 text-slate-700 flex items-center justify-center text-[10px]">
+                <i class="fa-solid fa-arrow-up"></i>
+              </button>
+              <button type="button" onclick="window.app.moveA4QueueItem('${c.id}', 1)" ${queueIdx === state.a4SelectedQueue.length - 1 ? 'disabled' : ''}
+                title="Turunkan urutan posisi di kertas A4"
+                class="w-6 h-6 rounded-md border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-30 text-slate-700 flex items-center justify-center text-[10px]">
+                <i class="fa-solid fa-arrow-down"></i>
+              </button>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold font-mono ${badgeColors[slotPos]}">
+                Hal ${pageNum} • ${slotPos}
+              </span>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="p-3 rounded-2xl border-2 transition ${isSelected ? 'border-brand-500 bg-brand-50/40 shadow-sm' : 'border-slate-200/80 bg-white hover:border-slate-300'}">
+            <div class="flex items-start justify-between gap-2">
+              <label class="flex items-start gap-2.5 cursor-pointer select-none flex-1 min-w-0">
+                <input type="checkbox"
+                  onchange="window.app.toggleA4CustomerSelection('${c.id}')"
+                  ${isSelected ? 'checked' : ''}
+                  class="mt-0.5 w-4 h-4 rounded text-brand-600 focus:ring-brand-500 border-slate-300 cursor-pointer shrink-0" />
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="font-mono text-[11px] font-extrabold px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 border border-slate-200">
+                      ID PL: ${escapeHTML(ov.code || c.customer_code || '-')}
+                    </span>
+                    <span class="font-extrabold text-xs text-slate-900 truncate">${escapeHTML(c.recipient_name)}</span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 truncate mt-0.5">
+                    ${escapeHTML(c.city || '')} &bull; ${escapeHTML(c.courier_name || '')}
+                  </div>
+                </div>
+              </label>
+              <div class="shrink-0 flex items-center gap-1">
+                ${positionBadgeHTML}
+              </div>
+            </div>
+
+            ${isSelected ? `
+              <div class="mt-2.5 pt-2.5 border-t border-brand-200/60 grid grid-cols-12 gap-2 items-center">
+                <div class="col-span-4">
+                  <label class="block text-[9px] font-extrabold text-slate-500 uppercase">ID PL (Manual)</label>
+                  <input type="text" value="${escapeHTML(ov.code)}"
+                    oninput="window.app.updateA4CustomerOverride('${c.id}', 'code', this.value)"
+                    class="w-full px-2 py-1 rounded-lg border border-slate-300 bg-white font-mono text-[11px] font-extrabold" />
+                </div>
+                <div class="col-span-4">
+                  <label class="block text-[9px] font-extrabold text-slate-500 uppercase">Berat / Koli</label>
+                  <input type="text" value="${escapeHTML(ov.weight)}"
+                    oninput="window.app.updateA4CustomerOverride('${c.id}', 'weight', this.value)"
+                    class="w-full px-2 py-1 rounded-lg border border-slate-300 bg-white text-[11px] font-bold" />
+                </div>
+                <div class="col-span-4 flex flex-col items-end justify-end pt-3">
+                  <label class="inline-flex items-center gap-1.5 text-[11px] font-extrabold ${ov.isDropship ? 'text-amber-800' : 'text-slate-700'} cursor-pointer select-none">
+                    <input type="checkbox" ${ov.isDropship ? 'checked' : ''}
+                      onchange="window.app.updateA4CustomerOverride('${c.id}', 'isDropship', this.checked)"
+                      class="w-3.5 h-3.5 rounded text-brand-600" />
+                    <span>Dropship</span>
+                  </label>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleA4CustomerSelection(customerId) {
+      const idx = state.a4SelectedQueue.indexOf(customerId);
+      if (idx > -1) {
+        state.a4SelectedQueue.splice(idx, 1);
+      } else {
+        state.a4SelectedQueue.push(customerId);
+      }
+      state.a4ActivePreviewPage = 'all';
+      renderA4Checklist();
+      updateLiveA4Preview();
+    }
+
+    function moveA4QueueItem(customerId, direction) {
+      const idx = state.a4SelectedQueue.indexOf(customerId);
+      if (idx === -1) return;
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= state.a4SelectedQueue.length) return;
+      const temp = state.a4SelectedQueue[idx];
+      state.a4SelectedQueue[idx] = state.a4SelectedQueue[targetIdx];
+      state.a4SelectedQueue[targetIdx] = temp;
+      renderA4Checklist();
+      updateLiveA4Preview();
+    }
+
+    function updateA4CustomerOverride(customerId, field, value) {
+      const c = state.customers.find(item => item.id === customerId);
+      if (c) syncCustomerToA4Overrides(c);
+      if (!state.a4CustomOverrides[customerId]) {
+        state.a4CustomOverrides[customerId] = { code: '', weight: '1 Kg / 1 Koli', isDropship: false };
+      }
+      state.a4CustomOverrides[customerId][field] = value;
+      if (field === 'isDropship') {
+        renderA4Checklist();
+      }
+      updateLiveA4Preview();
+    }
+
+    function selectA4PresetCount(count) {
+      state.a4SelectedQueue = state.customers.slice(0, count).map(c => c.id);
+      state.a4ActivePreviewPage = 'all';
+      renderA4Checklist();
+      updateLiveA4Preview();
+
+      if (count === 1) {
+        showToast('1 Alamat dipilih: Posisi berada di ATAS, dan 2 slot di bawahnya otomatis kosong.', 'info');
+      } else if (count === 2) {
+        showToast('2 Alamat dipilih: Posisi berada di ATAS & TENGAH, dan 1 slot di bawahnya otomatis kosong.', 'info');
+      } else if (count === 3) {
+        showToast('3 Alamat dipilih: Mengisi 1 halaman A4 penuh (Atas, Tengah, Bawah).', 'info');
+      }
+    }
+
+    function selectAllCustomersForA4() {
+      state.a4SelectedQueue = state.customers.map(c => c.id);
+      state.a4ActivePreviewPage = 'all';
+      renderA4Checklist();
+      updateLiveA4Preview();
+      const totalPages = Math.max(1, Math.ceil(state.a4SelectedQueue.length / 3));
+      showToast(`Semua alamat (${state.a4SelectedQueue.length} pelanggan) dipilih — Otomatis disusun menjadi ${totalPages} Halaman A4!`, 'info');
+    }
+
+    function clearAllA4Selection() {
+      state.a4SelectedQueue = [];
+      state.a4ActivePreviewPage = 'all';
+      renderA4Checklist();
+      updateLiveA4Preview();
+      showToast('Pilihan alamat A4 dikosongkan.', 'info');
+    }
+
+    /**
+     * Membagi daftar pelanggan yang dipilih menjadi array halaman A4.
+     * Setiap halaman selalu terdiri dari 3 slot berurutan:
+     * - Index 0: ATAS
+     * - Index 1: TENGAH
+     * - Index 2: BAWAH
+     * Jika pada suatu halaman hanya ada 1 alamat -> Index 0 (ATAS) terisi, Index 1 (TENGAH) & Index 2 (BAWAH) bernilai null (kosong).
+     * Jika pada suatu halaman hanya ada 2 alamat -> Index 0 (ATAS) & Index 1 (TENGAH) terisi, Index 2 (BAWAH) bernilai null (kosong).
+     */
+    function buildA4PagesDataFromQueue(customerIdsArray) {
+      const validItems = customerIdsArray
+        .map(id => {
+          const c = state.customers.find(item => item.id === id);
+          if (!c) return null;
+          syncCustomerToA4Overrides(c);
+          const ov = state.a4CustomOverrides[c.id];
+          return {
+            customer: c,
+            code: ov.code !== undefined && ov.code !== '' ? ov.code : (c.customer_code || '-'),
+            weight: ov.weight || c.default_weight || '1 Kg / 1 Koli',
+            isDropship: Boolean(ov.isDropship)
+          };
+        })
+        .filter(Boolean);
+
+      if (validItems.length === 0) {
+        // Jika belum ada yang dipilih, tampilkan 1 halaman kosong (3 slot kosong)
+        return [[
+          { customer: null, code: '', weight: '', isDropship: false },
+          { customer: null, code: '', weight: '', isDropship: false },
+          { customer: null, code: '', weight: '', isDropship: false }
+        ]];
+      }
+
+      const pages = [];
+      for (let i = 0; i < validItems.length; i += 3) {
+        const pageTriplet = [
+          validItems[i] || { customer: null, code: '', weight: '', isDropship: false },     // Slot 1: ATAS
+          validItems[i + 1] || { customer: null, code: '', weight: '', isDropship: false }, // Slot 2: TENGAH
+          validItems[i + 2] || { customer: null, code: '', weight: '', isDropship: false }  // Slot 3: BAWAH
+        ];
+        pages.push(pageTriplet);
+      }
+      return pages;
+    }
+
+    /**
+     * Generator HTML untuk 1 Slot (1/3 Halaman A4: Atas, Tengah, atau Bawah).
+     * Ukuran tiap slot: 210mm x 99mm.
+     * Jika slot kosong (customer === null):
+     * - Di layar pratinjau menampilkan keterangan bahwa slot tersebut kosong.
+     * - Saat dicetak ke printer (@media print), .a4-empty-slot-placeholder otomatis disembunyikan (visibility: hidden)
+     *   sehingga bagian bawah kertas A4 benar-benar bersih/kosong tanpa membuang tinta.
+     */
+    function buildA4SingleSlotHTML(customer, slotOptions = {}, positionLabel = 'ATAS', hasBottomCutLine = true) {
+      if (!customer) {
+        return `
+          <div class="a4-slot-third ${hasBottomCutLine ? 'has-cutline' : 'empty-slot-no-cutline'}">
+            <div class="a4-empty-slot-placeholder" style="width:100%; height:100%; border:1.5px dashed #cbd5e1; border-radius:3mm; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#94a3b8; background:#f8fafc;">
+              <div style="font-size:10pt; font-weight:800; letter-spacing:0.5px;">[ BAGIAN ${positionLabel} KOSONG — TIDAK DICETAK ]</div>
+              <div style="font-size:8pt; font-weight:600; margin-top:1mm;">Area kertas ini tetap putih bersih saat dicetak</div>
+            </div>
+          </div>
+        `;
+      }
+
+      const store = state.storeSettings;
+      const isDropship = slotOptions.isDropship !== undefined ? slotOptions.isDropship : Boolean(customer.is_dropship);
+      const manualCode = (slotOptions.code !== undefined && slotOptions.code !== '' ? slotOptions.code : customer.customer_code) || '-';
+      const weightText = slotOptions.weight || customer.default_weight || '1 Kg / 1 Koli';
+      const courierName = customer.courier_name || 'J&T Express';
+      const dropshipperName = customer.dropshipper_name || 'Pengirim Dropship';
+      const dropshipperPhone = customer.dropshipper_phone || '-';
+      const notesText = customer.notes || '-';
+      const printDate = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      // HEADER SLOT A4 (Mode Reguler menampilkan Logo & Nama Toko; Mode Dropship menyembunyikannya)
+      const headerBarHTML = !isDropship
+        ? `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:2mm 3.5mm; border-bottom:2px solid #000; height:15mm; box-sizing:border-box; background:#fff;">
+            <div style="display:flex; align-items:center; gap:2.5mm;">
+              <img src="${escapeHTML(store.store_logo || DEFAULT_LOGO)}"
+                onerror="this.style.display='none'"
+                alt="Logo"
+                style="width:10.5mm; height:10.5mm; object-fit:contain; border:1px solid #000; border-radius:1.2mm; padding:0.3mm; background:#fff;" />
+              <div>
+                <div style="font-size:11pt; font-weight:800; color:#000; line-height:1.1;">${escapeHTML(store.store_name)}</div>
+                <div style="font-size:7.5pt; font-weight:700; color:#000;">WA/Telp: ${escapeHTML(store.store_phone)}</div>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:3mm;">
+              <div style="text-align:right; font-family:'JetBrains Mono', monospace;">
+                <div style="font-size:8.5pt; font-weight:800; border:1.5px solid #000; padding:0.5mm 2mm; border-radius:1mm; background:#f8fafc;">
+                  ID PL: ${escapeHTML(manualCode)}
+                </div>
+                <div style="font-size:6.8pt; font-weight:700; margin-top:0.5mm;">TGL: ${printDate} &bull; ${escapeHTML(weightText)}</div>
+              </div>
+              <div style="background:#000; color:#fff; font-size:9pt; font-weight:800; padding:1.5mm 3mm; border-radius:1.2mm; text-transform:uppercase;">
+                ${escapeHTML(courierName)}
+              </div>
+            </div>
+          </div>
+        `
+        : `
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:2mm 3.5mm; border-bottom:2px solid #000; height:13.5mm; box-sizing:border-box; background:#fff;">
+            <div style="display:flex; align-items:center; gap:2.5mm;">
+              <span style="background:#000; color:#fff; font-size:9.5pt; font-weight:800; padding:1.2mm 3.2mm; border-radius:1.2mm; text-transform:uppercase;">
+                ${escapeHTML(courierName)}
+              </span>
+              <span style="font-size:7.5pt; font-weight:800; border:1.5px solid #000; padding:0.6mm 2mm; border-radius:1mm;">
+                NON-COD / PRIORITY
+              </span>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:2.5mm; font-family:'JetBrains Mono', monospace;">
+              <span style="font-size:8.5pt; font-weight:800; border:1.5px solid #000; padding:0.6mm 2.2mm; border-radius:1mm; background:#f8fafc;">
+                ID PL: ${escapeHTML(manualCode)}
+              </span>
+              <span style="font-size:8pt; font-weight:800; border:1.5px solid #000; padding:0.6mm 2mm; border-radius:1mm;">
+                ${escapeHTML(weightText)}
+              </span>
+              <span style="font-size:7pt; font-weight:800;">${printDate}</span>
+            </div>
+          </div>
+        `;
+
+      // BLOK PENGIRIM SLOT A4
+      const senderBlockHTML = !isDropship
+        ? `
+          <div style="padding:2.2mm 2.8mm; border-bottom:1.5px solid #000; flex:1; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8mm;">
+              <span style="font-size:6.8pt; font-weight:800; background:#000; color:#fff; padding:0.3mm 1.6mm; border-radius:0.6mm;">PENGIRIM (DARI)</span>
+              <span style="font-size:7.2pt; font-weight:800; font-family:'JetBrains Mono', monospace;">${escapeHTML(store.store_phone)}</span>
+            </div>
+            <div style="font-size:9pt; font-weight:800; color:#000;">${escapeHTML(store.store_name)}</div>
+            <div style="font-size:7.2pt; font-weight:600; color:#000; line-height:1.25; margin-top:0.5mm;">
+              ${escapeHTML(store.store_address)}
+            </div>
+          </div>
+        `
+        : `
+          <div style="padding:2.2mm 2.8mm; border-bottom:1.5px solid #000; flex:1; box-sizing:border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.8mm;">
+              <span style="font-size:6.8pt; font-weight:800; background:#000; color:#fff; padding:0.3mm 1.6mm; border-radius:0.6mm;">PENGIRIM (DARI)</span>
+              <span style="font-size:7.8pt; font-weight:800; font-family:'JetBrains Mono', monospace;">HP: ${escapeHTML(dropshipperPhone)}</span>
+            </div>
+            <div style="font-size:10pt; font-weight:800; color:#000; margin-top:1mm;">${escapeHTML(dropshipperName)}</div>
+          </div>
+        `;
+
+      return `
+        <div class="a4-slot-third ${hasBottomCutLine ? 'has-cutline' : ''}">
+          <div style="width:100%; height:100%; border:2px solid #000; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; background:#fff;">
+            ${headerBarHTML}
+
+            <!-- ISI UTAMA 2 KOLOM (KIRI: PENERIMA, KANAN: PENGIRIM + BARCODE ID PL + CATATAN) -->
+            <div style="display:flex; flex:1; overflow:hidden;">
+              <!-- Kolom Kiri (62%): Penerima -->
+              <div style="width:62%; padding:2.5mm 3.5mm; border-right:2px solid #000; display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box; overflow:hidden;">
+                <div>
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.2mm;">
+                    <span style="font-size:7.8pt; font-weight:800; background:#000; color:#fff; padding:0.5mm 2mm; border-radius:0.8mm;">
+                      PENERIMA (KEPADA)
+                    </span>
+                    <span style="font-size:7.5pt; font-weight:800; font-family:'JetBrains Mono', monospace;">
+                      ID PL: ${escapeHTML(manualCode)}
+                    </span>
+                  </div>
+
+                  <div style="font-size:13pt; font-weight:800; color:#000; line-height:1.15; margin-bottom:1mm; word-break:break-word;">
+                    ${escapeHTML(customer.recipient_name)}
+                  </div>
+
+                  <div style="font-size:9.8pt; font-weight:800; font-family:'JetBrains Mono', monospace; color:#000; padding:0.8mm 2mm; background:#f1f5f9; border:1.2px solid #000; border-radius:1mm; display:inline-block; margin-bottom:1.5mm;">
+                    HP/WA: ${escapeHTML(customer.recipient_phone)}
+                  </div>
+
+                  <div style="font-size:9pt; font-weight:600; color:#000; line-height:1.3; word-break:break-word;">
+                    ${escapeHTML(customer.full_address)}
+                  </div>
+                </div>
+
+                <div style="padding-top:1.2mm; border-top:1.2px dashed #000; display:flex; justify-content:space-between; align-items:flex-end;">
+                  <div style="font-size:8.5pt; font-weight:800; color:#000; text-transform:uppercase;">
+                    ${escapeHTML(customer.subdistrict || '')} &bull; ${escapeHTML(customer.city || '')}
+                  </div>
+                  <div style="font-size:7.5pt; font-weight:800; font-family:'JetBrains Mono', monospace; border:1px solid #000; padding:0.4mm 1.4mm; border-radius:0.6mm;">
+                    ${escapeHTML(customer.province_postal || 'INDONESIA')}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Kolom Kanan (38%): Pengirim + Barcode ID PL + Catatan -->
+              <div style="width:38%; display:flex; flex-direction:column; justify-content:space-between; box-sizing:border-box; overflow:hidden;">
+                ${senderBlockHTML}
+
+                <div style="padding:1.5mm 2.5mm; border-bottom:1.5px solid #000; text-align:center; box-sizing:border-box;">
+                  <div style="font-family:'Libre Barcode 128', cursive; font-size:23pt; line-height:0.82; color:#000;">
+                    *${escapeHTML(manualCode)}*
+                  </div>
+                  <div style="font-family:'JetBrains Mono', monospace; font-size:7pt; font-weight:800; margin-top:0.4mm;">
+                    ID PL: ${escapeHTML(manualCode)}
+                  </div>
+                </div>
+
+                <div style="padding:1.5mm 2.5mm; font-size:7.2pt; line-height:1.2; box-sizing:border-box; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                  <b>CATATAN:</b> ${escapeHTML(notesText)}
+                </div>
+              </div>
+            </div>
+
+            <!-- FOOTER SLOT A4 -->
+            <div style="padding:1.2mm 2.5mm; background:#000; color:#fff; display:flex; justify-content:space-between; align-items:center; font-size:6.5pt; font-weight:800; letter-spacing:0.3px; text-transform:uppercase;">
+              <span>${escapeHTML(store.footer_note || 'WAJIB VIDEO UNBOXING TANPA JEDA SAAT PAKET DITERIMA')}</span>
+              <span>[ FRAGILE / JANGAN DIBANTING ]</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildFullA4PageHTML(slotDataTriplet) {
+      const labels = ['ATAS', 'TENGAH', 'BAWAH'];
+      return slotDataTriplet.map((item, idx) => {
+        // Tampilkan garis potong jika slot saat ini berisi alamat atau slot berikutnya berisi alamat
+        const currentFilled = Boolean(item && item.customer);
+        const nextFilled = Boolean(slotDataTriplet[idx + 1] && slotDataTriplet[idx + 1].customer);
+        const showCutLine = idx < 2 && (currentFilled || nextFilled);
+
+        return buildA4SingleSlotHTML(
+          item ? item.customer : null,
+          {
+            code: item ? item.code : '',
+            weight: item ? item.weight : '',
+            isDropship: item ? item.isDropship : false
+          },
+          labels[idx],
+          showCutLine
+        );
+      }).join('');
+    }
+
+    function setA4PreviewPageFilter(pageFilter) {
+      state.a4ActivePreviewPage = pageFilter;
+      updateLiveA4Preview();
+    }
+
+    function updateLiveA4Preview() {
+      const scrollContainer = document.getElementById('live-a4-pages-scroll-container');
+      const summaryCounter = document.getElementById('a4-summary-counter');
+      const statusBadge = document.getElementById('a4-preview-status-badge');
+      const paginationBar = document.getElementById('a4-pagination-bar');
+      const paginationInfo = document.getElementById('a4-pagination-info');
+      const pageButtonsBox = document.getElementById('a4-page-Filter-buttons');
+      const printBtnLabel = document.getElementById('execute-a4-print-btn-label');
+
+      if (!scrollContainer) return;
+
+      const selectedCount = state.a4SelectedQueue.length;
+      const pagesData = buildA4PagesDataFromQueue(state.a4SelectedQueue);
+      const totalPages = selectedCount === 0 ? 0 : pagesData.length;
+
+      if (summaryCounter) {
+        summaryCounter.textContent = `${selectedCount} Alamat (${totalPages} Hal A4)`;
+      }
+
+      if (printBtnLabel) {
+        printBtnLabel.textContent = selectedCount > 0
+          ? `Cetak ${selectedCount} Alamat Terpilih (${totalPages} Halaman A4)`
+          : `Pilih Minimal 1 Alamat untuk Dicetak`;
+      }
+
+      // Deskripsi pintar posisi slot
+      if (statusBadge) {
+        if (selectedCount === 0) {
+          statusBadge.textContent = 'Belum Ada Alamat Dipilih';
+        } else if (selectedCount === 1) {
+          statusBadge.textContent = '1 Alamat: Posisi ATAS (Tengah & Bawah Kosong)';
+        } else if (selectedCount === 2) {
+          statusBadge.textContent = '2 Alamat: Posisi ATAS & TENGAH (Bawah Kosong)';
+        } else if (selectedCount === 3) {
+          statusBadge.textContent = '3 Alamat: 1 Halaman A4 Penuh (Atas, Tengah, Bawah)';
+        } else {
+          statusBadge.textContent = `${selectedCount} Alamat • Otomatis ${totalPages} Halaman A4`;
+        }
+      }
+
+      // Tampilkan bar navigasi halaman jika lebih dari 1 halaman A4
+      if (pagesData.length > 1) {
+        paginationBar.classList.remove('hidden');
+        paginationInfo.textContent = `Total ${pagesData.length} Halaman A4 (${selectedCount} Alamat):`;
+        pageButtonsBox.innerHTML = `
+          <button type="button" onclick="window.app.setA4PreviewPageFilter('all')"
+            class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition ${state.a4ActivePreviewPage === 'all' ? 'bg-brand-600 text-white' : 'bg-white text-slate-700 border border-slate-300'}">
+            Tampilkan Semua (${pagesData.length} Hal)
+          </button>
+          ${pagesData.map((_, idx) => `
+            <button type="button" onclick="window.app.setA4PreviewPageFilter(${idx})"
+              class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold transition ${state.a4ActivePreviewPage === idx ? 'bg-blue-600 text-white' : 'bg-white text-slate-700 border border-slate-300'}">
+              Hal #${idx + 1}
+            </button>
+          `).join('')}
+        `;
+      } else {
+        paginationBar.classList.add('hidden');
+      }
+
+      const pagesToRender = state.a4ActivePreviewPage === 'all'
+        ? pagesData.map((triplet, idx) => ({ triplet, pageIndex: idx }))
+        : [{ triplet: pagesData[state.a4ActivePreviewPage] || pagesData[0], pageIndex: Number(state.a4ActivePreviewPage) || 0 }];
+
+      scrollContainer.innerHTML = pagesToRender.map(({ triplet, pageIndex }) => {
+        const filledInThisPage = triplet.filter(item => item && item.customer).length;
+        let slotSummaryText = 'Semua Slot Kosong';
+        if (filledInThisPage === 1) slotSummaryText = '1 Alamat di ATAS • Tengah & Bawah Kosong';
+        if (filledInThisPage === 2) slotSummaryText = '2 Alamat di ATAS & TENGAH • Bawah Kosong';
+        if (filledInThisPage === 3) slotSummaryText = '3 Alamat Penuh (ATAS, TENGAH, BAWAH)';
+
+        return `
+          <div class="flex flex-col items-center w-full">
+            <div class="mb-2 flex items-center gap-2 bg-slate-800 text-white px-3.5 py-1 rounded-full text-[11px] font-extrabold shadow-sm">
+              <span>Halaman A4 #${pageIndex + 1} dari ${pagesData.length}</span>
+              <span class="text-slate-300">&bull;</span>
+              <span class="text-amber-300">${slotSummaryText}</span>
+            </div>
+            <div class="a4-preview-frame-wrapper">
+              <div class="a4-responsive-scaler ${state.a4ZoomLarge ? 'zoom-large' : ''}">
+                <div class="a4-sheet-preview">
+                  ${buildFullA4PageHTML(triplet)}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Ketika tombol "A4" diklik pada 1 baris pelanggan di Dashboard / Tabel Pelanggan:
+    // Langsung memilih 1 alamat tersebut saja (posisi di Atas, 2 di bawahnya kosong)
+    function sendSingleCustomerToA4(customerId) {
+      const c = state.customers.find(item => item.id === customerId);
+      if (!c) return;
+
+      syncCustomerToA4Overrides(c);
+      state.a4SelectedQueue = [c.id];
+      state.a4ActivePreviewPage = 'all';
+
+      switchView('print-a4');
+      renderA4Checklist();
+      updateLiveA4Preview();
+      showToast(`1 Alamat (${c.recipient_name}) disiapkan di Bagian Atas Kertas A4 (2 slot bawah kosong).`, 'info');
+    }
+
+    // ====================================================
+    // SIMULATOR & EKSEKUSI CETAK (A6 GAP 3MM & A4 FLEKSIBEL)
+    // ====================================================
+    function openPrintSimulatorModal(pagesHTMLArray, titleText, mode = 'a6') {
+      const modal = document.getElementById('print-simulator-modal');
+      const container = document.getElementById('simulator-pages-container');
+      const badge = document.getElementById('simulator-badge');
+      const hint = document.getElementById('simulator-footer-hint');
+
+      document.getElementById('simulator-modal-title').textContent = titleText;
+
+      if (mode === 'a4') {
+        badge.textContent = `Pratinjau Output Cetak Kertas A4 (${pagesHTMLArray.length} Halaman)`;
+        badge.className = 'text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-600 text-white';
+        hint.innerHTML = `<i class="fa-solid fa-circle-info text-blue-600 mr-1"></i>Atur ukuran kertas printer ke <b>A4 (210 x 297 mm)</b>, orientasi <b>Portrait</b>, dan <b>Margins: None</b>. Slot kosong otomatis tidak mencetak garis/tinta.`;
+
+        container.innerHTML = pagesHTMLArray.map((pageInnerHTML, idx) => `
+          <div class="flex flex-col items-center mb-6 w-full">
+            <span class="text-xs font-extrabold text-slate-700 font-mono mb-2 bg-white px-3.5 py-1 rounded-full shadow-sm border border-slate-200">
+              Lembar Kertas A4 #${idx + 1} dari ${pagesHTMLArray.length}
+            </span>
+            <div class="a4-preview-frame-wrapper">
+              <div class="a4-responsive-scaler">
+                <div class="a4-sheet-preview">
+                  ${pageInnerHTML}
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        badge.textContent = 'Pratinjau Kertas Thermal A6 (100 x 150 mm • Gap Massal 3 mm)';
+        badge.className = 'text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-600 text-white';
+        hint.innerHTML = `<i class="fa-solid fa-circle-info text-brand-600 mr-1"></i>Atur ukuran kertas printer ke <b>100 x 150 mm (A6)</b> dan <b>Margins: None</b>. Jarak antar label cetak massal: <b>3 mm</b>.`;
+
+        container.innerHTML = pagesHTMLArray.map((sheetInnerHTML, idx) => `
+          <div class="flex flex-col items-center">
+            <span class="text-[11px] font-extrabold text-slate-600 font-mono mb-1.5">
+              Label A6 #${idx + 1} (100 mm x 150 mm)
+            </span>
+            <div class="thermal-label-100x150">
+              ${sheetInnerHTML}
+            </div>
+            ${idx < pagesHTMLArray.length - 1 ? `
+              <div style="height:3mm; min-height:3mm;" class="w-full flex items-center justify-center my-1">
+                <span class="text-[10px] font-mono font-extrabold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  ↕ Gap Antar Label: 3 mm
+                </span>
+              </div>
+            ` : ''}
+          </div>
+        `).join('');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closePrintSimulatorModal() {
+      document.getElementById('print-simulator-modal').classList.add('hidden');
+    }
+
+    async function prepareAndPrintSingleA6(showSimulatorFirst = false) {
+      const c = state.customers.find(item => item.id === state.activePrintCustomerId);
+      if (!c) {
+        showToast('Pilih pelanggan terlebih dahulu!', 'error');
+        return;
+      }
+
+      const manualCode = document.getElementById('print-customer-code-input').value.trim();
+      const isDropship = document.getElementById('print-dropship-toggle').checked;
+      const dropshipperName = document.getElementById('print-dropshipper-name').value.trim();
+      const dropshipperPhone = document.getElementById('print-dropshipper-phone').value.trim();
+      const courierName = document.getElementById('print-courier-select').value;
+      const weight = document.getElementById('print-weight-input').value.trim();
+      const notes = document.getElementById('print-notes-input').value.trim();
+
+      if (isDropship && !dropshipperName) {
+        showToast('Mohon isi Nama Pengirim Dropship sebelum mencetak!', 'error');
+        document.getElementById('print-dropshipper-name').focus();
+        return;
+      }
+
+      setPrintPageRule('a6');
+
+      const sheetHTML = buildLabelSheetHTML(c, {
+        customer_code: manualCode,
+        is_dropship: isDropship,
+        dropshipper_name: dropshipperName,
+        dropshipper_phone: dropshipperPhone,
+        courier_name: courierName,
+        weight,
+        notes
+      });
+
+      const mount = document.getElementById('print-mount-container');
+      mount.innerHTML = `<div class="print-page-sheet-a6">${sheetHTML}</div>`;
+
+      c.print_count = (Number(c.print_count) || 0) + 1;
+      if (manualCode) c.customer_code = manualCode;
+      c.is_dropship = isDropship;
+      if (isDropship) {
+        c.dropshipper_name = dropshipperName;
+        c.dropshipper_phone = dropshipperPhone;
+      }
+      c.courier_name = courierName;
+      c.default_weight = weight;
+      c.notes = notes;
+
+      if (!IS_PREVIEW && supabase) {
+        await supabase.from('customers').update({
+          customer_code: c.customer_code,
+          print_count: c.print_count,
+          is_dropship: c.is_dropship,
+          dropshipper_name: c.dropshipper_name,
+          dropshipper_phone: c.dropshipper_phone,
+          courier_name: c.courier_name,
+          default_weight: c.default_weight,
+          notes: c.notes
+        }).eq('id', c.id);
+      }
+
+      renderDashboardStats();
+      renderCustomersTable();
+
+      if (showSimulatorFirst) {
+        openPrintSimulatorModal([sheetHTML], `Pratinjau Cetak A6: ${c.recipient_name} (ID PL: ${c.customer_code || '-'})`, 'a6');
+      } else {
+        showToast('Menyiapkan dokumen cetak Label A6 (100x150 mm)...', 'info');
+        setTimeout(() => window.print(), 150);
+      }
+    }
+
+    /**
+     * Mencetak daftar pelanggan yang dipilih di Menu A4 (bisa 1, 2, 3, atau banyak pelanggan sekaligus).
+     * Otomatis membuat 1 atau banyak halaman A4 sesuai jumlah alamat yang dipilih.
+     */
+    async function executeA4QueuePrint(showSimulatorFirst = false) {
+      if (state.a4SelectedQueue.length === 0) {
+        showToast('Pilih/centang minimal 1 alamat pelanggan terlebih dahulu!', 'error');
+        return;
+      }
+
+      setPrintPageRule('a4');
+
+      const pagesData = buildA4PagesDataFromQueue(state.a4SelectedQueue);
+      const pagesHTMLArray = pagesData.map(triplet => buildFullA4PageHTML(triplet));
+
+      const mount = document.getElementById('print-mount-container');
+      mount.innerHTML = pagesHTMLArray.map(html => `<div class="print-page-sheet-a4">${html}</div>`).join('');
+
+      // Update print_count untuk semua pelanggan yang ikut dicetak
+      for (const id of state.a4SelectedQueue) {
+        const c = state.customers.find(item => item.id === id);
+        if (c) {
+          c.print_count = (Number(c.print_count) || 0) + 1;
+          const ov = state.a4CustomOverrides[c.id];
+          if (ov && ov.code) c.customer_code = ov.code;
+          if (!IS_PREVIEW && supabase) {
+            await supabase.from('customers').update({
+              print_count: c.print_count,
+              customer_code: c.customer_code
+            }).eq('id', c.id);
+          }
+        }
+      }
+
+      renderDashboardStats();
+      renderCustomersTable();
+
+      const totalAddresses = state.a4SelectedQueue.length;
+      const totalPages = pagesHTMLArray.length;
+
+      if (showSimulatorFirst) {
+        openPrintSimulatorModal(
+          pagesHTMLArray,
+          `Simulasi Cetak Kertas A4: ${totalAddresses} Alamat (${totalPages} Halaman A4)`,
+          'a4'
+        );
+      } else {
+        showToast(`Menyiapkan cetak ${totalAddresses} alamat pada ${totalPages} halaman A4...`, 'info');
+        setTimeout(() => window.print(), 150);
+      }
+    }
+
+    function toggleSelectCustomer(customerId) {
+      if (state.selectedCustomerIds.has(customerId)) {
+        state.selectedCustomerIds.delete(customerId);
+      } else {
+        state.selectedCustomerIds.add(customerId);
+      }
+      renderCustomersTable();
+    }
+
+    function toggleSelectAllCustomers(e) {
+      const checked = e.target.checked;
+      const filtered = getFilteredCustomers();
+      if (checked) {
+        filtered.forEach(c => state.selectedCustomerIds.add(c.id));
+      } else {
+        filtered.forEach(c => state.selectedCustomerIds.delete(c.id));
+      }
+      renderCustomersTable();
+    }
+
+    function updateBatchSelectionUI() {
+      const count = state.selectedCustomerIds.size;
+      const badge = document.getElementById('selected-count-badge');
+      const btnA6 = document.getElementById('batch-print-selected-btn');
+      const btnA4 = document.getElementById('batch-print-a4-selected-btn');
+      const btnA4Count = document.getElementById('selected-a4-btn-count');
+      if (badge) badge.textContent = count;
+      if (btnA4Count) btnA4Count.textContent = count;
+      if (btnA6) btnA6.disabled = count === 0;
+      if (btnA4) btnA4.disabled = count === 0;
+    }
+
+    // Cetak Massal A6 dengan Gap 3mm antar label
+    async function handleBatchPrintSelectedA6() {
+      const selectedList = state.customers.filter(c => state.selectedCustomerIds.has(c.id));
+      if (selectedList.length === 0) return;
+
+      setPrintPageRule('a6');
+
+      const sheetsArray = selectedList.map(c => buildLabelSheetHTML(c));
+      const mount = document.getElementById('print-mount-container');
+      mount.innerHTML = sheetsArray.map(html => `<div class="print-page-sheet-a6">${html}</div>`).join('');
+
+      for (const c of selectedList) {
+        c.print_count = (Number(c.print_count) || 0) + 1;
+        if (!IS_PREVIEW && supabase) {
+          await supabase.from('customers').update({ print_count: c.print_count }).eq('id', c.id);
+        }
+      }
+
+      renderDashboardStats();
+      renderCustomersTable();
+
+      openPrintSimulatorModal(
+        sheetsArray,
+        `Cetak Massal ${selectedList.length} Label A6 (100x150 mm • Gap 3 mm)`,
+        'a6'
+      );
+    }
+
+    // Kirim pelanggan yang dicentang di Tabel Pelanggan (bisa 1, 2, 3, atau banyak) ke Menu Cetak A4
+    function handleSendSelectedFromTableToA4() {
+      const selectedIds = state.customers
+        .filter(c => state.selectedCustomerIds.has(c.id))
+        .map(c => c.id);
+
+      if (selectedIds.length === 0) return;
+
+      state.a4SelectedQueue = selectedIds;
+      state.a4ActivePreviewPage = 'all';
+      switchView('print-a4');
+      renderA4Checklist();
+      updateLiveA4Preview();
+
+      const totalPages = Math.ceil(selectedIds.length / 3);
+      showToast(`${selectedIds.length} alamat berhasil disusun ke dalam ${totalPages} Halaman A4!`, 'info');
+    }
+
+    async function handleSaveStoreSettings(e) {
+      e.preventDefault();
+      const updated = {
+        store_name: document.getElementById('setting-store-name').value.trim(),
+        store_phone: document.getElementById('setting-store-phone').value.trim(),
+        store_logo: document.getElementById('setting-store-logo').value.trim() || DEFAULT_LOGO,
+        store_address: document.getElementById('setting-store-address').value.trim(),
+        footer_note: document.getElementById('setting-footer-note').value.trim()
+      };
+
+      try {
+        if (!IS_PREVIEW && supabase) {
+          const { error } = await supabase
+            .from('store_settings')
+            .update(updated)
+            .eq('id', state.storeSettings.id);
+          if (error) throw error;
+        }
+        state.storeSettings = { ...state.storeSettings, ...updated };
+        syncStoreIdentityUI();
+        updateLiveLabelPreview();
+        updateLiveA4Preview();
+        showToast('Pengaturan identitas Yaxiya Grosir berhasil disimpan!');
+      } catch (err) {
+        showToast('Gagal menyimpan pengaturan: ' + err.message, 'error');
+      }
+    }
+
+    function exportCustomersJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.customers, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute('href', dataStr);
+      a.setAttribute('download', `backup-pelanggan-yaxiya-grosir-${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      showToast('File backup JSON berhasil diunduh!');
+    }
+
+    function resetDemoData() {
+      state.customers = getInitialDummyCustomers();
+      state.selectedCustomerIds.clear();
+      state.a4CustomOverrides = {};
+      state.a4SelectedQueue = [];
+      state.activePrintCustomerId = state.customers[0].id;
+      initDefaultA4Selection();
+      renderAllViews();
+      showToast('Data simulasi berhasil direset ke kondisi awal.', 'info');
+    }
+
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    window.app = {
+      switchView,
+      openCustomerModal,
+      closeCustomerModal,
+      openDeleteModal,
+      closeDeleteModal,
+      openPrintForCustomer,
+      sendSingleCustomerToA4,
+      toggleA4CustomerSelection,
+      moveA4QueueItem,
+      updateA4CustomerOverride,
+      setA4PreviewPageFilter,
+      quickToggleDropship,
+      toggleSelectCustomer,
+      closePrintSimulatorModal
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      registerDynamicPWA();
+      checkActiveSession();
+
+      document.getElementById('login-form').addEventListener('submit', handleLogin);
+      document.getElementById('toggle-password-btn').addEventListener('click', () => {
+        const input = document.getElementById('login-password');
+        input.type = input.type === 'password' ? 'text' : 'password';
+      });
+
+      document.getElementById('logout-btn-desktop').addEventListener('click', handleLogout);
+      document.getElementById('logout-btn-mobile').addEventListener('click', handleLogout);
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => switchView(btn.getAttribute('data-nav')));
+      });
+
+      document.getElementById('quick-add-customer-btn').addEventListener('click', () => openCustomerModal());
+
+      document.getElementById('customer-search-input').addEventListener('input', renderCustomersTable);
+      document.getElementById('customer-type-filter').addEventListener('change', renderCustomersTable);
+      document.getElementById('customer-courier-filter').addEventListener('change', renderCustomersTable);
+
+      document.getElementById('select-all-customers').addEventListener('change', toggleSelectAllCustomers);
+      document.getElementById('batch-print-selected-btn').addEventListener('click', handleBatchPrintSelectedA6);
+      document.getElementById('batch-print-a4-selected-btn').addEventListener('click', handleSendSelectedFromTableToA4);
+
+      document.getElementById('form-is-dropship').addEventListener('change', toggleModalDropshipSection);
+      document.getElementById('customer-form').addEventListener('submit', handleSaveCustomer);
+      document.getElementById('confirm-delete-btn').addEventListener('click', confirmDeleteCustomer);
+
+      // Studio Label A6 Events
+      document.getElementById('print-customer-select').addEventListener('change', (e) => {
+        loadCustomerIntoPrintControls(e.target.value);
+      });
+
+      document.getElementById('print-dropship-toggle').addEventListener('change', (e) => {
+        syncDropshipSwitchCardUI(e.target.checked);
+        updateLiveLabelPreview();
+      });
+
+      ['print-customer-code-input', 'print-dropshipper-name', 'print-dropshipper-phone', 'print-courier-select', 'print-weight-input', 'print-notes-input'].forEach(id => {
+        document.getElementById(id).addEventListener('input', updateLiveLabelPreview);
+        document.getElementById(id).addEventListener('change', updateLiveLabelPreview);
+      });
+
+      document.getElementById('toggle-ruler-btn').addEventListener('click', () => {
+        document.getElementById('label-stage-box').classList.toggle('show-ruler');
+      });
+
+      document.getElementById('execute-single-print-btn').addEventListener('click', () => prepareAndPrintSingleA6(false));
+      document.getElementById('open-print-simulator-btn').addEventListener('click', () => prepareAndPrintSingleA6(true));
+      document.getElementById('save-print-changes-btn').addEventListener('click', savePrintChangesToCustomer);
+
+      // Studio Cetak Alamat Ukuran A4 Fleksibel Events
+      document.getElementById('a4-preset-1-btn').addEventListener('click', () => selectA4PresetCount(1));
+      document.getElementById('a4-preset-2-btn').addEventListener('click', () => selectA4PresetCount(2));
+      document.getElementById('a4-preset-3-btn').addEventListener('click', () => selectA4PresetCount(3));
+      document.getElementById('a4-select-all-btn').addEventListener('click', selectAllCustomersForA4);
+      document.getElementById('a4-clear-all-btn').addEventListener('click', clearAllA4Selection);
+      document.getElementById('a4-customer-search').addEventListener('input', renderA4Checklist);
+
+      const zoomBtn = document.getElementById('toggle-a4-zoom-btn');
+      if (zoomBtn) {
+        zoomBtn.addEventListener('click', () => {
+          state.a4ZoomLarge = !state.a4ZoomLarge;
+          document.getElementById('toggle-a4-zoom-label').textContent = state.a4ZoomLarge ? 'Perkecil' : 'Perbesar';
+          updateLiveA4Preview();
+        });
+      }
+
+      document.getElementById('execute-a4-print-btn').addEventListener('click', () => executeA4QueuePrint(false));
+      document.getElementById('open-a4-simulator-btn').addEventListener('click', () => executeA4QueuePrint(true));
+      document.getElementById('execute-a4-print-all-direct-btn').addEventListener('click', () => {
+        selectAllCustomersForA4();
+        executeA4QueuePrint(true);
+      });
+
+      document.getElementById('simulator-trigger-system-print').addEventListener('click', () => {
+        window.print();
+      });
+
+      document.getElementById('store-settings-form').addEventListener('submit', handleSaveStoreSettings);
+      document.getElementById('export-json-btn').addEventListener('click', exportCustomersJSON);
+      document.getElementById('reset-demo-data-btn').addEventListener('click', resetDemoData);
+    });
+  </script>
+</body>
+</html>
