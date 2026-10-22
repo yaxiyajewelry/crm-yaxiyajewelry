@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Yaxiya Grosir - Sistem Manajemen Pelanggan & Cetak Resi A5 / A6 / A4</title>
+  <title>Yaxiya Grosir - Sistem Manajemen Pelanggan & Cetak Resi A6 / A4</title>
   <meta name="theme-color" content="#8E1EA2" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -363,7 +363,7 @@
         break-after: auto !important;
       }
 
-      /* Cetak langsung satu alamat dari tabel pelanggan: A5 / A4. */
+      /* Cetak langsung satu alamat dari tabel pelanggan: A6 / A4. */
       .print-direct-a5-page {
         width: 148mm !important;
         height: 210mm !important;
@@ -470,7 +470,7 @@
             Single Admin Portal
           </span>
           <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Yaxiya Grosir</h1>
-          <p class="text-xs text-slate-500 mt-1">Sistem Manajemen Pelanggan, Multi-Alamat & Cetak Resi A5 / A6 / A4</p>
+          <p class="text-xs text-slate-500 mt-1">Sistem Manajemen Pelanggan, Multi-Alamat & Cetak Resi A6 / A4</p>
         </div>
 
         <form id="login-form" class="space-y-4">
@@ -615,7 +615,7 @@
               <div id="mobile-header-store-name" class="lg:hidden text-sm sm:text-base font-extrabold text-slate-900 truncate">YAXIYA GROSIR</div>
               <div class="hidden lg:block min-w-0">
                 <h1 id="page-title" class="text-sm sm:text-base lg:text-lg font-extrabold text-slate-900 truncate">Dashboard Ringkasan</h1>
-                <p id="page-subtitle" class="text-[11px] text-slate-500 hidden sm:block truncate">Kelola pelanggan multi-alamat, grup alamat, jasa kirim, serta cetak A5, A6, dan A4</p>
+                <p id="page-subtitle" class="text-[11px] text-slate-500 hidden sm:block truncate">Kelola pelanggan, alamat tujuan, grup, jasa kirim, serta cetak A6 dan A4</p>
               </div>
             </div>
           </div>
@@ -674,7 +674,7 @@
                 </span>
                 <h2 class="text-xl sm:text-2xl font-extrabold leading-tight">Panel Manajemen Pelanggan Yaxiya Grosir</h2>
                 <p class="text-white/85 text-xs sm:text-sm leading-relaxed">
-                  Satu <b>ID PL</b> kini mendukung banyak alamat sekaligus dan pengelompokan <b>Grup Alamat</b>. Cetak langsung tiap alamat ke kertas <b>A5/A4</b> atau gunakan label thermal <b>A6 (100x150 mm)</b> dan cetak massal A4 3 slot, lengkap dengan fitur <b>Dropship</b>.
+                  Satu <b>ID PL</b> kini mendukung banyak alamat sekaligus dan pengelompokan <b>Grup Alamat</b>. Cetak alamat ke label <b>A6 (100x150 mm)</b> atau kertas <b>A4</b> dan cetak massal A4 3 slot, lengkap dengan fitur <b>Dropship</b>.
                 </p>
               </div>
               <div class="flex flex-wrap gap-2.5 relative z-10 shrink-0">
@@ -860,11 +860,11 @@
               </div>
             </div>
 
-            <!-- Import CSV pelanggan dan multi-alamat -->
+            <!-- Import CSV pelanggan (kompatibel dengan format multi-alamat lama) -->
             <div class="glass-card rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div class="min-w-0">
                 <h3 class="text-sm font-extrabold text-slate-800"><i class="fa-solid fa-file-csv text-brand-600 mr-1.5"></i>Import Pelanggan Massal (CSV)</h3>
-                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Template berisi contoh 3 baris data. Ganti atau hapus baris contoh sebelum impor. Satu baris untuk satu alamat; untuk multi-alamat, ulangi <b>customer_code</b> yang sama. ID yang sudah ada akan diperbarui dan seluruh daftar alamatnya diganti mengikuti isi CSV.</p>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Template mengikuti 7 kolom form terbaru. Kolom data boleh kosong; satu baris mewakili satu alamat. Untuk multi-alamat, ulangi <b>ID PL</b> yang sama. ID yang sudah ada akan diperbarui dan seluruh daftar alamatnya diganti mengikuti isi CSV.</p>
               </div>
               <div class="flex flex-wrap items-center gap-2 shrink-0">
                 <input type="file" id="customer-csv-file" accept=".csv,text/csv" class="hidden" />
@@ -883,19 +883,21 @@
               </div>
             </div>
 
-            <!-- Tabel Daftar Pelanggan (alamat disembunyikan di dropdown) -->
+            <!-- Tabel data pelanggan: tujuh kolom sesuai format baru -->
             <div class="glass-card rounded-2xl overflow-hidden">
               <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                   <thead>
                     <tr class="bg-slate-100/90 border-b border-slate-200 text-[11px] font-extrabold text-slate-600 uppercase tracking-wider">
-                      <th class="py-3.5 px-4">ID PL / Alamat</th>
-                      <th class="py-3.5 px-4">Nomor HP</th>
-                      <th class="py-3.5 px-4">Grup Alamat</th>
-                      <th class="py-3.5 px-4">Nama Pelanggan</th>
-                      <th class="py-3.5 px-4">Jasa Kirim</th>
-                      <th class="py-3.5 px-4">Status Dropship</th>
-                      <th class="py-3.5 px-4 text-right">Aksi Kelola</th>
+                      <th class="py-3.5 px-4 w-14">NO.</th>
+                      <th class="py-3.5 px-4">ID PL</th>
+                      <th class="py-3.5 px-4">NAMA PELANGGAN</th>
+                      <th class="py-3.5 px-4 min-w-[240px]">ALAMAT TUJUAN</th>
+                      <th class="py-3.5 px-4">NOMOR HP</th>
+                      <th class="py-3.5 px-4">JASA KIRIM</th>
+                      <th class="py-3.5 px-4">CATATAN</th>
+                      <th class="py-3.5 px-4">GRUP</th>
+                      <th class="py-3.5 px-4 text-right">AKSI CETAK</th>
                     </tr>
                   </thead>
                   <tbody id="customers-table-body" class="divide-y divide-slate-200/70 text-xs">
@@ -949,18 +951,11 @@
                   <select id="a6-address-select" class="w-full px-3 py-2.5 rounded-xl border border-brand-200 bg-brand-50/40 text-xs font-bold text-slate-900"></select>
                 </div>
 
-                <!-- Input Manual ID PL & Berat -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">ID PL (Manual)</label>
-                    <input type="text" id="a6-idpl-input" placeholder="Contoh: PL-001"
-                      class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
-                  </div>
-                  <div>
-                    <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Berat / Jumlah Koli</label>
-                    <input type="text" id="a6-weight-input" value="1 Kg / 1 Koli"
-                      class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
-                  </div>
+                <!-- ID PL manual untuk penyesuaian label -->
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">ID PL (Manual)</label>
+                  <input type="text" id="a6-idpl-input" placeholder="Contoh: PL-001"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold focus:outline-none focus:ring-2 focus:ring-brand-600" />
                 </div>
 
                 <!-- Jasa Kirim & Catatan Isi -->
@@ -1055,10 +1050,10 @@
           <!-- (Fitur Jumlah Cetak / Copy per Alamat, Multi-Alamat, Multi-Halaman) -->
           <!-- ========================================== -->
           <section id="view-print-a4" class="view-section hidden">
-            <div class="grid grid-cols-1 xl:grid-cols-12 gap-5 items-start">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
 
               <!-- KIRI: DAFTAR PILIHAN ALAMAT & JUMLAH CETAK (QTY) -->
-              <div class="xl:col-span-5 glass-card rounded-2xl p-5 space-y-4">
+              <div class="lg:col-span-5 glass-card rounded-2xl p-5 space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-200/80 pb-3">
                   <div>
                     <h3 class="font-extrabold text-slate-900 text-base">Pengaturan Cetak Alamat A4 (3 Slot / Halaman)</h3>
@@ -1116,7 +1111,7 @@
               </div>
 
               <!-- KANAN: PRATINJAU KERTAS A4 (ATAS, TENGAH, BAWAH) + NAVIGASI HALAMAN -->
-              <div class="xl:col-span-7 glass-card rounded-2xl p-5 flex flex-col items-center">
+              <div class="lg:col-span-7 glass-card rounded-2xl p-5 flex flex-col items-center">
                 <div class="w-full flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200/70">
                   <div>
                     <span class="text-xs font-extrabold text-slate-800 uppercase">Pratinjau Kertas A4 (3 Alamat: Atas, Tengah, Bawah)</span>
@@ -1402,8 +1397,8 @@
       <div class="bg-white rounded-3xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl border border-slate-100 my-6 max-h-[92vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3.5 border-b border-slate-200">
           <div>
-            <h3 id="modal-title" class="text-base sm:text-lg font-extrabold text-slate-900">Tambah Data Pelanggan & Multi-Alamat</h3>
-            <p class="text-xs text-slate-500">Satu ID PL dapat menyimpan banyak alamat pengiriman sekaligus</p>
+            <h3 id="modal-title" class="text-base sm:text-lg font-extrabold text-slate-900">Tambah Pelanggan Baru</h3>
+            <p class="text-xs text-slate-500">Isi tujuh kolom data pelanggan berikut.</p>
           </div>
           <button type="button" onclick="window.app.closeCustomerModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
             <i class="fa-solid fa-xmark"></i>
@@ -1412,104 +1407,60 @@
 
         <form id="customer-form" class="space-y-4 mt-4">
           <input type="hidden" id="form-customer-id" />
-
-          <!-- Baris 1: ID PL Manual, Grup Alamat, Jasa Kirim -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">ID PL (Input Manual) *</label>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">ID PL *</label>
               <input type="text" id="form-customer-code" required placeholder="Contoh: PL-001"
                 class="w-full px-3.5 py-2.5 rounded-xl border border-brand-300 bg-brand-50/30 text-sm font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Grup Alamat *</label>
-              <select id="form-group-id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600"></select>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jasa Kirim Default</label>
-              <select id="form-courier-name" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600"></select>
-              <div id="form-courier-search-wrap" class="hidden mt-2 rounded-xl border border-brand-200 bg-brand-50/40 p-2.5 space-y-2">
-                <input type="search" id="form-courier-search" autocomplete="off" placeholder="Cari jasa kirim yang sudah terdaftar..."
-                  class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
-                <div id="form-courier-search-results" class="max-h-36 overflow-y-auto space-y-1" role="listbox" aria-label="Hasil pencarian jasa kirim"></div>
-                <p class="text-[10px] text-slate-500">Pilihan diambil dari menu Pengaturan Jasa Kirim. Jasa kirim baru perlu ditambahkan dari menu tersebut.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Baris 2: Nama Utama, No HP Utama, Catatan -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Pelanggan / Penerima Utama *</label>
-              <input type="text" id="form-recipient-name" required placeholder="Contoh: Hj. Rahmawati"
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Pelanggan *</label>
+              <input type="text" id="form-recipient-name" required placeholder="Masukkan nama pelanggan"
                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600" />
             </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Alamat Tujuan *</label>
+              <textarea id="form-full-address" rows="3" required placeholder="Nama jalan, nomor rumah, RT/RW, desa/kelurahan, kecamatan, kota/kabupaten, provinsi, dan kode pos"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600 resize-y"></textarea>
+            </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">No. HP / WhatsApp Utama *</label>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nomor HP *</label>
               <input type="text" id="form-recipient-phone" required placeholder="Contoh: 0812-3456-7890"
                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600" />
             </div>
             <div>
-              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan Barang Default</label>
-              <input type="text" id="form-notes" placeholder="Contoh: Pakaian Grosir"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jasa Kirim *</label>
+              <select id="form-courier-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600"></select>
+              <div id="form-courier-search-wrap" class="hidden mt-2 rounded-xl border border-brand-200 bg-brand-50/40 p-2.5 space-y-2">
+                <input type="search" id="form-courier-search" autocomplete="off" placeholder="Cari jasa kirim yang sudah terdaftar..."
+                  class="w-full px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-600" />
+                <div id="form-courier-search-results" class="max-h-36 overflow-y-auto space-y-1" role="listbox" aria-label="Hasil pencarian jasa kirim"></div>
+                <p class="text-[10px] text-slate-500">Pilih jasa kirim yang sudah terdaftar. Untuk menambah jasa baru, gunakan menu Pengaturan Jasa Kirim.</p>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Catatan</label>
+              <textarea id="form-notes" rows="2" placeholder="Catatan isi paket atau instruksi pengiriman (opsional)"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600 resize-y"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Grup *</label>
+              <select id="form-group-id" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-600"></select>
             </div>
           </div>
-
-          <!-- Bagian Multi-Alamat Dinamis -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Daftar Alamat Pengiriman (Multi-Alamat dalam 1 ID PL)</h4>
-                <p class="text-[11px] text-slate-500">Anda bisa menambahkan beberapa alamat berbeda untuk ID PL ini</p>
-              </div>
-              <button type="button" id="btn-add-address-row"
-                class="px-3 py-1.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs flex items-center gap-1.5 transition">
-                <i class="fa-solid fa-plus"></i>
-                <span>Tambah Alamat Lain</span>
-              </button>
+          <div id="form-extra-addresses-wrap" class="hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <div><h4 class="text-xs font-extrabold text-slate-800">Alamat Lainnya</h4><p class="text-[10px] text-slate-500">Edit alamat tambahan untuk ID PL yang sama. Kosongkan/hapus alamat yang tidak diperlukan.</p></div>
+              <button type="button" onclick="window.app.addExtraAddressEditor()" class="px-3 py-2 rounded-lg bg-brand-600 text-white text-[10px] font-extrabold"><i class="fa-solid fa-plus mr-1"></i>Tambah Alamat</button>
             </div>
-
-            <div id="multi-addresses-container" class="space-y-3">
-              <!-- Baris-baris alamat dirender via JS -->
-            </div>
+            <div id="form-extra-addresses" class="space-y-3"></div>
           </div>
-
-          <!-- Opsi Dropship -->
-          <div class="p-4 rounded-2xl bg-brand-50/70 border border-brand-200 space-y-3">
-            <div class="flex items-center justify-between">
-              <div>
-                <div class="text-xs font-extrabold text-slate-900">Aktifkan Mode Dropship untuk Pelanggan Ini?</div>
-                <div class="text-[11px] text-slate-500">Saat aktif, Logo & Nama Toko Yaxiya Grosir otomatis menghilang dari resi cetak.</div>
-              </div>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="form-is-dropship" class="sr-only peer" />
-                <div class="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-600"></div>
-              </label>
-            </div>
-
-            <div id="form-dropship-section" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-brand-200/60">
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">Nama Pengirim Dropship *</label>
-                <input type="text" id="form-dropshipper-name" placeholder="Contoh: Nabila Fashion Hijab"
-                  class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold" />
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-slate-700 uppercase mb-1">No. HP Pengirim Dropship *</label>
-                <input type="text" id="form-dropshipper-phone" placeholder="Contoh: 0896-5544-3322"
-                  class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold" />
-              </div>
-            </div>
-          </div>
-
           <div class="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
             <button type="button" onclick="window.app.closeCustomerModal()"
-              class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-100">
-              Batal
-            </button>
+              class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-bold text-xs hover:bg-slate-100">Batal</button>
             <button type="submit"
               class="px-6 py-2.5 rounded-xl brand-gradient text-white font-bold text-xs brand-shadow hover:opacity-95 flex items-center gap-2">
-              <i class="fa-solid fa-check"></i>
-              <span>Simpan Pelanggan & Alamat</span>
+              <i class="fa-solid fa-check"></i><span>Simpan Pelanggan</span>
             </button>
           </div>
         </form>
@@ -1573,7 +1524,7 @@
 
   </div>
 
-  <!-- MOUNT CONTAINER KHUSUS CETAK KERTAS A5, A6 & A4 -->
+  <!-- MOUNT CONTAINER KHUSUS CETAK KERTAS A6 & A4 -->
   <div id="print-mount-container"></div>
 
   <!-- ========================================== -->
@@ -1619,7 +1570,7 @@
       activeA6CustomerId: null,
       activeA6AddressIndex: 0,
 
-      // State Cetak A4 (Map key: `${customerId}__${addressIdx}` -> { selected: boolean, qty: number, weight: string })
+      // State Cetak A4 (Map key: `${customerId}__${addressIdx}` -> { selected: boolean, qty: number })
       a4SelectionMap: {},
       a4CurrentPreviewPage: 1,
 
@@ -1893,7 +1844,6 @@
           nextMap[key] = {
             selected: prev ? prev.selected : (count < 3),
             qty: prev ? prev.qty : 1,
-            weight: prev ? prev.weight : '1 Kg / 1 Koli'
           };
           count++;
         });
@@ -1902,10 +1852,7 @@
     }
 
     function getCustomerAddresses(c) {
-      if (Array.isArray(c.addresses) && c.addresses.length > 0) {
-        return c.addresses;
-      }
-      return [{
+      const fallback = {
         addr_id: 'default-' + c.id,
         label: 'Alamat Utama',
         recipient_name: c.recipient_name || '',
@@ -1914,7 +1861,28 @@
         subdistrict: c.subdistrict || '',
         city: c.city || '',
         province_postal: c.province_postal || ''
-      }];
+      };
+      if (Array.isArray(c.addresses) && c.addresses.length > 0) {
+        return c.addresses.map((addr, index) => index === 0 ? {
+          ...fallback,
+          ...addr,
+          recipient_name: addr.recipient_name || c.recipient_name || '',
+          recipient_phone: addr.recipient_phone || c.recipient_phone || '',
+          full_address: addr.full_address || c.full_address || '',
+          subdistrict: addr.subdistrict || c.subdistrict || '',
+          city: addr.city || c.city || '',
+          province_postal: addr.province_postal || c.province_postal || ''
+        } : addr);
+      }
+      return [fallback];
+    }
+
+    // Menyatukan kolom alamat lama ke satu bidang ALAMAT TUJUAN tanpa menghilangkan data.
+    function formatAddressText(address = {}) {
+      return [address.full_address, address.subdistrict, address.city, address.province_postal]
+        .map(part => String(part || '').trim())
+        .filter(Boolean)
+        .join(', ');
     }
 
     // ====================================================
@@ -2201,7 +2169,6 @@
       const dropshipperPhone = (options.dropshipper_phone !== undefined ? options.dropshipper_phone : customer.dropshipper_phone) || '-';
       const idPL = options.customer_code !== undefined ? options.customer_code : (customer.customer_code || 'PL-001');
       const courierName = options.courier_name || customer.courier_name || 'J&T Express';
-      const weightText = options.weight || '1 Kg / 1 Koli';
       const notesText = options.notes !== undefined ? options.notes : (customer.notes || '-');
       const isCompactA4 = Boolean(options.compactA4);
 
@@ -2296,10 +2263,7 @@
                 ${escapeHTML(addressObj.full_address)}
               </div>
 
-              <div style="margin-top:1mm; padding-top:1mm; border-top:1px dashed #000; font-size:${isCompactA4 ? '8pt' : '8.8pt'}; font-weight:800;">
-                ${escapeHTML(addressObj.subdistrict || '')} — ${escapeHTML(addressObj.city || '')}
-                ${addressObj.province_postal ? ` &bull; ${escapeHTML(addressObj.province_postal)}` : ''}
-              </div>
+              ${(addressObj.subdistrict || addressObj.city || addressObj.province_postal) ? `<div style="margin-top:1mm; padding-top:1mm; border-top:1px dashed #000; font-size:${isCompactA4 ? '8pt' : '8.8pt'}; font-weight:800;">${escapeHTML([addressObj.subdistrict, addressObj.city, addressObj.province_postal].filter(Boolean).join(' · '))}</div>` : ''}
             </div>
 
           </div>
@@ -2312,7 +2276,7 @@
             </div>
 
             <!-- 2. INFO JASA KIRIM (DIPINDAHKAN KE BAWAH SETELAH CATATAN ISI) -->
-            <div style="border:2px solid #000; border-radius:1.5mm; padding:${isCompactA4 ? '1.2mm 2.2mm' : '1.8mm 2.5mm'}; display:flex; align-items:center; justify-content:space-between; background:#f8fafc;">
+            <div style="border:2px solid #000; border-radius:1.5mm; padding:${isCompactA4 ? '1.2mm 2.2mm' : '1.8mm 2.5mm'}; display:flex; align-items:center; justify-content:flex-start; background:#f8fafc;">
               <div style="display:flex; align-items:center; gap:1.8mm;">
                 <span style="font-size:${isCompactA4 ? '7pt' : '7.5pt'}; font-weight:800; background:#000; color:#fff; padding:0.4mm 1.6mm; border-radius:0.8mm;">
                   JASA KIRIM
@@ -2321,9 +2285,7 @@
                   ${escapeHTML(courierName)}
                 </span>
               </div>
-              <div style="font-size:${isCompactA4 ? '7.5pt' : '8.5pt'}; font-weight:800;">
-                BERAT/KOLI: ${escapeHTML(weightText)}
-              </div>
+
             </div>
 
           </div>
@@ -2374,7 +2336,7 @@
                 ${grp ? `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-bold text-[10px]">${escapeHTML(grp.group_name)}</span>` : ''}
               </div>
               <div class="text-xs text-slate-500">
-                <i class="fa-solid fa-location-dot text-brand-600 mr-1"></i>${escapeHTML(addrs[0].full_address)}, ${escapeHTML(addrs[0].city)}
+                <i class="fa-solid fa-location-dot text-brand-600 mr-1"></i>${escapeHTML(formatAddressText(addrs[0]) || '-')}
               </div>
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
@@ -2579,6 +2541,7 @@
           (c.customer_code || '').toLowerCase().includes(q) ||
           (c.recipient_name || '').toLowerCase().includes(q) ||
           (c.recipient_phone || '').toLowerCase().includes(q) ||
+          (c.notes || '').toLowerCase().includes(q) ||
           (c.dropshipper_name || '').toLowerCase().includes(q) ||
           matchAddress;
 
@@ -2598,101 +2561,59 @@
       const filtered = getFilteredCustomers();
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="py-10 text-center text-slate-400 text-xs">
-              Tidak ada data pelanggan yang sesuai filter pencarian.
-            </td>
-          </tr>
-        `;
+        tbody.innerHTML = `<tr><td colspan="9" class="py-10 text-center text-slate-400 text-xs">Tidak ada data pelanggan yang sesuai filter pencarian.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.map(c => {
         const addrs = getCustomerAddresses(c);
+        const primaryAddress = addrs[0] || {};
         const grp = state.addressGroups.find(g => g.id === c.group_id);
-        const addressCountLabel = `${addrs.length} alamat`;
-        const addressesHTML = addrs.map((a, idx) => `
-          <div class="p-3 rounded-xl ${idx === 0 ? 'bg-brand-50/70 border border-brand-200/70' : 'bg-white border border-slate-200'}">
+        const moreAddresses = addrs.length > 1;
+        const addressText = formatAddressText(primaryAddress) || '-';
+        const addressesHTML = addrs.slice(1).map((a, idx) => `
+          <div class="p-3 rounded-xl bg-white border border-slate-200">
             <div class="flex flex-wrap items-start justify-between gap-2">
-              <span class="font-extrabold text-[11px] text-brand-700">
-                <i class="fa-solid fa-location-dot mr-1"></i>${escapeHTML(a.label || ('Alamat ' + (idx + 1)))}${idx === 0 ? ' <span class="text-[9px] uppercase tracking-wide text-slate-500">(utama)</span>' : ''}
-              </span>
+              <span class="font-extrabold text-[11px] text-brand-700"><i class="fa-solid fa-location-dot mr-1"></i>${escapeHTML(a.label || ('Alamat ' + (idx + 2)))}</span>
               <span class="text-[10px] font-bold text-slate-600">${escapeHTML(a.recipient_name || c.recipient_name || '-')} · ${escapeHTML(a.recipient_phone || c.recipient_phone || '-')}</span>
             </div>
-            <div class="text-[11px] text-slate-700 mt-1 leading-relaxed">
-              ${escapeHTML(a.full_address || '-')}${a.subdistrict ? ', ' + escapeHTML(a.subdistrict) : ''}${a.city ? ', ' + escapeHTML(a.city) : ''}${a.province_postal ? ' · ' + escapeHTML(a.province_postal) : ''}
-            </div>
+            <div class="text-[11px] text-slate-700 mt-1 leading-relaxed">${escapeHTML(formatAddressText(a) || '-')}</div>
             <div class="mt-2.5 flex flex-wrap gap-1.5">
-              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx}, 'A6')"
-                class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-[10px] transition">
-                <i class="fa-solid fa-print mr-1"></i>Cetak A6
-              </button>
-              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx}, 'A4')"
-                class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-extrabold text-[10px] transition">
-                <i class="fa-solid fa-print mr-1"></i>Cetak A4
-              </button>
+              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx + 1}, 'A6')" class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-[10px]"><i class="fa-solid fa-print mr-1"></i>Cetak A6</button>
+              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx + 1}, 'A4')" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-extrabold text-[10px]"><i class="fa-solid fa-print mr-1"></i>Cetak A4</button>
             </div>
           </div>
         `).join('');
 
+        const rowNumber = filtered.indexOf(c) + 1;
         return `
-          <tr class="hover:bg-brand-50/20 transition align-middle">
-            <td class="py-3 px-4 whitespace-nowrap">
-              <div class="flex items-center gap-2">
-                <button type="button" data-toggle-customer-address="${escapeHTML(c.id)}" aria-expanded="false"
-                  title="Lihat ${escapeHTML(addressCountLabel)}" ${addrs.length ? '' : 'disabled'}
-                  class="w-7 h-7 shrink-0 rounded-lg border border-slate-200 bg-white hover:bg-brand-50 hover:border-brand-200 text-slate-500 hover:text-brand-700 disabled:opacity-30 disabled:cursor-default flex items-center justify-center transition">
-                  <i class="fa-solid fa-chevron-right text-[10px] transition-transform"></i>
-                </button>
-                <div>
-                  <span class="px-2.5 py-1 rounded-lg bg-brand-100 text-brand-800 text-xs font-extrabold">${escapeHTML(c.customer_code)}</span>
-                  <div class="text-[10px] text-slate-400 mt-1 pl-0.5">${escapeHTML(addressCountLabel)}</div>
+          <tr class="hover:bg-brand-50/20 transition align-top">
+            <td class="py-3 px-4 text-center text-[11px] font-extrabold text-slate-500">${rowNumber}</td>
+            <td class="py-3 px-4 min-w-[145px]">
+              <div class="flex items-start gap-2">
+                ${moreAddresses ? `<button type="button" data-toggle-customer-address="${escapeHTML(c.id)}" aria-expanded="false" title="Lihat ${addrs.length - 1} alamat lainnya" class="mt-0.5 w-6 h-6 shrink-0 rounded-lg border border-slate-200 bg-white hover:bg-brand-50 text-slate-500 flex items-center justify-center"><i class="fa-solid fa-chevron-right text-[10px] transition-transform"></i></button>` : `<span class="w-6 shrink-0"></span>`}
+                <div class="min-w-0">
+                  <span class="px-2 py-1 rounded-lg bg-brand-100 text-brand-800 text-xs font-extrabold">${escapeHTML(c.customer_code || '-')}</span>
+                  ${moreAddresses ? `<div class="text-[10px] text-slate-400 mt-1">+${addrs.length - 1} alamat lain</div>` : ''}
+                  <div class="flex items-center gap-1 mt-2">
+                    <button type="button" onclick="window.app.openCustomerModal('${escapeHTML(c.id)}')" title="Edit pelanggan" class="w-7 h-7 rounded-lg border border-slate-200 bg-white hover:bg-brand-50 text-slate-600 hover:text-brand-700 flex items-center justify-center"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                    <button type="button" onclick="window.app.openDeleteModal('${escapeHTML(c.id)}')" title="Hapus pelanggan" class="w-7 h-7 rounded-lg border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                  </div>
                 </div>
               </div>
             </td>
-            <td class="py-3 px-4 whitespace-nowrap">
-              <span class="font-bold text-slate-700"><i class="fa-solid fa-phone text-[10px] text-brand-600 mr-1"></i>${escapeHTML(c.recipient_phone || '-')}</span>
+            <td class="py-3 px-4 min-w-[160px]"><div class="font-extrabold text-slate-900 text-xs sm:text-sm">${escapeHTML(c.recipient_name || '-')}</div></td>
+            <td class="py-3 px-4 min-w-[240px] max-w-[420px]">
+              <div class="text-xs text-slate-700 leading-relaxed whitespace-normal break-words">${escapeHTML(addressText)}</div>
+
             </td>
-            <td class="py-3 px-4 whitespace-nowrap">
-              <span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">${escapeHTML(grp ? grp.group_name : 'Umum')}</span>
-            </td>
-            <td class="py-3 px-4 min-w-[170px]">
-              <div class="font-extrabold text-slate-900 text-xs sm:text-sm">${escapeHTML(c.recipient_name || '-')}</div>
-            </td>
-            <td class="py-3 px-4 whitespace-nowrap">
-              <span class="px-2.5 py-1 rounded-lg bg-purple-100 text-brand-800 font-bold text-[11px]">${escapeHTML(c.courier_name || '-')}</span>
-            </td>
-            <td class="py-3 px-4 whitespace-nowrap">
-              <button onclick="window.app.quickToggleDropship('${escapeHTML(c.id)}')"
-                class="px-2.5 py-1 rounded-xl border text-[11px] font-bold transition ${c.is_dropship ? 'bg-amber-100 border-amber-300 text-amber-900' : 'bg-emerald-50 border-emerald-200 text-emerald-800'}">
-                <i class="fa-solid ${c.is_dropship ? 'fa-eye-slash' : 'fa-store'} mr-1"></i>
-                ${c.is_dropship ? 'Dropship: ' + escapeHTML(c.dropshipper_name || 'Aktif') : 'Mode Reguler'}
-              </button>
-            </td>
-            <td class="py-3 px-4 text-right whitespace-nowrap">
-              <div class="inline-flex items-center gap-1.5">
-                <button onclick="window.app.openCustomerModal('${escapeHTML(c.id)}', true)" title="Tambah Alamat Baru ke ID PL ini"
-                  class="px-2.5 py-1.5 rounded-xl bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 font-bold text-[11px] transition">
-                  <i class="fa-solid fa-plus mr-1"></i>Alamat
-                </button>
-                <button onclick="window.app.openCustomerModal('${escapeHTML(c.id)}')" title="Edit Data Pelanggan"
-                  class="w-8 h-8 rounded-xl border border-slate-200 bg-white hover:bg-brand-50 text-slate-700 hover:text-brand-600 flex items-center justify-center transition">
-                  <i class="fa-solid fa-pen text-xs"></i>
-                </button>
-                <button onclick="window.app.openDeleteModal('${escapeHTML(c.id)}')" title="Hapus Pelanggan"
-                  class="w-8 h-8 rounded-xl border border-rose-200 bg-rose-50/70 hover:bg-rose-100 text-rose-600 flex items-center justify-center transition">
-                  <i class="fa-solid fa-trash text-xs"></i>
-                </button>
-              </div>
-            </td>
+            <td class="py-3 px-4 whitespace-nowrap"><span class="font-bold text-slate-700">${escapeHTML(c.recipient_phone || primaryAddress.recipient_phone || '-')}</span></td>
+            <td class="py-3 px-4 min-w-[130px]"><span class="px-2.5 py-1 rounded-lg bg-purple-100 text-brand-800 font-bold text-[11px]">${escapeHTML(c.courier_name || '-')}</span></td>
+            <td class="py-3 px-4 min-w-[160px] max-w-[280px]"><div class="text-xs text-slate-600 leading-relaxed whitespace-normal break-words">${escapeHTML(c.notes || '-')}</div></td>
+            <td class="py-3 px-4 whitespace-nowrap"><span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">${escapeHTML(grp ? grp.group_name : 'Umum')}</span></td>
+            <td class="py-3 px-4 min-w-[170px]"><div class="flex flex-wrap justify-end gap-1.5"><button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', 0, 'A6')" class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-[10px]"><i class="fa-solid fa-print mr-1"></i>Cetak A6</button><button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', 0, 'A4')" class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-extrabold text-[10px]"><i class="fa-solid fa-print mr-1"></i>Cetak A4</button></div></td>
           </tr>
-          <tr class="customer-address-expand-row hidden bg-slate-50/70" data-customer-addresses-for="${escapeHTML(c.id)}">
-            <td colspan="7" class="px-4 py-3 border-b border-slate-200">
-              <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-2">Daftar Alamat Pengiriman (${addrs.length})</div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 gap-2">${addressesHTML}</div>
-            </td>
-          </tr>
+          ${moreAddresses ? `<tr class="customer-address-expand-row hidden bg-slate-50/70" data-customer-addresses-for="${escapeHTML(c.id)}"><td colspan="9" class="px-4 py-3 border-b border-slate-200"><div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-2">Alamat lainnya (${addrs.length - 1})</div><div class="grid grid-cols-1 xl:grid-cols-2 gap-2">${addressesHTML}</div></td></tr>` : ''}
         `;
       }).join('');
 
@@ -2714,52 +2635,23 @@
     // ====================================================
     // IMPORT CSV PELANGGAN + MULTI-ALAMAT
     // ====================================================
-    const CUSTOMER_CSV_HEADERS = [
-      'customer_code', 'group_name', 'recipient_name', 'recipient_phone', 'courier_name', 'notes',
-      'is_dropship', 'dropshipper_name', 'dropshipper_phone', 'address_label',
-      'address_recipient_name', 'address_recipient_phone', 'address_full_address',
-      'address_subdistrict', 'address_city', 'address_province_postal'
-    ];
+    const CUSTOMER_CSV_HEADERS = ['ID PL', 'NAMA PELANGGAN', 'ALAMAT TUJUAN', 'NOMOR HP', 'JASA KIRIM', 'CATATAN', 'GRUP'];
 
     function downloadCustomerCsvTemplate() {
-      // Template memuat contoh pelanggan PL-001 dengan dua alamat dan PL-002 dropship.
-      // Pengguna perlu mengganti/menghapus contoh ini sebelum melakukan import sesungguhnya.
+      // Template mengikuti tepat tujuh kolom pada form terbaru. Nilai contoh boleh diganti/dikosongkan.
       const exampleRows = [
         CUSTOMER_CSV_HEADERS,
-        [
-          'PL-001', 'Pelanggan Grosir Tetap', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
-          'Indah Logistik Cargo', 'Grosir Setelan Anak 3 Bal', 'false', '', '',
-          'Toko Utama (Pasar Klewer)', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
-          'Jl. Pasar Klewer Blok C No. 14, dekat pintu timur', 'Kec. Pasar Kliwon', 'Kota Surakarta', 'Jawa Tengah - 57118'
-        ],
-        [
-          'PL-001', 'Pelanggan Grosir Tetap', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
-          'Indah Logistik Cargo', 'Grosir Setelan Anak 3 Bal', 'false', '', '',
-          'Gudang Cabang Solo Baru', 'Bpk. Hendra (Gudang Berkah)', '0812-9900-1122',
-          'Ruko Pandawa Blok B2 No. 8, Solo Baru', 'Kec. Grogol', 'Kab. Sukoharjo', 'Jawa Tengah - 57552'
-        ],
-        [
-          'PL-002', 'Mitra Reseller & Dropship', 'Siska Amelia Putri', '0857-8899-1122',
-          'J&T Express', 'Gamis Ceruty Babydoll 6 pcs', 'true', 'Nabila Fashion Hijab', '0896-5544-3322',
-          'Alamat Rumah Slawi', 'Siska Amelia Putri', '0857-8899-1122',
-          'Perum Griya Asri Blok Melati No. 9 RT 04/08', 'Kec. Slawi', 'Kab. Tegal', 'Jawa Tengah - 52419'
-        ]
+        ['PL-001', 'Hj. Rahmawati', 'Jl. Pasar Klewer Blok C No. 14, Surakarta', '0812-3456-7891', 'J&T Express', 'Pelanggan grosir', 'Pelanggan Grosir Tetap'],
+        ['PL-002', 'Siska Amelia Putri', 'Perum Griya Asri Blok Melati No. 9, Slawi', '0857-8899-1122', 'SiCepat', '', 'Reseller'],
+        ['', '', '', '', '', '', '']
       ];
-      const csvEscape = value => {
-        const text = String(value ?? '');
-        return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
-      };
+      const csvEscape = value => { const text = String(value ?? ''); return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text; };
       const csv = '\uFEFF' + exampleRows.map(row => row.map(csvEscape).join(',')).join('\r\n') + '\r\n';
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'template-import-pelanggan-yaxiya.csv';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showToast('Template CSV beserta 3 contoh baris berhasil diunduh. Ganti/hapus contoh sebelum impor.');
+      const link = document.createElement('a'); link.href = url; link.download = 'template-import-pelanggan-yaxiya.csv';
+      document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast('Template CSV 7 kolom sesuai form terbaru berhasil diunduh. Kolom data boleh dikosongkan.');
     }
 
     function exportCustomerAddressesToExcel() {
@@ -2865,36 +2757,31 @@
         const rows = parseCSVText(await file.text());
         if (rows.length < 2) throw new Error('CSV belum memiliki baris data pelanggan.');
 
-        const headers = rows[0].map(h => String(h || '').trim().toLowerCase());
-        const missingHeaders = ['customer_code', 'recipient_name', 'recipient_phone', 'address_full_address', 'address_city']
-          .filter(name => !headers.includes(name));
-        if (missingHeaders.length) throw new Error('Kolom wajib tidak ditemukan: ' + missingHeaders.join(', ') + '. Unduh template CSV agar formatnya sesuai.');
-
+        const headers = rows[0].map(h => String(h || '').trim().toLowerCase().replace(/[\s-]+/g, '_'));
         const idx = Object.fromEntries(headers.map((name, index) => [name, index]));
         const get = (line, name) => idx[name] === undefined ? '' : String(line[idx[name]] || '').trim();
+        const getAny = (line, names) => { for (const name of names) { const value = get(line, name); if (value) return value; } return ''; };
         const grouped = new Map();
 
         for (let lineNo = 1; lineNo < rows.length; lineNo++) {
           const line = rows[lineNo];
-          const code = get(line, 'customer_code');
-          const name = get(line, 'recipient_name');
-          const phone = get(line, 'recipient_phone');
-          const address = get(line, 'address_full_address');
-          const city = get(line, 'address_city');
-          if (!code || !name || !phone || !address || !city) {
-            throw new Error(`Baris ${lineNo + 1}: ID PL, nama pelanggan, nomor HP, alamat lengkap, dan kota wajib diisi.`);
-          }
-
+          const name = getAny(line, ['recipient_name', 'nama_pelanggan', 'nama']);
+          const phone = getAny(line, ['recipient_phone', 'nomor_hp', 'no_hp', 'nomor_hp']);
+          const address = getAny(line, ['address_full_address', 'full_address', 'alamat_tujuan', 'alamat']);
+          const city = getAny(line, ['address_city', 'city', 'kota']);
+          let code = getAny(line, ['customer_code', 'id_pl', 'id_pelanggan']);
+          // Kolom data boleh kosong. Jika ID PL kosong, setiap baris kosong-ID dibuat sebagai pelanggan baru.
+          if (!code) code = `PL-CSV-${Date.now().toString(36).toUpperCase()}-${lineNo.toString().padStart(4, '0')}`;
           const key = code.toLocaleLowerCase('id-ID');
           let customer = grouped.get(key);
           if (!customer) {
             customer = {
               customer_code: code,
-              group_name: get(line, 'group_name'),
+              group_name: getAny(line, ['group_name', 'grup']),
               recipient_name: name,
               recipient_phone: phone,
-              courier_name: get(line, 'courier_name'),
-              notes: get(line, 'notes'),
+              courier_name: getAny(line, ['courier_name', 'jasa_kirim']),
+              notes: getAny(line, ['notes', 'catatan']),
               is_dropship: parseBoolCsv(get(line, 'is_dropship')),
               dropshipper_name: get(line, 'dropshipper_name'),
               dropshipper_phone: get(line, 'dropshipper_phone'),
@@ -2904,13 +2791,13 @@
           }
 
           customer.addresses.push({
-            label: get(line, 'address_label') || `Alamat ${customer.addresses.length + 1}`,
-            recipient_name: get(line, 'address_recipient_name') || customer.recipient_name,
-            recipient_phone: get(line, 'address_recipient_phone') || customer.recipient_phone,
+            label: getAny(line, ['address_label', 'label_alamat']) || `Alamat ${customer.addresses.length + 1}`,
+            recipient_name: getAny(line, ['address_recipient_name']) || name || customer.recipient_name,
+            recipient_phone: getAny(line, ['address_recipient_phone']) || phone || customer.recipient_phone,
             full_address: address,
-            subdistrict: get(line, 'address_subdistrict'),
+            subdistrict: getAny(line, ['address_subdistrict', 'kecamatan']),
             city,
-            province_postal: get(line, 'address_province_postal')
+            province_postal: getAny(line, ['address_province_postal', 'provinsi_kodepos'])
           });
         }
 
@@ -3043,136 +2930,75 @@
     // ====================================================
     // 10. MODAL FORM PELANGGAN & MULTI-ALAMAT DINAMIS
     // ====================================================
-    function renderAddressRowItem(addr = {}, index = 0) {
-      const div = document.createElement('div');
-      div.className = 'address-row-item p-3.5 rounded-2xl bg-white border border-slate-200 space-y-2.5 relative';
-      div.innerHTML = `
-        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-          <span class="text-xs font-extrabold text-brand-700">Alamat Pengiriman #<span class="addr-num">${index + 1}</span></span>
-          <button type="button" class="btn-remove-addr text-rose-600 hover:text-rose-800 text-xs font-bold flex items-center gap-1">
-            <i class="fa-solid fa-trash-can"></i> Hapus Alamat Ini
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Label Alamat *</label>
-            <input type="text" class="addr-label w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold"
-              required placeholder="Contoh: Toko Utama / Cabang 2" value="${escapeHTML(addr.label || 'Alamat Utama')}" />
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Nama Penerima di Alamat Ini</label>
-            <input type="text" class="addr-recipient w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
-              placeholder="Kosongkan jika sama dgn nama utama" value="${escapeHTML(addr.recipient_name || '')}" />
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">No. HP di Alamat Ini</label>
-            <input type="text" class="addr-phone w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold"
-              placeholder="Kosongkan jika sama dgn HP utama" value="${escapeHTML(addr.recipient_phone || '')}" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Detail Jalan, RT/RW, No. Rumah, Patokan *</label>
-          <input type="text" class="addr-full w-full px-3 py-2 rounded-xl border border-slate-200 text-xs"
-            required placeholder="Contoh: Jl. Pasar Klewer Blok C No. 14" value="${escapeHTML(addr.full_address || '')}" />
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Kecamatan / Kelurahan *</label>
-            <input type="text" class="addr-subdistrict w-full px-3 py-2 rounded-xl border border-slate-200 text-xs"
-              required placeholder="Kec. Pasar Kliwon" value="${escapeHTML(addr.subdistrict || '')}" />
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Kota / Kabupaten *</label>
-            <input type="text" class="addr-city w-full px-3 py-2 rounded-xl border border-slate-200 text-xs"
-              required placeholder="Kota Surakarta" value="${escapeHTML(addr.city || '')}" />
-          </div>
-          <div>
-            <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Provinsi & Kode Pos</label>
-            <input type="text" class="addr-province w-full px-3 py-2 rounded-xl border border-slate-200 text-xs"
-              placeholder="Jawa Tengah - 57118" value="${escapeHTML(addr.province_postal || '')}" />
-          </div>
-        </div>
-      `;
-
-      div.querySelector('.btn-remove-addr').addEventListener('click', () => {
-        const container = document.getElementById('multi-addresses-container');
-        if (container.querySelectorAll('.address-row-item').length <= 1) {
-          showToast('Minimal harus ada 1 alamat pengiriman pada pelanggan ini!', 'error');
-          return;
-        }
-        const addressLabel = div.querySelector('.addr-label')?.value.trim() || `Alamat ${index + 1}`;
-        openConfirmationModal({
-          title: 'Konfirmasi Hapus Alamat',
-          message: `Hapus <b>${escapeHTML(addressLabel)}</b> dari formulir pelanggan ini? Perubahan permanen baru tersimpan setelah formulir pelanggan disimpan.`,
-          confirmLabel: 'Ya, Hapus Alamat',
-          action: async () => {
-            div.remove();
-            renumberAddressRows();
-            showToast('Alamat dihapus dari formulir. Simpan pelanggan untuk menerapkan perubahan.');
-          }
-        });
-      });
-
-      return div;
+    function renderExtraAddressEditors(addresses = []) {
+      const wrap = document.getElementById('form-extra-addresses-wrap');
+      const container = document.getElementById('form-extra-addresses');
+      if (!wrap || !container) return;
+      container.innerHTML = '';
+      (addresses || []).forEach(address => addExtraAddressEditor(address));
+      wrap.classList.toggle('hidden', !(addresses && addresses.length));
     }
 
-    function renumberAddressRows() {
-      document.querySelectorAll('#multi-addresses-container .address-row-item').forEach((row, i) => {
-        const num = row.querySelector('.addr-num');
-        if (num) num.textContent = i + 1;
-      });
+    function addExtraAddressEditor(address = {}) {
+      const wrap = document.getElementById('form-extra-addresses-wrap');
+      const container = document.getElementById('form-extra-addresses');
+      if (!container) return;
+      wrap?.classList.remove('hidden');
+      const el = document.createElement('div');
+      el.className = 'extra-address-editor rounded-xl border border-slate-200 bg-white p-3 space-y-2';
+      el.dataset.addrId = address.addr_id || '';
+      const safe = value => escapeHTML(value || '');
+      el.innerHTML = `<div class="flex items-center justify-between gap-2"><label class="text-[10px] font-extrabold text-slate-700">Alamat Tambahan</label><button type="button" class="text-[10px] font-bold text-rose-600 hover:text-rose-800" data-remove-extra><i class="fa-solid fa-trash mr-1"></i>Hapus</button></div>
+        <input data-extra-label value="${safe(address.label)}" placeholder="Nama/label alamat (opsional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><input data-extra-name value="${safe(address.recipient_name)}" placeholder="Nama penerima (opsional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" /><input data-extra-phone value="${safe(address.recipient_phone)}" placeholder="Nomor HP (opsional)" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs" /></div>
+        <textarea data-extra-address rows="2" placeholder="Alamat tujuan tambahan" class="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs resize-y">${safe(formatAddressText(address))}</textarea>`;
+      el.querySelector('[data-remove-extra]').addEventListener('click', () => { el.remove(); if (!container.children.length) wrap.classList.add('hidden'); });
+      container.appendChild(el);
     }
 
-    function openCustomerModal(customerId = null, autoAddNewAddress = false) {
+    function openCustomerModal(customerId = null) {
       const modal = document.getElementById('customer-modal');
       const form = document.getElementById('customer-form');
-      const addrContainer = document.getElementById('multi-addresses-container');
       form.reset();
-      addrContainer.innerHTML = '';
-
       populateGroupDropdowns();
       populateCourierDropdowns();
+      document.getElementById('form-extra-addresses').innerHTML = '';
+      document.getElementById('form-extra-addresses-wrap').classList.add('hidden');
 
       const customerCodeInput = document.getElementById('form-customer-code');
       if (customerId) {
-        const c = state.customers.find(x => x.id === customerId);
+        const c = state.customers.find(x => String(x.id) === String(customerId));
         if (!c) return;
+        const customerAddresses = getCustomerAddresses(c);
+        const mainAddress = customerAddresses[0] || {};
+        renderExtraAddressEditors(customerAddresses.slice(1));
         document.getElementById('modal-title').textContent = `Edit Pelanggan (${c.customer_code})`;
         document.getElementById('form-customer-id').value = c.id;
         customerCodeInput.value = c.customer_code || '';
         customerCodeInput.readOnly = true;
         customerCodeInput.classList.add('bg-slate-100', 'cursor-not-allowed');
         customerCodeInput.title = 'ID PL tidak dapat diubah setelah pelanggan dibuat.';
+        document.getElementById('form-recipient-name').value = c.recipient_name || mainAddress.recipient_name || '';
+        document.getElementById('form-full-address').value = formatAddressText(mainAddress) || formatAddressText(c);
+        document.getElementById('form-recipient-phone').value = c.recipient_phone || mainAddress.recipient_phone || '';
+        document.getElementById('form-notes').value = c.notes || '';
         document.getElementById('form-group-id').value = c.group_id || (state.addressGroups[0]?.id || '');
         setCustomerCourierValue(c.courier_name || (state.couriers[0]?.courier_name || ''));
-        document.getElementById('form-recipient-name').value = c.recipient_name || '';
-        document.getElementById('form-recipient-phone').value = c.recipient_phone || '';
-        document.getElementById('form-notes').value = c.notes || '';
-        document.getElementById('form-is-dropship').checked = Boolean(c.is_dropship);
-        document.getElementById('form-dropshipper-name').value = c.dropshipper_name || '';
-        document.getElementById('form-dropshipper-phone').value = c.dropshipper_phone || '';
-
-        const addrs = getCustomerAddresses(c);
-        addrs.forEach((a, idx) => addrContainer.appendChild(renderAddressRowItem(a, idx)));
-
-        if (autoAddNewAddress) {
-          addrContainer.appendChild(renderAddressRowItem({ label: `Alamat Cabang ${addrs.length + 1}` }, addrs.length));
-        }
       } else {
-        document.getElementById('modal-title').textContent = 'Tambah Pelanggan Baru (ID PL Manual)';
+        document.getElementById('modal-title').textContent = 'Tambah Pelanggan Baru';
         document.getElementById('form-customer-id').value = '';
-        setCustomerCourierValue(state.couriers[0]?.courier_name || '');
         customerCodeInput.value = '';
         customerCodeInput.readOnly = false;
         customerCodeInput.classList.remove('bg-slate-100', 'cursor-not-allowed');
         customerCodeInput.title = 'Masukkan ID PL pelanggan yang unik.';
-        addrContainer.appendChild(renderAddressRowItem({ label: 'Alamat Utama' }, 0));
+        document.getElementById('form-group-id').value = state.addressGroups[0]?.id || '';
+        renderExtraAddressEditors([]);
+        document.getElementById('form-recipient-name').value = '';
+        document.getElementById('form-full-address').value = '';
+        document.getElementById('form-recipient-phone').value = '';
+        document.getElementById('form-notes').value = '';
+        setCustomerCourierValue(state.couriers[0]?.courier_name || '');
       }
-
-      document.getElementById('form-dropship-section').classList.toggle('hidden', !document.getElementById('form-is-dropship').checked);
       modal.classList.remove('hidden');
     }
 
@@ -3183,89 +3009,87 @@
     async function handleSaveCustomer(e) {
       e.preventDefault();
       const id = document.getElementById('form-customer-id').value;
-      const currentCustomer = id ? state.customers.find(c => c.id === id) : null;
+      const currentCustomer = id ? state.customers.find(c => String(c.id) === String(id)) : null;
       if (id && !currentCustomer) {
         showToast('Data pelanggan yang diedit tidak ditemukan. Muat ulang data lalu coba lagi.', 'error');
         return;
       }
-      // Saat edit, ID selalu mengambil nilai dari database/state, bukan dari input form.
+
       const customerCode = currentCustomer ? currentCustomer.customer_code : document.getElementById('form-customer-code').value.trim();
-      const duplicateCustomer = state.customers.find(c => c.id !== id && (c.customer_code || '').trim().toLocaleLowerCase('id-ID') === customerCode.toLocaleLowerCase('id-ID'));
+      const duplicateCustomer = state.customers.find(c => String(c.id) !== String(id) && (c.customer_code || '').trim().toLocaleLowerCase('id-ID') === customerCode.toLocaleLowerCase('id-ID'));
       if (duplicateCustomer) {
         showToast(`ID PL ${customerCode} sudah digunakan oleh pelanggan lain.`, 'error');
         return;
       }
-      const groupId = document.getElementById('form-group-id').value;
+
+      const groupId = document.getElementById('form-group-id').value || null;
       const courierSelectValue = document.getElementById('form-courier-name').value;
       const courierName = courierSelectValue === '__search__' ? '' : courierSelectValue;
       const mainName = document.getElementById('form-recipient-name').value.trim();
+      const mainAddressText = document.getElementById('form-full-address').value.trim();
       const mainPhone = document.getElementById('form-recipient-phone').value.trim();
       const notes = document.getElementById('form-notes').value.trim();
-      const isDropship = document.getElementById('form-is-dropship').checked;
-      const dropshipperName = document.getElementById('form-dropshipper-name').value.trim();
-      const dropshipperPhone = document.getElementById('form-dropshipper-phone').value.trim();
 
-      if (!customerCode) {
-        showToast('Mohon isi ID PL secara manual!', 'error');
+      if (!customerCode || !mainName || !mainAddressText || !mainPhone || !groupId) {
+        showToast('Lengkapi ID PL, nama pelanggan, alamat tujuan, nomor HP, dan grup.', 'error');
         return;
       }
-      if (!courierName) {
+      if (!courierName || !state.couriers.some(c => c.courier_name === courierName)) {
         showToast('Pilih jasa kirim yang sudah terdaftar. Gunakan Cari Lainnya untuk mencari.', 'error');
         return;
       }
 
-      if (isDropship && !dropshipperName) {
-        showToast('Mohon isi Nama Pengirim Dropship!', 'error');
-        return;
-      }
-
-      const rowEls = Array.from(document.querySelectorAll('#multi-addresses-container .address-row-item'));
-      const addresses = rowEls.map((row, idx) => ({
-        addr_id: 'addr-' + Date.now() + '-' + idx,
-        label: row.querySelector('.addr-label').value.trim() || `Alamat ${idx + 1}`,
-        recipient_name: row.querySelector('.addr-recipient').value.trim() || mainName,
-        recipient_phone: row.querySelector('.addr-phone').value.trim() || mainPhone,
-        full_address: row.querySelector('.addr-full').value.trim(),
-        subdistrict: row.querySelector('.addr-subdistrict').value.trim(),
-        city: row.querySelector('.addr-city').value.trim(),
-        province_postal: row.querySelector('.addr-province').value.trim()
-      }));
-
-      const firstAddr = addresses[0] || {};
+      const existingAddresses = currentCustomer ? getCustomerAddresses(currentCustomer) : [];
+      const primaryAddress = {
+        addr_id: existingAddresses[0]?.addr_id || `addr-${Date.now()}`,
+        label: existingAddresses[0]?.label || 'Alamat Utama',
+        recipient_name: mainName,
+        recipient_phone: mainPhone,
+        full_address: mainAddressText,
+        subdistrict: '', city: '', province_postal: ''
+      };
+      const extraAddresses = Array.from(document.querySelectorAll('#form-extra-addresses .extra-address-editor')).map((el, index) => ({
+        addr_id: el.dataset.addrId || `addr-${Date.now()}-${index}`,
+        label: el.querySelector('[data-extra-label]').value.trim() || `Alamat ${index + 2}`,
+        recipient_name: el.querySelector('[data-extra-name]').value.trim() || mainName,
+        recipient_phone: el.querySelector('[data-extra-phone]').value.trim() || mainPhone,
+        full_address: el.querySelector('[data-extra-address]').value.trim(),
+        subdistrict: '', city: '', province_postal: ''
+      })).filter(a => a.full_address);
+      const addresses = [primaryAddress, ...extraAddresses];
       const payload = {
         customer_code: customerCode,
         group_id: groupId,
         recipient_name: mainName,
         recipient_phone: mainPhone,
-        full_address: firstAddr.full_address || '',
-        subdistrict: firstAddr.subdistrict || '',
-        city: firstAddr.city || '',
-        province_postal: firstAddr.province_postal || '',
+        full_address: mainAddressText,
+        subdistrict: '',
+        city: '',
+        province_postal: '',
         courier_name: courierName,
         notes,
-        is_dropship: isDropship,
-        dropshipper_name: isDropship ? dropshipperName : '',
-        dropshipper_phone: isDropship ? dropshipperPhone : '',
-        addresses
+        addresses,
+        updated_at: new Date().toISOString()
       };
 
       try {
         if (IS_PREVIEW) {
           if (id) {
-            const idx = state.customers.findIndex(c => c.id === id);
+            const idx = state.customers.findIndex(c => String(c.id) === String(id));
             if (idx > -1) state.customers[idx] = { ...state.customers[idx], ...payload };
-            showToast('Data pelanggan & multi-alamat diperbarui!');
+            showToast('Data pelanggan berhasil diperbarui!');
           } else {
-            const newCust = { id: 'cust-' + Date.now(), ...payload, created_at: new Date().toISOString() };
+            const newCust = { id: 'cust-' + Date.now(), ...payload, is_dropship: false, dropshipper_name: '', dropshipper_phone: '', created_at: new Date().toISOString() };
             state.customers.unshift(newCust);
             showToast('Pelanggan baru berhasil disimpan!');
           }
           localStorage.setItem('yaxiya_v3_customers', JSON.stringify(state.customers));
         } else {
+          if (!supabase) throw new Error('Supabase belum dikonfigurasi.');
           if (id) {
             const { data, error } = await supabase.from('customers').update(payload).eq('id', id).select().single();
             if (error) throw error;
-            const idx = state.customers.findIndex(c => c.id === id);
+            const idx = state.customers.findIndex(c => String(c.id) === String(id));
             if (idx > -1) state.customers[idx] = data;
           } else {
             const { data, error } = await supabase.from('customers').insert([payload]).select().single();
@@ -3406,7 +3230,7 @@
         customer_code: customer.customer_code,
         recipient_name: addr.recipient_name || customer.recipient_name,
         recipient_phone: addr.recipient_phone || customer.recipient_phone,
-        address_summary: `${addr.label || 'Utama'} - ${addr.full_address || ''}${addr.city ? ', ' + addr.city : ''}`,
+        address_summary: `${addr.label || 'Utama'} - ${formatAddressText(addr)}`,
         courier_name: customer.courier_name || '',
         sender_mode: customer.is_dropship ? `Dropship (${customer.dropshipper_name || 'Pengirim Dropship'})` : `Reguler (${state.storeSettings.store_name})`,
         qty: 1
@@ -3499,7 +3323,7 @@
       const addrSelect = document.getElementById('a6-address-select');
       addrSelect.innerHTML = addrs.map((a, i) => `
         <option value="${i}" ${i === state.activeA6AddressIndex ? 'selected' : ''}>
-          Alamat #${i + 1}: ${escapeHTML(a.label || 'Utama')} — ${escapeHTML(a.city || '')}
+          Alamat #${i + 1}: ${escapeHTML(a.label || 'Utama')} — ${escapeHTML(formatAddressText(a))}
         </option>
       `).join('');
 
@@ -3549,7 +3373,6 @@
 
       box.innerHTML = buildReceiptSlotHTML(c, addrObj, {
         customer_code: document.getElementById('a6-idpl-input').value.trim(),
-        weight: document.getElementById('a6-weight-input').value.trim(),
         courier_name: document.getElementById('a6-courier-select').value,
         notes: document.getElementById('a6-notes-input').value.trim(),
         is_dropship: document.getElementById('a6-dropship-toggle').checked,
@@ -3569,7 +3392,6 @@
       const dropshipperName = document.getElementById('a6-dropshipper-name').value.trim();
       const dropshipperPhone = document.getElementById('a6-dropshipper-phone').value.trim();
       const idPL = document.getElementById('a6-idpl-input').value.trim() || c.customer_code;
-      const weight = document.getElementById('a6-weight-input').value.trim();
       const courierName = document.getElementById('a6-courier-select').value;
       const notes = document.getElementById('a6-notes-input').value.trim();
       const qty = Math.max(1, parseInt(document.getElementById('a6-copy-qty').value, 10) || 1);
@@ -3581,7 +3403,6 @@
 
       const singleHTML = buildReceiptSlotHTML(c, addrObj, {
         customer_code: idPL,
-        weight,
         courier_name: courierName,
         notes,
         is_dropship: isDropship,
@@ -3599,7 +3420,7 @@
         customer_code: idPL,
         recipient_name: addrObj.recipient_name || c.recipient_name,
         recipient_phone: addrObj.recipient_phone || c.recipient_phone,
-        address_summary: `${addrObj.label || 'Utama'} - ${addrObj.full_address}, ${addrObj.city}`,
+        address_summary: `${addrObj.label || 'Utama'} - ${formatAddressText(addrObj)}`,
         courier_name: courierName,
         sender_mode: isDropship ? `Dropship (${dropshipperName})` : `Reguler (${state.storeSettings.store_name})`,
         qty
@@ -3625,7 +3446,7 @@
             customer_code: c.customer_code,
             recipient_name: addrObj.recipient_name || c.recipient_name,
             recipient_phone: addrObj.recipient_phone || c.recipient_phone,
-            address_summary: `${addrObj.label || 'Utama'} - ${addrObj.full_address}, ${addrObj.city}`,
+            address_summary: `${addrObj.label || 'Utama'} - ${formatAddressText(addrObj)}`,
             courier_name: c.courier_name,
             sender_mode: c.is_dropship ? `Dropship (${c.dropshipper_name})` : `Reguler (${state.storeSettings.store_name})`,
             qty: 1
@@ -3654,7 +3475,7 @@
         addrs.forEach((addr, idx) => {
           const key = `${c.id}__${idx}`;
           if (!state.a4SelectionMap[key]) {
-            state.a4SelectionMap[key] = { selected: false, qty: 1, weight: '1 Kg / 1 Koli' };
+            state.a4SelectionMap[key] = { selected: false, qty: 1 };
           }
           const matchQ = !q ||
             (c.customer_code || '').toLowerCase().includes(q) ||
@@ -3686,7 +3507,6 @@
                 key,
                 customer: c,
                 address: addr,
-                weight: cfg.weight || '1 Kg / 1 Koli'
               });
             }
           }
@@ -3746,7 +3566,7 @@
 
     function toggleA4AddressItem(key, checked) {
       if (!state.a4SelectionMap[key]) {
-        state.a4SelectionMap[key] = { selected: checked, qty: 1, weight: '1 Kg / 1 Koli' };
+        state.a4SelectionMap[key] = { selected: checked, qty: 1 };
       } else {
         state.a4SelectionMap[key].selected = checked;
       }
@@ -3758,7 +3578,7 @@
     function setA4Qty(key, val) {
       const qty = Math.max(1, Math.min(99, parseInt(val, 10) || 1));
       if (!state.a4SelectionMap[key]) {
-        state.a4SelectionMap[key] = { selected: true, qty, weight: '1 Kg / 1 Koli' };
+        state.a4SelectionMap[key] = { selected: true, qty };
       } else {
         state.a4SelectionMap[key].qty = qty;
         state.a4SelectionMap[key].selected = true;
@@ -3826,10 +3646,7 @@
         }
         return `
           <div class="a4-slot-box">
-            ${buildReceiptSlotHTML(item.customer, item.address, {
-              weight: item.weight,
-              compactA4: true
-            })}
+            ${buildReceiptSlotHTML(item.customer, item.address, { compactA4: true })}
           </div>
         `;
       }).join('');
@@ -3852,10 +3669,7 @@
           if (!item) return `<div class="print-a4-slot-blank"></div>`;
           return `
             <div class="print-a4-slot-filled">
-              ${buildReceiptSlotHTML(item.customer, item.address, {
-                weight: item.weight,
-                compactA4: true
-              })}
+              ${buildReceiptSlotHTML(item.customer, item.address, { compactA4: true })}
             </div>
           `;
         }).join('');
@@ -3876,7 +3690,7 @@
               customer_code: c.customer_code,
               recipient_name: addrObj.recipient_name || c.recipient_name,
               recipient_phone: addrObj.recipient_phone || c.recipient_phone,
-              address_summary: `${addrObj.label || 'Utama'} - ${addrObj.full_address}, ${addrObj.city}`,
+              address_summary: `${addrObj.label || 'Utama'} - ${formatAddressText(addrObj)}`,
               courier_name: c.courier_name,
               sender_mode: c.is_dropship ? `Dropship (${c.dropshipper_name})` : `Reguler (${state.storeSettings.store_name})`,
               qty: Math.max(1, parseInt(cfg.qty, 10) || 1)
@@ -4409,6 +4223,7 @@
       switchView,
       openCustomerModal,
       closeCustomerModal,
+      addExtraAddressEditor,
       openGroupModal,
       closeGroupModal,
       editGroup,
@@ -4491,15 +4306,7 @@
         });
       });
 
-      // Modal Pelanggan & Multi-Alamat
-      document.getElementById('btn-add-address-row').addEventListener('click', () => {
-        const container = document.getElementById('multi-addresses-container');
-        const idx = container.querySelectorAll('.address-row-item').length;
-        container.appendChild(renderAddressRowItem({ label: `Alamat Cabang ${idx + 1}` }, idx));
-      });
-      document.getElementById('form-is-dropship').addEventListener('change', (e) => {
-        document.getElementById('form-dropship-section').classList.toggle('hidden', !e.target.checked);
-      });
+      // Form pelanggan baru: tujuh kolom sesuai format data pelanggan.
       document.getElementById('customer-form').addEventListener('submit', handleSaveCustomer);
       document.getElementById('form-courier-name').addEventListener('change', (e) => {
         const searchWrap = document.getElementById('form-courier-search-wrap');
@@ -4563,7 +4370,7 @@
         syncA6DropshipUI(e.target.checked);
         updateA6LivePreview();
       });
-      ['a6-idpl-input', 'a6-weight-input', 'a6-courier-select', 'a6-notes-input', 'a6-dropshipper-name', 'a6-dropshipper-phone'].forEach(id => {
+      ['a6-idpl-input', 'a6-courier-select', 'a6-notes-input', 'a6-dropshipper-name', 'a6-dropshipper-phone'].forEach(id => {
         document.getElementById(id).addEventListener('input', updateA6LivePreview);
         document.getElementById(id).addEventListener('change', updateA6LivePreview);
       });
