@@ -801,7 +801,7 @@
 
           <!-- ========================================== -->
           <!-- VIEW 2: DATA PELANGGAN (TABEL + MULTI ALAMAT + GRUP) -->
-          <!-- Aksi cetak A5 / A4 tersedia untuk setiap alamat, termasuk multi-alamat. -->
+          <!-- Aksi cetak A6 / A4 tersedia untuk setiap alamat, termasuk multi-alamat. -->
           <!-- ========================================== -->
           <section id="view-customers" class="view-section hidden space-y-4">
 
@@ -864,13 +864,17 @@
             <div class="glass-card rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div class="min-w-0">
                 <h3 class="text-sm font-extrabold text-slate-800"><i class="fa-solid fa-file-csv text-brand-600 mr-1.5"></i>Import Pelanggan Massal (CSV)</h3>
-                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Satu baris untuk satu alamat. Untuk multi-alamat, ulangi <b>customer_code</b> yang sama pada beberapa baris. ID yang sudah ada akan diperbarui dan daftar alamatnya diganti sesuai isi CSV.</p>
+                <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">Template berisi contoh 3 baris data. Ganti atau hapus baris contoh sebelum impor. Satu baris untuk satu alamat; untuk multi-alamat, ulangi <b>customer_code</b> yang sama. ID yang sudah ada akan diperbarui dan seluruh daftar alamatnya diganti mengikuti isi CSV.</p>
               </div>
               <div class="flex flex-wrap items-center gap-2 shrink-0">
                 <input type="file" id="customer-csv-file" accept=".csv,text/csv" class="hidden" />
                 <button type="button" onclick="window.app.downloadCustomerCsvTemplate()"
                   class="px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs flex items-center gap-2">
                   <i class="fa-solid fa-download"></i><span>Unduh Template CSV</span>
+                </button>
+                <button type="button" id="btn-export-customer-addresses-excel"
+                  class="px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center gap-2 shadow-sm">
+                  <i class="fa-solid fa-file-excel"></i><span>Export Alamat Excel</span>
                 </button>
                 <button type="button" onclick="document.getElementById('customer-csv-file').click()"
                   class="px-3.5 py-2.5 rounded-xl brand-gradient text-white font-extrabold text-xs flex items-center gap-2 shadow-sm">
@@ -1817,11 +1821,12 @@
       // MODE PRODUKSI SUPABASE (IS_PREVIEW = false)
       try {
         // 1. Store settings
-        const { data: stData } = await supabase.from('store_settings').select('*').limit(1);
+        const { data: stData, error: stError } = await supabase.from('store_settings').select('*').limit(1);
+        if (stError) throw stError;
         if (stData && stData.length > 0) {
           state.storeSettings = stData[0];
         } else {
-          const { data: newSt } = await supabase.from('store_settings').insert([{
+          const { data: newSt, error: newStError } = await supabase.from('store_settings').insert([{
             store_name: state.storeSettings.store_name,
             store_logo: state.storeSettings.store_logo,
             store_phone: state.storeSettings.store_phone,
@@ -1829,42 +1834,51 @@
             admin_username: state.storeSettings.admin_username,
             admin_email: state.storeSettings.admin_email
           }]).select().single();
+          if (newStError) throw newStError;
           if (newSt) state.storeSettings = newSt;
         }
 
         // 2. Address Groups
-        const { data: grpData } = await supabase.from('address_groups').select('*').order('created_at', { ascending: true });
+        const { data: grpData, error: grpError } = await supabase.from('address_groups').select('*').order('created_at', { ascending: true });
+        if (grpError) throw grpError;
         if (grpData && grpData.length > 0) {
           state.addressGroups = grpData;
         } else {
-          const { data: insGrp } = await supabase.from('address_groups').insert(
+          const { data: insGrp, error: insGrpError } = await supabase.from('address_groups').insert(
             defaultGroups.map(g => ({ group_name: g.group_name }))
           ).select();
+          if (insGrpError) throw insGrpError;
           if (insGrp) state.addressGroups = insGrp;
         }
 
         // 3. Couriers
-        const { data: crData } = await supabase.from('couriers').select('*').order('created_at', { ascending: true });
+        const { data: crData, error: crError } = await supabase.from('couriers').select('*').order('created_at', { ascending: true });
+        if (crError) throw crError;
         if (crData && crData.length > 0) {
           state.couriers = crData;
         } else {
-          const { data: insCr } = await supabase.from('couriers').insert(
+          const { data: insCr, error: insCrError } = await supabase.from('couriers').insert(
             defaultCouriers.map(c => ({ courier_name: c.courier_name, service_note: c.service_note }))
           ).select();
+          if (insCrError) throw insCrError;
           if (insCr) state.couriers = insCr;
         }
 
         // 4. Customers
-        const { data: custData } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
+        const { data: custData, error: custError } = await supabase.from('customers').select('*').order('created_at', { ascending: false });
+        if (custError) throw custError;
         if (custData) state.customers = custData;
 
         // 5. Print History
-        const { data: histData } = await supabase.from('print_history').select('*').order('printed_at', { ascending: false });
+        const { data: histData, error: histError } = await supabase.from('print_history').select('*').order('printed_at', { ascending: false });
+        if (histError) throw histError;
         if (histData) state.printHistory = histData;
 
         initA4SelectionDefaults();
+        return true;
       } catch (err) {
-        showToast('Gagal memuat data Supabase: ' + err.message, 'error');
+        showToast(explainSupabaseError(err, 'memuat data Supabase'), 'error');
+        return false;
       }
     }
 
@@ -1933,6 +1947,14 @@
         .replace(/'/g, '&#039;');
     }
 
+    function explainSupabaseError(err, context = 'menyimpan data') {
+      const message = String(err?.message || err || 'Kesalahan tidak diketahui');
+      if (String(err?.code || '') === '42501' || /row-level security policy|violates row-level security/i.test(message)) {
+        return `Supabase menolak operasi karena kebijakan keamanan RLS. Akun login belum terdaftar sebagai admin, atau SQL keamanan belum diperbarui. Jalankan SQL revisi dan pastikan akun admin tercantum pada public.app_admins. Detail: ${message}`;
+      }
+      return `Gagal ${context}: ${message}`;
+    }
+
     // ====================================================
     // 4. LOGIN & LOGOUT ADMIN UTAMA (DENGAN EDIT AKUN)
     // ====================================================
@@ -1998,8 +2020,8 @@
           email: data.user.email,
           username: data.user.user_metadata?.username || state.storeSettings.admin_username || 'admin'
         };
-        showToast('Login Admin berhasil!');
-        await enterDashboard();
+        const dashboardOpened = await enterDashboard();
+        if (dashboardOpened) showToast('Login Admin berhasil!');
       } catch (err) {
         showToast('Gagal masuk: ' + err.message, 'error');
       }
@@ -2018,13 +2040,48 @@
     }
 
     async function enterDashboard() {
+      // Verifikasi tambahan di server sebelum mencoba membaca/menulis tabel ber-RLS.
+      // Jangan mengatasi masalah dengan membuka tabel ke role anon/authenticated secara umum.
+      if (!IS_PREVIEW) {
+        if (!supabase) {
+          showToast('Supabase belum dikonfigurasi. Isi URL dan anon key yang benar serta set IS_PREVIEW = false.', 'error');
+          return false;
+        }
+        try {
+          const { data: userData, error: userError } = await supabase.auth.getUser();
+          if (userError) throw userError;
+          if (!userData?.user) {
+            showToast('Sesi login Supabase tidak ditemukan. Silakan login kembali.', 'error');
+            return false;
+          }
+          const { data: isAdmin, error: adminCheckError } = await supabase.rpc('is_app_admin');
+          if (adminCheckError) {
+            throw new Error(`Fungsi verifikasi is_app_admin belum dapat dijalankan. Jalankan SQL revisi Supabase. Detail: ${adminCheckError.message}`);
+          }
+          if (isAdmin !== true) {
+            showToast('Login berhasil, tetapi akun ini belum terdaftar sebagai admin database. Jalankan bagian bootstrap admin pada SQL revisi, lalu login kembali.', 'error');
+            await supabase.auth.signOut();
+            state.adminUser = null;
+            return false;
+          }
+        } catch (err) {
+          showToast(explainSupabaseError(err, 'memverifikasi akses admin'), 'error');
+          return false;
+        }
+      }
+
+      const dataLoaded = await autoSetupDatabase();
+      if (dataLoaded === false) {
+        document.getElementById('app-shell').classList.add('hidden');
+        document.getElementById('login-screen').classList.remove('hidden');
+        return false;
+      }
       document.getElementById('login-screen').classList.add('hidden');
       document.getElementById('app-shell').classList.remove('hidden');
-
-      await autoSetupDatabase();
       syncStoreAndAdminUI();
       renderAllViews();
       switchView('dashboard');
+      return true;
     }
 
     function syncStoreAndAdminUI() {
@@ -2463,7 +2520,7 @@
         renderGroupsModalList();
         renderAllViews();
       } catch (err) {
-        showToast('Gagal menyimpan grup: ' + err.message, 'error');
+        showToast(explainSupabaseError(err, 'menyimpan grup alamat'), 'error');
       }
     }
 
@@ -2567,9 +2624,9 @@
               ${escapeHTML(a.full_address || '-')}${a.subdistrict ? ', ' + escapeHTML(a.subdistrict) : ''}${a.city ? ', ' + escapeHTML(a.city) : ''}${a.province_postal ? ' · ' + escapeHTML(a.province_postal) : ''}
             </div>
             <div class="mt-2.5 flex flex-wrap gap-1.5">
-              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx}, 'A5')"
+              <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx}, 'A6')"
                 class="px-2.5 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-extrabold text-[10px] transition">
-                <i class="fa-solid fa-print mr-1"></i>Cetak A5
+                <i class="fa-solid fa-print mr-1"></i>Cetak A6
               </button>
               <button type="button" onclick="window.app.printCustomerAddress('${escapeHTML(c.id)}', ${idx}, 'A4')"
                 class="px-2.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-800 font-extrabold text-[10px] transition">
@@ -2665,7 +2722,34 @@
     ];
 
     function downloadCustomerCsvTemplate() {
-      const csv = '\uFEFF' + CUSTOMER_CSV_HEADERS.join(',') + '\r\n';
+      // Template memuat contoh pelanggan PL-001 dengan dua alamat dan PL-002 dropship.
+      // Pengguna perlu mengganti/menghapus contoh ini sebelum melakukan import sesungguhnya.
+      const exampleRows = [
+        CUSTOMER_CSV_HEADERS,
+        [
+          'PL-001', 'Pelanggan Grosir Tetap', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
+          'Indah Logistik Cargo', 'Grosir Setelan Anak 3 Bal', 'false', '', '',
+          'Toko Utama (Pasar Klewer)', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
+          'Jl. Pasar Klewer Blok C No. 14, dekat pintu timur', 'Kec. Pasar Kliwon', 'Kota Surakarta', 'Jawa Tengah - 57118'
+        ],
+        [
+          'PL-001', 'Pelanggan Grosir Tetap', 'Hj. Rahmawati (Toko Berkah Jaya)', '0812-3456-7891',
+          'Indah Logistik Cargo', 'Grosir Setelan Anak 3 Bal', 'false', '', '',
+          'Gudang Cabang Solo Baru', 'Bpk. Hendra (Gudang Berkah)', '0812-9900-1122',
+          'Ruko Pandawa Blok B2 No. 8, Solo Baru', 'Kec. Grogol', 'Kab. Sukoharjo', 'Jawa Tengah - 57552'
+        ],
+        [
+          'PL-002', 'Mitra Reseller & Dropship', 'Siska Amelia Putri', '0857-8899-1122',
+          'J&T Express', 'Gamis Ceruty Babydoll 6 pcs', 'true', 'Nabila Fashion Hijab', '0896-5544-3322',
+          'Alamat Rumah Slawi', 'Siska Amelia Putri', '0857-8899-1122',
+          'Perum Griya Asri Blok Melati No. 9 RT 04/08', 'Kec. Slawi', 'Kab. Tegal', 'Jawa Tengah - 52419'
+        ]
+      ];
+      const csvEscape = value => {
+        const text = String(value ?? '');
+        return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+      };
+      const csv = '\uFEFF' + exampleRows.map(row => row.map(csvEscape).join(',')).join('\r\n') + '\r\n';
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -2675,7 +2759,56 @@
       link.click();
       link.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      showToast('Template CSV berhasil diunduh.');
+      showToast('Template CSV beserta 3 contoh baris berhasil diunduh. Ganti/hapus contoh sebelum impor.');
+    }
+
+    function exportCustomerAddressesToExcel() {
+      const customers = getFilteredCustomers();
+      const rows = [];
+      customers.forEach(customer => {
+        const group = state.addressGroups.find(item => String(item.id) === String(customer.group_id));
+        getCustomerAddresses(customer).forEach((address, index) => {
+          rows.push({
+            'No': rows.length + 1,
+            'ID PL': customer.customer_code || '',
+            'Urutan Alamat': index + 1,
+            'Label Alamat': address.label || (index === 0 ? 'Alamat Utama' : `Alamat ${index + 1}`),
+            'Nama Pelanggan Utama': customer.recipient_name || '',
+            'No. HP Utama': customer.recipient_phone || '',
+            'Nama Penerima Alamat': address.recipient_name || customer.recipient_name || '',
+            'No. HP Penerima Alamat': address.recipient_phone || customer.recipient_phone || '',
+            'Alamat Lengkap': address.full_address || customer.full_address || '',
+            'Kecamatan': address.subdistrict || customer.subdistrict || '',
+            'Kota/Kabupaten': address.city || customer.city || '',
+            'Provinsi / Kode Pos': address.province_postal || customer.province_postal || '',
+            'Grup Alamat': group ? group.group_name : 'Umum',
+            'Jasa Kirim': customer.courier_name || '',
+            'Mode Dropship': customer.is_dropship ? 'Ya' : 'Tidak',
+            'Nama Dropshipper': customer.dropshipper_name || '',
+            'No. HP Dropshipper': customer.dropshipper_phone || '',
+            'Catatan': customer.notes || ''
+          });
+        });
+      });
+
+      if (!rows.length) {
+        showToast('Tidak ada alamat pelanggan untuk diekspor berdasarkan filter saat ini.', 'error');
+        return;
+      }
+      if (!window.XLSX) {
+        showToast('Komponen Excel belum termuat. Muat ulang halaman lalu coba kembali.', 'error');
+        return;
+      }
+      const worksheet = window.XLSX.utils.json_to_sheet(rows);
+      worksheet['!cols'] = [
+        { wch: 6 }, { wch: 14 }, { wch: 13 }, { wch: 28 }, { wch: 30 }, { wch: 18 },
+        { wch: 30 }, { wch: 20 }, { wch: 48 }, { wch: 22 }, { wch: 24 }, { wch: 25 },
+        { wch: 28 }, { wch: 24 }, { wch: 15 }, { wch: 28 }, { wch: 20 }, { wch: 36 }
+      ];
+      const workbook = window.XLSX.utils.book_new();
+      window.XLSX.utils.book_append_sheet(workbook, worksheet, 'Alamat Pelanggan');
+      window.XLSX.writeFile(workbook, `Alamat-Pelanggan-Yaxiya-Grosir-${new Date().toISOString().slice(0, 10)}.xlsx`);
+      showToast(`Berhasil mengekspor ${rows.length} alamat pelanggan ke Excel. Ekspor mengikuti filter yang aktif.`);
     }
 
     function parseCSVText(text) {
@@ -3146,7 +3279,7 @@
         closeCustomerModal();
         renderAllViews();
       } catch (err) {
-        showToast('Gagal menyimpan pelanggan: ' + err.message, 'error');
+        showToast(explainSupabaseError(err, 'menyimpan pelanggan'), 'error');
       }
     }
 
@@ -3225,7 +3358,7 @@
         await action();
         closeDeleteModal();
       } catch (err) {
-        showToast('Operasi gagal: ' + (err?.message || String(err)), 'error');
+        showToast(explainSupabaseError(err, 'menjalankan operasi'), 'error');
         closeDeleteModal();
       } finally {
         button.disabled = false;
@@ -3233,7 +3366,7 @@
       }
     }
 
-    // Cetak satu alamat langsung dari daftar pelanggan pada kertas A5 atau A4.
+    // Cetak satu alamat dari tabel pelanggan dengan format yang sama persis seperti studio A6 atau A4.
     async function printCustomerAddress(customerId, addressIndex, paperType) {
       const customer = state.customers.find(c => String(c.id) === String(customerId));
       if (!customer) {
@@ -3247,7 +3380,7 @@
         return;
       }
 
-      const paper = String(paperType).toUpperCase() === 'A4' ? 'A4' : 'A5';
+      const paper = String(paperType).toUpperCase() === 'A4' ? 'A4' : 'A6';
       let printHTML = '';
       if (paper === 'A4') {
         // Sama dengan studio Cetak A4: satu alamat menempati satu slot (1/3 halaman).
@@ -3257,13 +3390,15 @@
           <div class="print-a4-slot-blank"></div>
           <div class="print-a4-slot-blank"></div>
         </div>`;
+        document.getElementById('dynamic-page-print-style').innerHTML =
+          '@media print { @page { size: A4 portrait; margin: 0mm; } }';
       } else {
-        // Format A5 memakai desain resi non-kompak yang sama seperti preview/cetak A6.
+        // Pakai kelas dan ukuran kertas studio A6 yang sama agar hasil tabel identik dengan studio.
         const receiptHTML = buildReceiptSlotHTML(customer, addr, { compactA4: false });
-        printHTML = `<div class="print-direct-a5-page">${receiptHTML}</div>`;
+        printHTML = `<div class="print-a6-wrapper"><div class="print-a6-item">${receiptHTML}</div></div>`;
+        document.getElementById('dynamic-page-print-style').innerHTML =
+          '@media print { @page { size: 100mm 150mm; margin: 0mm; } }';
       }
-      document.getElementById('dynamic-page-print-style').innerHTML =
-        `@media print { @page { size: ${paper} portrait; margin: 0mm; } }`;
       document.getElementById('print-mount-container').innerHTML = printHTML;
 
       await recordPrintHistory({
@@ -4115,7 +4250,7 @@
         resetCourierForm();
         renderAllViews();
       } catch (err) {
-        showToast('Gagal menyimpan jasa kirim: ' + err.message, 'error');
+        showToast(explainSupabaseError(err, 'menyimpan jasa kirim'), 'error');
       }
     }
 
@@ -4172,7 +4307,7 @@
         renderAllViews();
         showToast('Identitas toko berhasil diperbarui!');
       } catch (err) {
-        showToast('Gagal menyimpan pengaturan toko: ' + err.message, 'error');
+        showToast(explainSupabaseError(err, 'menyimpan pengaturan toko'), 'error');
       }
     }
 
@@ -4233,10 +4368,11 @@
           });
           if (authErr) throw authErr;
 
-          await supabase.from('store_settings').update({
+          const { error: settingsError } = await supabase.from('store_settings').update({
             admin_username: newUsername,
             admin_email: newEmail
           }).eq('id', state.storeSettings.id);
+          if (settingsError) throw settingsError;
 
           state.storeSettings.admin_username = newUsername;
           state.storeSettings.admin_email = newEmail;
@@ -4390,6 +4526,7 @@
       });
       document.getElementById('confirm-delete-btn').addEventListener('click', confirmPendingAction);
       document.getElementById('customer-csv-file').addEventListener('change', handleCustomerCsvSelected);
+      document.getElementById('btn-export-customer-addresses-excel').addEventListener('click', exportCustomerAddressesToExcel);
 
       // Modal Grup Alamat
       document.getElementById('group-form').addEventListener('submit', handleSaveGroup);
